@@ -25,7 +25,7 @@ class Koordinate{
 };
 
 bool operator!=(Koordinate &lhs, Koordinate &rhs){
-  if(lhs.getX()!=rhs.getX()&&lhs.getY()!=rhs.getY()){
+  if(lhs.getX()!=rhs.getX()&&lhs.getY()!=rhs.getY()){  //treba provjeriti koliko grijesi, koliko odstupa na mjestu i kolike su grijske prijenosa
     return LOW;
   }
   return HIGH;
