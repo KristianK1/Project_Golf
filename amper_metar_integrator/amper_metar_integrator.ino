@@ -3,6 +3,7 @@ double naboj=0;
 int T=1000;
 double R=100;
 int sekunde=0;
+double struja;
 
 void setup() {
   // put your setup code here, to run once:
@@ -17,8 +18,9 @@ void loop() {
     naboj+=1.0*T/1000000*struja;
   }
   if(millis()-sekunde*1000>1000){
-    sekunde=(int)millis()/1000;
+    sekunde=millis()/1000;
     Serial.print(naboj);
-    Serial.println(" mAs (mili amper sekunda)");
+    Serial.print(" mAs (mili amper sekunda)   Sekunda: ");
+    Serial.println(sekunde);
   }
 }
