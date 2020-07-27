@@ -20,7 +20,7 @@ void loop_mirnog_stanja(){
 }
 
 void loop_pobudenog_stanja(){
-  valid=GPS_update(mjesta);
+//  valid=GPS_update(mjesta);
   if(valid==LOW){
     //neispravno mjerenje
   }

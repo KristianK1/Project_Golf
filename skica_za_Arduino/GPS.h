@@ -1,13 +1,14 @@
 #include<math.h>
 
 int broj_lokacija=5;
+/*
 Koordinate *mjesta;
 
 double udaljenost(Koordinate &K, double X, double Y){
   return sqrt(pow(K.getX()-X,2)+pow(K.getY()-Y,2));
 }
-
-bool GPS_mjerenje(Koordinate* mjer, Koordinate *mjesta){
+*/
+/*bool GPS_mjerenje(Koordinate* mjer, Koordinate *mjesta){
   
   mjer->set(18,45);  //primjer, ovdje treba ubaciti mjerenje
   bool vjerodostojnost=1;
@@ -51,9 +52,9 @@ bool GPS_mjerenje(Koordinate* mjer, Koordinate *mjesta){
     }
     else Serial.println("Primljena totalno kriva koordinata (nije na zemlji)");
   }
-}
+}*/
 
-
+/*
 bool GPS_update(Koordinate *mjesta){
   Koordinate *novo_mjerenje=new Koordinate();
   bool valid=GPS_mjerenje(novo_mjerenje, mjesta);
@@ -69,3 +70,4 @@ bool GPS_update(Koordinate *mjesta){
     Serial.println("Nevaljalo mjerenje zbog nekog razloga");
   }
 }
+*/

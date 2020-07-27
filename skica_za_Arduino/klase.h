@@ -1,4 +1,5 @@
 class koor_1D{
+  friend koor_1D divide(koor_1D, int);
   friend bool operator>=(koor_1D, koor_1D);
   friend koor_1D operator-(koor_1D, koor_1D);
   friend koor_1D operator+(koor_1D, koor_1D);
@@ -10,12 +11,8 @@ class koor_1D{
     double decimala_sekunde;
     int maks;   //za X je 180, za Y je 90
   public:
-    koor_1D(): stupanj(0), minuta(0), sekunda(0), decimala_sekunde(0.0), maks(0){
-      
-    }
-    koor_1D(int mStupnjevi, int mMinute, int mSekunde, double mDecimala, int mmaks): stupanj(mStupnjevi), minuta(mMinute), sekunda(mSekunde), decimala_sekunde(mDecimala), maks(mmaks){
-      
-    }
+    koor_1D(): stupanj(0), minuta(0), sekunda(0), decimala_sekunde(0.0), maks(0){}
+    koor_1D(int mStupnjevi, int mMinute, int mSekunde, double mDecimala, int mmaks): stupanj(mStupnjevi), minuta(mMinute), sekunda(mSekunde), decimala_sekunde(mDecimala), maks(mmaks){}
     int get_stupanj(){ return stupanj;}
     int get_minuta(){ return minuta;}
     int get_sekunda(){ return sekunda;}
@@ -75,9 +72,44 @@ class koor_1D{
         }
       }
     }
+
+  koor_abs(){
+    prefix();
+    if(stupanj<0){
+      stupanj*=-1;
+      minuta*=-1;
+      sekunda*=-1;
+      decimala_sekunde*=-1;
+    }
+  }
+  
 };
 
+koor_1D divide(koor_1D lhs, int rhs){
+  koor_1D ret;
+  ret.maks=lhs.maks;
+  if(rhs>0){
+    ret.stupanj=lhs.stupanj/rhs;
+    lhs.stupanj-=ret.stupanj*rhs;
+    
+    lhs.minuta+=lhs.stupanj*60;
+    ret.minuta=(int)(lhs.minuta/rhs);
+    lhs.minuta-=ret.minuta*rhs;
+
+    lhs.sekunda+=lhs.minuta*60;
+    ret.sekunda=(int)(lhs.sekunda/rhs);
+    lhs.sekunda-=ret.sekunda*rhs;
+
+    lhs.decimala_sekunde+=lhs.sekunda*1.0;
+    ret.decimala_sekunde=lhs.decimala_sekunde/rhs;
+  }
+}
+
+
 bool operator>=(koor_1D lhs, koor_1D rhs){
+  lhs.prefix();
+  rhs.prefix();
+  
   if(lhs.stupanj>rhs.stupanj) return true;
   else if(lhs.stupanj<rhs.stupanj)return false;
   else {
@@ -175,40 +207,39 @@ koor_1D operator+(koor_1D lhs, koor_1D rhs){
 
 
 
-class Koordinate{
-  friend bool operator!=(Koordinate &lhs, Koordinate &rhs);
+
+
+
+class lokacija{
   private:
-    double x;
-    double y;
+    koor_1D X;
+    koor_1D Y;
   public:
-    Koordinate():x(0), y(0){}
-    Koordinate(double mX, double mY): x(mX), y(mY){}
+    lokacija():X(0,0,0,0.0,180), Y(0,0,0,0.0,90){}
+    koor_1D getX(){ return X;}
+    koor_1D getY(){ return Y;}
+    void setX(koor_1D x){ X=x;}
+    void setY(koor_1D y){ Y=y;}
     
-    void set(double x_new, double y_new){
-      //provjera jesu li dobre brojke (dobra hemisfera itd.)
-      x=x_new;
-      y=y_new;
-    }
-    double getX(){
-      return x;
-    }
-    double getY(){
-      return y;
-    }
-    void operator=(Koordinate &rhs){
-      x=rhs.getX();
-      y=rhs.getY();
-    }
+    
 };
 
-bool operator!=(Koordinate &lhs, Koordinate &rhs){
-  if(lhs.getX()!=rhs.getX()&&lhs.getY()!=rhs.getY()){  //treba provjeriti koliko grijesi, koliko odstupa na mjestu i kolike su greske prijenosa
-    return LOW;
-  }
-  return HIGH;
+lokacija operator+(lokacija lhs, lokacija rhs){
+  lokacija ret;
+  ret.setX(lhs.getX()+rhs.getX());
+  ret.setY(lhs.getY()+rhs.getY());
+  return ret;
 }
 
-Koordinate& operator-(Koordinate &lhs, Koordinate &rhs){
-  
-  
+lokacija operator-(lokacija lhs, lokacija rhs){
+  lokacija ret;
+  ret.setX(lhs.getX()-rhs.getX());
+  ret.setY(lhs.getY()-rhs.getY());
+  return ret;
+}
+
+lokacija divide_lokacija(lokacija lhs, int rhs){
+  lokacija ret;
+  ret.setX(divide(lhs.getX(), rhs));
+  ret.setY(divide(lhs.getY(), rhs));
 }
