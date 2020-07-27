@@ -10,3 +10,10 @@ while(millis()<timer){
 
 
 Ako se auto giba po GPS-u uređaj se ne smije vratiti u mirno stanje
+
+
+Svaki put umjesto jednog mjerenja napraviti 3 i ako se poklapaju (sigma<0.2 km) zakljuciti da mjerenja valja i proslijediti dalje.
+Ako nakon ta prva 3 mjerenja ne bude se mogla uspostaviti vjerodostojnost, ponoviti još 2 puta i tek onda zakljuciti da mjerenja ne valjaju.
+
+
+Izracunati Xsr, Ysr, sigmaX, sigmaY i onda izracunati udaljenost pomocu ekvivalencije stupnja i metra za (Xsr, Ysr)
