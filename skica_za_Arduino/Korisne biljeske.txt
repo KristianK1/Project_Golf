@@ -1,0 +1,1 @@
+Neka interval slanja GPS koordinata ovisi o udaljenosti od proslog mjesta
