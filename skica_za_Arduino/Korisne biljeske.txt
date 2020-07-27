@@ -1,1 +1,8 @@
 Neka interval slanja GPS koordinata ovisi o udaljenosti od proslog mjesta
+
+
+Ako se dogodi pobuda (pin D2) postaviti timer_rada=millis()+period_rada i onda imati petlju:
+
+unsigned long int period_rada=10*60*1000;
+
+while(millis()<timer

@@ -1,5 +1,5 @@
-int ulaz1=A1;
-int ulaz2=A2;
+int ulaz1=7;
+int ulaz2=8;
 
 int input_time=0;
 
