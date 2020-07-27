@@ -2,16 +2,16 @@ ARDUINO NANO:
 
 D0
 D1
-D2
-D3   
-D4
+D2	Interupt akcelerometar/brak/locks
+D3	GPS serial
+D4	GPS serial
 D5	GSM_power_pin
 D6	GPS_power_pin
 D7	Brake sensor
 D8	Lock sensor
-D9
-D10
-D11
+D9	Reset interupta
+D10	GSM serial
+D11	GSM serial
 D12
 D13
 
