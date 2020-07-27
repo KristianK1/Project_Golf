@@ -5,4 +5,8 @@ Ako se dogodi pobuda (pin D2) postaviti timer_rada=millis()+period_rada i onda i
 
 unsigned long int period_rada=10*60*1000;
 
-while(millis()<timer
+while(millis()<timer){
+
+
+
+Ako se auto giba po GPS-u uređaj se ne smije vratiti u mirno stanje

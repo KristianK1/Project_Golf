@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
 #include"klase.h"
 #include"funkcije.h"
+#include"stanja.h"
 
 SoftwareSerial GSMSerial(10, 11);
 SoftwareSerial GPSSerial(4,3);
@@ -11,6 +12,12 @@ void setup() {
   // put your setup code here, to run once:
   GSMSerial.begin(9600);
   GPSSerial.begin(9600);
+  mjesta=new Koordinate[broj_lokacija];
+  int i;
+  for(i=0;i<broj_lokacija;i++){
+    mjesta[i].set(1000,1000);
+  }
+
 }
 
 void loop() {
