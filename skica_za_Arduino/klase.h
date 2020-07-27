@@ -1,5 +1,6 @@
 class koor_1D{
-  friend koor_1D operator-(koor_1D&, koor_1D&);
+  friend bool operator>=(koor_1D, koor_1D);
+  friend koor_1D operator-(koor_1D, koor_1D);
   private:
     int stupanj;
     int minuta;
@@ -23,15 +24,67 @@ class koor_1D{
     void set_decimala(double new_decimala){ decimala_sekunde=new_decimala;};
 };
 
-koor_1D operator-(koor_1D &lhs, koor_1D &rhs){
-  koor_1D ret;
-  ret.stupanj=lhs.stupanj-rhs.stupanj;
-  ret.minuta=lhs.minuta-rhs.minuta;
-  ret.sekunda=lhs.sekunda-rhs.minuta;
-  ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;;
+bool operator>=(koor_1D lhs, koor_1D rhs){
+  if(lhs.stupanj>rhs.stupanj) return true;
+  else if(lhs.stupanj<rhs.stupanj)return false;
+  else {
+    if(lhs.minuta>rhs.minuta) return true;
+    else if(lhs.minuta<rhs.minuta)return false;
+    else{
+      if(lhs.sekunda>rhs.sekunda) return true;
+      else if(lhs.sekunda<rhs.sekunda)return false;
+      else{
+        if(lhs.decimala_sekunde>=rhs.decimala_sekunde) return true;
+        else if(lhs.decimala_sekunde<rhs.decimala_sekunde)return false;
+      }
+    }
+  }
 }
 
+koor_1D operator-(koor_1D lhs, koor_1D rhs){
+  koor_1D ret;
+  if(lhs>=rhs){
+    ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;
+    if(ret.decimala_sekunde<0){
+      ret.decimala_sekunde+=1;
+      rhs.sekunda+=1;
+    }
 
+    ret.sekunda=lhs.sekunda-rhs.sekunda;
+    if(ret.sekunda<0){
+      ret.sekunda+=60;
+      rhs.minuta+=1;
+    }
+    
+    ret.minuta=lhs.minuta-rhs.minuta;
+    if(ret.minuta<0){
+      ret.minuta+=60;
+      rhs.stupanj+=1;
+    }
+    ret.stupanj=lhs.stupanj-rhs.stupanj;
+  }
+  else{
+    ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;
+    if(ret.decimala_sekunde>0){
+      ret.decimala_sekunde-=1;
+      lhs.sekunda+=1;
+    }
+
+    ret.sekunda=lhs.sekunda-rhs.sekunda;
+    if(ret.sekunda>0){
+      ret.sekunda-=60;
+      lhs.minuta+=1;
+    }
+    
+    ret.minuta=lhs.minuta-rhs.minuta;
+    if(ret.minuta>0){
+      ret.minuta-=60;
+      lhs.stupanj+=1;
+    }
+    ret.stupanj=lhs.stupanj-rhs.stupanj;
+  }
+  return ret;
+}
 
 class Koordinate{
   friend bool operator!=(Koordinate &lhs, Koordinate &rhs);
