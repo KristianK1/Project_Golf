@@ -208,6 +208,8 @@ koor_1D operator+(koor_1D lhs, koor_1D rhs){
 
 
 
+#define radius_zemlje 6371000
+#define pi 3.14159265358979323846264338327950288
 
 
 class lokacija{
@@ -221,7 +223,10 @@ class lokacija{
     void setX(koor_1D x){ X=x;}
     void setY(koor_1D y){ Y=y;}
     
-    
+    lokacija_abs(){
+      X.koor_abs();
+      Y.koor_abs();
+    }
 };
 
 lokacija operator+(lokacija lhs, lokacija rhs){
@@ -242,4 +247,45 @@ lokacija divide_lokacija(lokacija lhs, int rhs){
   lokacija ret;
   ret.setX(divide(lhs.getX(), rhs));
   ret.setY(divide(lhs.getY(), rhs));
+}
+
+
+lokacija srednja_vrijednost(lokacija* polje, int n){
+  lokacija srednja;
+  int i;
+  for(i=0;i<n;i++){
+    srednja=srednja+polje[i];
+  }
+  srednja=divide_lokacija(srednja, n);
+}
+
+lokacija srednje_apsolutno_odstupanje(lokacija *polje, int n){
+  lokacija srednja=srednja_vrijednost(polje, n);
+  lokacija odstupanje;
+  int i;
+  for(i=0;i<n;i++){
+    lokacija razlika=polje[i]-srednja;
+    razlika.lokacija_abs();
+    odstupanje=odstupanje+razlika;
+  }
+  odstupanje=divide_lokacija(odstupanje,n);
+  return odstupanje;
+}
+
+double srednja_udaljenost_kilometri(lokacija srednja, lokacija odstupanje){
+  double kmX=0, kmY=0;
+  if(odstupanje.getX().get_stupanj()!=0&&odstupanje.getY().get_stupanj()!=0){
+    //barem 79 km nije bas moguce
+  }
+  kmY+=(double)odstupanje.getY().get_stupanj()*radius_zemlje*pi/180;
+  kmY+=(double)odstupanje.getY().get_minuta()*radius_zemlje*pi/180/60;
+  kmY+=(double)odstupanje.getY().get_sekunda()*radius_zemlje*pi/180/60/60;
+  kmY+=(double)odstupanje.getY().get_decimala()*radius_zemlje*pi/180/60/60;    //sumnjivi izracuni zbog nepreciznosti double-a
+
+  kmX+=(double)odstupanje.getX().get_stupanj()*radius_zemlje*pi/180*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  kmX+=(double)odstupanje.getX().get_minuta()*radius_zemlje*pi/180/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  kmX+=(double)odstupanje.getX().get_sekunda()*radius_zemlje*pi/180/60/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  kmX+=(double)odstupanje.getX().get_decimala()*radius_zemlje*pi/180/60/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
+    
+  return sqrt(pow(kmX,2)+pow(kmY,2));
 }
