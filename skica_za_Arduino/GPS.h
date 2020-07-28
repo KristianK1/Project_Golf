@@ -1,62 +1,28 @@
 #include<math.h>
+#include <TinyGPS.h>
+
+TinyGPS gps;
 
 int broj_lokacija=5;
-/*
-Koordinate *mjesta;
 
-double udaljenost(Koordinate &K, double X, double Y){
-  return sqrt(pow(K.getX()-X,2)+pow(K.getY()-Y,2));
+lokacija *mjesta;
+
+bool GPS_mjerenje(lokacija* novo_mjerenje, lokacija mjesta[]){  //jos jedan argument je broj_lokacija koji je globalna varijabla
+  float flat, flon;
+  unsigned long age;
+  gps.f_get_position(&flat, &flon, &age);
+  //print_float(flat, TinyGPS::GPS_INVALID_F_ANGLE, 10, 6);
+  //print_float(flon, TinyGPS::GPS_INVALID_F_ANGLE, 11, 6);
+  novo_mjerenje->setY(koor_1D((int)flat, (int)(flat*60), (int)(flat*60*60),flat-(int)(flat*60*60), 90));
+  novo_mjerenje->setX(koor_1D((int)flon, (int)(flon*60), (int)(flon*60*60),flat-(int)(flon*60*60), 180));
+  //dodati predznak
+  //moze i ocitati brzinu, neka brzina moze produziti timer pobudenog stanja
+  
+  return (TinyGPS::GPS_INVALID_F_ANGLE==flat)||(TinyGPS::GPS_INVALID_F_ANGLE==flon);  //valjda
 }
-*/
-/*bool GPS_mjerenje(Koordinate* mjer, Koordinate *mjesta){
-  
-  mjer->set(18,45);  //primjer, ovdje treba ubaciti mjerenje
-  bool vjerodostojnost=1;
 
-  
-  if(vjerodostojnost==1){
-    //provjera mjerenja
-    if(mjer->getX()<=180&&mjer->getX()>=-180&&mjer->getY()<90&&mjer->getY()>-90){
-      //racunje srednje vrijednosti zadnji broj_lokacija+1 mjerenja
-      int br=0;
-      double Xavg=0, Yavg=0, sigma=0;
-      int i;
-  
-      Xavg+=mjer->getX();
-      Yavg+=mjer->getY();
-      br++;
-      for(i=0;i<broj_lokacija;i++){
-        if(mjesta[i].getX()<=180&&mjesta[i].getX()>=-180&&mjesta[i].getY()<90&&mjesta[i].getY()>-90){
-          br++;
-          Xavg+=mjesta[i].getX();
-          Yavg+=mjesta[i].getY();
-        }
-      }
-      Xavg/=br;
-      Yavg/=br;
-  
-      br=0;
-  
-      sigma+=udaljenost(*mjer, Xavg, Yavg);
-      br++;
-      //racunanje devijacije zadnjih broj_lokacija+1 mjerenja
-      for(i=0;i<broj_lokacija;i++){
-        if(mjesta[i].getX()<=180&&mjesta[i].getX()>=-180&&mjesta[i].getY()<90&&mjesta[i].getY()>-90){
-          br++;
-          sigma+=udaljenost(mjesta[i], Xavg,Yavg);
-        }
-      }
-      sigma/=br;
-      sigma=sqrt(sigma);
-      return sigma;
-    }
-    else Serial.println("Primljena totalno kriva koordinata (nije na zemlji)");
-  }
-}*/
-
-/*
-bool GPS_update(Koordinate *mjesta){
-  Koordinate *novo_mjerenje=new Koordinate();
+bool GPS_update(lokacija *mjesta){
+  lokacija *novo_mjerenje=new lokacija();
   bool valid=GPS_mjerenje(novo_mjerenje, mjesta);
   
   if(valid==HIGH){
@@ -70,4 +36,3 @@ bool GPS_update(Koordinate *mjesta){
     Serial.println("Nevaljalo mjerenje zbog nekog razloga");
   }
 }
-*/

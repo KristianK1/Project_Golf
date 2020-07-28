@@ -222,8 +222,7 @@ class lokacija{
     koor_1D getY(){ return Y;}
     void setX(koor_1D x){ X=x;}
     void setY(koor_1D y){ Y=y;}
-    
-    lokacija_abs(){
+    void lokacija_abs(){
       X.koor_abs();
       Y.koor_abs();
     }

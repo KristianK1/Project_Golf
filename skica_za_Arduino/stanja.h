@@ -3,7 +3,9 @@
 int bistabil_out=2;
 int bistabil_reset=9;
 
-int stanje=1;
+int stanje=1;  //MAIN STATE
+
+
 unsigned long int timer_rada;
 int period_provjere_pobudeno_stanje=45;   //sekunde
 int period_isteka=10; //minute
