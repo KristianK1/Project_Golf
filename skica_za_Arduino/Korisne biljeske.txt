@@ -13,7 +13,12 @@ Ako se auto giba po GPS-u uređaj se ne smije vratiti u mirno stanje
 
 
 Svaki put umjesto jednog mjerenja napraviti 3 i ako se poklapaju (sigma<0.2 km) zakljuciti da mjerenja valja i proslijediti dalje.
-Ako nakon ta prva 3 mjerenja ne bude se mogla uspostaviti vjerodostojnost, ponoviti još 2 puta i tek onda zakljuciti da mjerenja ne valjaju.
+Ako nakon ta prva 3 mjerenja ne bude se mogla uspostaviti vjerodostojnost, ponoviti još 2 puta i tek onda zakljuciti da mjerenja ne valjaju. //check
 
+Izracunati Xsr, Ysr, sigmaX, sigmaY i onda izracunati udaljenost pomocu ekvivalencije stupnja i metra za (Xsr, Ysr)  //check
 
-Izracunati Xsr, Ysr, sigmaX, sigmaY i onda izracunati udaljenost pomocu ekvivalencije stupnja i metra za (Xsr, Ysr)
+Neka slanje informacija sadrži GPS koordinatu i vrstu pobude.
+
+interupt probudi uređaj i onda se detacha interupt i pokrene pobuđeno stanje.
+I dalje gleda izlaz bistabila svaki put kada uđe u loop pobuđenog stanja lai mu to sad nije doslovno interupt.
+

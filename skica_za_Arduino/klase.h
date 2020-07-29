@@ -208,6 +208,8 @@ koor_1D operator+(koor_1D lhs, koor_1D rhs){
 
 
 
+
+
 #define radius_zemlje 6371000
 #define pi 3.14159265358979323846264338327950288
 
@@ -217,7 +219,7 @@ class lokacija{
     koor_1D X;
     koor_1D Y;
   public:
-    lokacija():X(0,0,0,0.0,180), Y(0,0,0,0.0,90){}
+    lokacija():X(1000,0,0,0.0,180), Y(1000,0,0,0.0,90){}
     koor_1D getX(){ return X;}
     koor_1D getY(){ return Y;}
     void setX(koor_1D x){ X=x;}
@@ -271,20 +273,20 @@ lokacija srednje_apsolutno_odstupanje(lokacija *polje, int n){
   return odstupanje;
 }
 
-double srednja_udaljenost_kilometri(lokacija srednja, lokacija odstupanje){
-  double kmX=0, kmY=0;
+double srednja_udaljenost_metri(lokacija srednja, lokacija odstupanje){
+  double metar_X=0, metar_Y=0;
   if(odstupanje.getX().get_stupanj()!=0&&odstupanje.getY().get_stupanj()!=0){
-    //barem 79 km nije bas moguce
+    //barem 79 metar_ nije bas moguce
   }
-  kmY+=(double)odstupanje.getY().get_stupanj()*radius_zemlje*pi/180;
-  kmY+=(double)odstupanje.getY().get_minuta()*radius_zemlje*pi/180/60;
-  kmY+=(double)odstupanje.getY().get_sekunda()*radius_zemlje*pi/180/60/60;
-  kmY+=(double)odstupanje.getY().get_decimala()*radius_zemlje*pi/180/60/60;    //sumnjivi izracuni zbog nepreciznosti double-a
+  metar_Y+=(double)odstupanje.getY().get_stupanj()*radius_zemlje*pi/180;
+  metar_Y+=(double)odstupanje.getY().get_minuta()*radius_zemlje*pi/180/60;
+  metar_Y+=(double)odstupanje.getY().get_sekunda()*radius_zemlje*pi/180/60/60;
+  metar_Y+=(double)odstupanje.getY().get_decimala()*radius_zemlje*pi/180/60/60;    //sumnjivi izracuni zbog nepreciznosti double-a
 
-  kmX+=(double)odstupanje.getX().get_stupanj()*radius_zemlje*pi/180*cos((float)(srednja.getY().get_stupanj()/180*pi));
-  kmX+=(double)odstupanje.getX().get_minuta()*radius_zemlje*pi/180/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
-  kmX+=(double)odstupanje.getX().get_sekunda()*radius_zemlje*pi/180/60/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
-  kmX+=(double)odstupanje.getX().get_decimala()*radius_zemlje*pi/180/60/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  metar_X+=(double)odstupanje.getX().get_stupanj()*radius_zemlje*pi/180*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  metar_X+=(double)odstupanje.getX().get_minuta()*radius_zemlje*pi/180/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  metar_X+=(double)odstupanje.getX().get_sekunda()*radius_zemlje*pi/180/60/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
+  metar_X+=(double)odstupanje.getX().get_decimala()*radius_zemlje*pi/180/60/60*cos((float)(srednja.getY().get_stupanj()/180*pi));
     
-  return sqrt(pow(kmX,2)+pow(kmY,2));
+  return sqrt(pow(metar_X,2)+pow(metar_Y,2));
 }
