@@ -19,16 +19,17 @@ bool GPS_mjerenje(lokacija* novo_mjerenje, lokacija mjesta[]) { //jos jedan argu
 
 
   GPS_power(1);
-  /*for (i = 0; i < br_ponavljanja; i++) {
+  for (i = 0; i < br_ponavljanja; i++) {
     gps.f_get_position(&flat, &flon, &age);
     mjerenja[i].setY(koor_1D((int)flat, (int)(flat * 60), (int)(flat * 60 * 60), flat - (int)(flat * 60 * 60), 90));
     mjerenja[i].setX(koor_1D((int)flon, (int)(flon * 60), (int)(flon * 60 * 60), flat - (int)(flon * 60 * 60), 180));
     if((TinyGPS::GPS_INVALID_F_ANGLE == flat) || (TinyGPS::GPS_INVALID_F_ANGLE == flon)==0){
+      delete(mjerenja);
       return LOW;
     }
-  }*/
+  }
   GPS_power(0);
-  /*lokacija srednja=srednja_vrijednost(mjerenja, br_ponavljanja);
+  lokacija srednja=srednja_vrijednost(mjerenja, br_ponavljanja);
   lokacija odstupanje=srednje_apsolutno_odstupanje(mjerenja, br_ponavljanja);
   if(srednja_udaljenost_metri(srednja, odstupanje)>50){
     delete(mjerenja);
@@ -50,7 +51,6 @@ bool GPS_mjerenje(lokacija* novo_mjerenje, lokacija mjesta[]) { //jos jedan argu
   //moze i ocitati brzinu, neka brzina moze produziti timer pobudenog stanja
   
   
-  */
   delete(mjerenja);
   //return (TinyGPS::GPS_INVALID_F_ANGLE == flat) || (TinyGPS::GPS_INVALID_F_ANGLE == flon); //valjda
 
@@ -58,8 +58,7 @@ return false;
 }
 
 bool GPS_update(lokacija *mjesta) {
-  Serial.println("OVDJE SAM");
-  delay(100);
+  Serial.println("ulaz u GPS update");
   lokacija *novo_mjerenje = new lokacija();
   bool valid;
   Serial.println("Ulazak u GPS_mjerenje");

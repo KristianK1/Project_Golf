@@ -6,7 +6,7 @@ int bistabil_reset=9;
 int stanje=1;  //MAIN STATE
 
 int period_provjere_pobudeno_stanje=2;   //sekunde
-unsigned long int period_isteka=5; //sekunde  (10*60)
+unsigned long int period_isteka=60; //sekunde  (10*60)
 unsigned long int timer_rada=period_isteka*1000;
 
 //stanje==0 mirno_stanje
@@ -25,7 +25,7 @@ void loop_mirnog_stanja(){
 
 void reset_bistabil(){
   digitalWrite(bistabil_reset, HIGH);
-  delay(5);  //change to 2 ms
+  delay(1);  //change to 2 ms
   
   digitalWrite(bistabil_reset, LOW);
   return;
@@ -47,7 +47,8 @@ void loop_pobudenog_stanja(){
     reset_bistabil();
   }
   if(timer_rada<millis()){
-    GPS_update(mjesta);   //zadnja provjera prije vracanja u mirno stanje, provjera brzine
+    GPS_update(mjesta);   //zadnja provjera prije vracanja u mirno stanje
+    //provjera brzine
     stanje=0;
     Serial.println("ugasio sam");
     
@@ -56,6 +57,5 @@ void loop_pobudenog_stanja(){
     
     Serial.print("millis: ");
     Serial.println(millis());
-
   } 
 }

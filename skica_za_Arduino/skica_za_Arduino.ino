@@ -25,6 +25,7 @@ void setup() {
   pinMode(bistabil_reset, OUTPUT);
 
   Serial.println("                 setup");
+  Serial.println(sizeof(lokacija));
 }
 
 void loop() {
@@ -40,10 +41,7 @@ void loop() {
       Serial.println("pobuđeno stanje");
       loop_pobudenog_stanja();
     }
-    else{
-      Serial.print("ajd koji kurac jebote bog. Stanje je ");
-      Serial.println(stanje);
-    }
+
   }
   
   
