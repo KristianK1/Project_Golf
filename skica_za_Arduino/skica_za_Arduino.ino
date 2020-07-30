@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 #include"funkcije.h"
 #include"stanja.h"
-
+#include"testiranje.h"
 SoftwareSerial GSMSerial(10, 11);
 SoftwareSerial GPSSerial(4,3);
 //TinyGPS gps;
@@ -12,9 +12,19 @@ lokacija trenutno_online;
 
 void setup() {
   // put your setup code here, to run once:
+
+  
   GSMSerial.begin(9600);
   GPSSerial.begin(4800);
   Serial.begin(9600);
+
+  //test
+  testiranje();
+  //test end
+  
+  
+
+    
   mjesta=new lokacija[broj_lokacija];
   int i;
   for(i=0;i<broj_lokacija;i++){

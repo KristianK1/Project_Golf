@@ -49,7 +49,7 @@ bool GPS_mjerenje(lokacija* novo_mjerenje, lokacija mjesta[]) { //jos jedan argu
   novo_mjerenje->setX(koor_1D((int)flon, (int)(flon * 60), (int)(flon * 60 * 60), flat - (int)(flon * 60 * 60), 180));
   //dodati predznak
   //moze i ocitati brzinu, neka brzina moze produziti timer pobudenog stanja
-  
+        
   
   delete(mjerenja);
   //return (TinyGPS::GPS_INVALID_F_ANGLE == flat) || (TinyGPS::GPS_INVALID_F_ANGLE == flon); //valjda
