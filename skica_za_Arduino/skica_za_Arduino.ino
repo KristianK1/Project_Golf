@@ -24,7 +24,7 @@ void setup() {
   pinMode(GPS_power_pin, OUTPUT);
   pinMode(bistabil_reset, OUTPUT);
 
-  Serial.println("JEBO TE BOG");
+  Serial.println("                 setup");
 }
 
 void loop() {
@@ -36,10 +36,14 @@ void loop() {
       Serial.println("mirno stanje");
       loop_mirnog_stanja();
     }
-    if(stanje==1){
+    else if(stanje==1){
       Serial.println("pobuđeno stanje");
       loop_pobudenog_stanja();
-    }  
+    }
+    else{
+      Serial.print("ajd koji kurac jebote bog. Stanje je ");
+      Serial.println(stanje);
+    }
   }
   
   

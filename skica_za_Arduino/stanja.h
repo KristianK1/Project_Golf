@@ -6,7 +6,7 @@ int bistabil_reset=9;
 int stanje=1;  //MAIN STATE
 
 int period_provjere_pobudeno_stanje=2;   //sekunde
-unsigned long int period_isteka=60; //sekunde  (10*60)
+unsigned long int period_isteka=5; //sekunde  (10*60)
 unsigned long int timer_rada=period_isteka*1000;
 
 //stanje==0 mirno_stanje
@@ -25,18 +25,19 @@ void loop_mirnog_stanja(){
 
 void reset_bistabil(){
   digitalWrite(bistabil_reset, HIGH);
-  delay(50);  //change to 2 ms
+  delay(5);  //change to 2 ms
+  
   digitalWrite(bistabil_reset, LOW);
   return;
 }
 
 void produzenje_pobudenog_stanja(){
   timer_rada=millis()+period_isteka*1000;
-  return;
 }
 
 void loop_pobudenog_stanja(){
-  //valid=GPS_update(mjesta);
+  Serial.println("ulazak u pobudeno stanje");
+  valid=GPS_update(mjesta);
   if(valid==LOW){
     //neispravno mjerenje
   }
