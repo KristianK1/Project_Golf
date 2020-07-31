@@ -1,6 +1,7 @@
 class koor_1D{
   friend koor_1D divide(koor_1D, int);
   friend bool operator>=(koor_1D, koor_1D);
+  friend bool operator==(koor_1D lhs, koor_1D rhs);
   friend koor_1D operator-(koor_1D, koor_1D);
   friend koor_1D operator+(koor_1D, koor_1D);
   
@@ -126,6 +127,20 @@ bool operator>=(koor_1D lhs, koor_1D rhs){
   }
 }
 
+bool operator==(koor_1D lhs, koor_1D rhs){
+  if(lhs.get_stupanj()==rhs.get_stupanj()){
+    if(lhs.get_minuta()==rhs.get_minuta()){
+      if(lhs.get_sekunda()==rhs.get_sekunda()){
+        if((lhs.get_decimala()-rhs.get_decimala()<0.001)||(lhs.get_decimala()-rhs.get_decimala()>-0.001)){
+          return true;
+        }      
+      }
+    }
+  }
+  return false;
+}
+
+
 koor_1D operator-(koor_1D lhs, koor_1D rhs){
   
   koor_1D ret;
@@ -137,21 +152,33 @@ koor_1D operator-(koor_1D lhs, koor_1D rhs){
   }
   if(lhs>=rhs){
     ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;
-    if(ret.decimala_sekunde<0){
+    while(ret.decimala_sekunde<0){
       ret.decimala_sekunde+=1;
       rhs.sekunda+=1;
     }
+    while(ret.decimala_sekunde>=1){
+      ret.decimala_sekunde-=1;
+      rhs.sekunda-=1;
+    }
 
     ret.sekunda=lhs.sekunda-rhs.sekunda;
-    if(ret.sekunda<0){
+    while(ret.sekunda<0){
       ret.sekunda+=60;
       rhs.minuta+=1;
     }
+    while(ret.sekunda>=60){
+      ret.sekunda-=60;
+      rhs.minuta-=1;
+    }
     
     ret.minuta=lhs.minuta-rhs.minuta;
-    if(ret.minuta<0){
+    while(ret.minuta<0){
       ret.minuta+=60;
       rhs.stupanj+=1;
+    }
+    while(ret.minuta>=60){
+      ret.minuta-=60;
+      rhs.stupanj-=1;
     }
     ret.stupanj=lhs.stupanj-rhs.stupanj;
   }

@@ -11,8 +11,8 @@ int T_check=1*1000;
 lokacija trenutno_online;
 
 void setup() {
+  randomSeed(analogRead(A0));
   // put your setup code here, to run once:
-
   
   GSMSerial.begin(9600);
   GPSSerial.begin(4800);
@@ -35,7 +35,6 @@ void setup() {
   pinMode(bistabil_reset, OUTPUT);
 
   Serial.println("                 setup");
-  Serial.println(sizeof(lokacija));
 }
 
 void loop() {
