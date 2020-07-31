@@ -12,7 +12,7 @@ int T_check=1*1000;
 lokacija trenutno_online;
 
 void setup() {  
-  Serial.begin(9600);
+  Serial.begin(38400);
   Serial.println("DJESI");
   randomSeed(analogRead(A0));
   // put your setup code here, to run once:
