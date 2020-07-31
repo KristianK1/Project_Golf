@@ -17,7 +17,7 @@ void setup() {
   GSMSerial.begin(9600);
   GPSSerial.begin(4800);
   Serial.begin(9600);
-
+  Serial.println("DJESI");
   //test
   testiranje();
   //test end

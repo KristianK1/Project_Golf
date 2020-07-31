@@ -186,11 +186,10 @@ koor_1D operator+(koor_1D lhs, koor_1D rhs){
 }
 
 koor_1D prefix(koor_1D kor){
-  if(kor>=koor_1D(0,0,0,0.0,kor.maks)){
-    while(kor.decimala_sekunde<=-1){
-      kor.decimala_sekunde+=1;
-      kor.sekunda-=1;
-    }
+  if(kor==koor_1D(0,0,0,0.0,kor.maks)){
+    return kor;
+  }
+  else if(kor>=koor_1D(0,0,0,0.0,kor.maks)){
     while(kor.decimala_sekunde<0){
       kor.decimala_sekunde+=1;
       kor.sekunda-=1;
@@ -200,15 +199,47 @@ koor_1D prefix(koor_1D kor){
       kor.sekunda+=1;
     }
     
-    while(kor.sekunda<=-60){
-      kor.minuta+=1;
-      kor.sekunda+=60;
-    }
     while(kor.sekunda<0){
       kor.minuta+=1;
       kor.sekunda+=60;
     }
-    while(kor.sekunda>60){
+    while(kor.sekunda>=60){
+      kor.minuta-=1;
+      kor.sekunda-=60;
+    }
+
+    while(kor.minuta<0){
+      kor.stupanj+=1;
+      kor.minuta+=60;
+    }
+    while(kor.minuta>=60){
+      kor.stupanj-=1;
+      kor.minuta-=60;
+    }
+
+    while(kor.stupanj<0){
+      kor.stupanj+=2*kor.maks;
+    }
+    while(kor.stupanj>kor.maks){
+      kor.stupanj-=2*kor.maks;
+    }
+  }
+  else{
+    ///
+    while(kor.decimala_sekunde<=-1){
+      kor.decimala_sekunde+=1;
+      kor.sekunda-=1;
+    }
+    while(kor.decimala_sekunde>0){
+      kor.decimala_sekunde-=1;
+      kor.sekunda+=1;
+    }
+    
+    while(kor.sekunda<=-60){
+      kor.minuta+=1;
+      kor.sekunda+=60;
+    }
+    while(kor.sekunda>0){
       kor.minuta-=1;
       kor.sekunda-=60;
     }
@@ -217,11 +248,8 @@ koor_1D prefix(koor_1D kor){
       kor.stupanj+=1;
       kor.minuta+=60;
     }
-    while(kor.minuta<0){
-      kor.stupanj+=1;
-      kor.minuta+=60;
-    }
-    while(kor.minuta>60){
+
+    while(kor.minuta>0){
       kor.stupanj-=1;
       kor.minuta-=60;
     }
@@ -229,9 +257,11 @@ koor_1D prefix(koor_1D kor){
     while(kor.stupanj<-1*kor.maks){
       kor.stupanj+=2*kor.maks;
     }
-    while(kor.stupanj>kor.maks){
+    while(kor.stupanj>0){
       kor.stupanj-=2*kor.maks;
     }
+    
+    ///
   }
   return kor;
 }
