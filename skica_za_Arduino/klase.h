@@ -4,7 +4,7 @@ class koor_1D{
   friend bool operator==(koor_1D lhs, koor_1D rhs);
   friend koor_1D operator-(koor_1D, koor_1D);
   friend koor_1D operator+(koor_1D, koor_1D);
-  
+  friend koor_1D prefix(koor_1D);
   private:
     int stupanj;
     int minuta;
@@ -24,58 +24,8 @@ class koor_1D{
     void set_sekunda(int new_sekunda){ sekunda=new_sekunda;}
     void set_decimala(double new_decimala){ decimala_sekunde=new_decimala;}
 
-    void prefix(){
-      if(stupanj>0){
-        if(decimala_sekunde<=-1){
-          decimala_sekunde+=1;
-          sekunda-=1;
-        }
-        if(decimala_sekunde<0){
-          decimala_sekunde+=1;
-          sekunda-=1;
-        }
-        if(decimala_sekunde>=1){
-          decimala_sekunde-=1;
-          sekunda+=1;
-        }
-        
-        if(sekunda<=-60){
-          minuta+=1;
-          sekunda+=60;
-        }
-        if(sekunda<0){
-          minuta+=1;
-          sekunda+=60;
-        }
-        if(sekunda>60){
-          minuta-=1;
-          sekunda-=60;
-        }
-
-        if(minuta<=-60){
-          stupanj+=1;
-          minuta+=60;
-        }
-        if(minuta<0){
-          stupanj+=1;
-          minuta+=60;
-        }
-        if(minuta>60){
-          stupanj-=1;
-          minuta-=60;
-        }
-
-        if(stupanj<-1*maks){
-          stupanj+=2*maks;
-        }
-        if(stupanj>maks){
-          stupanj-=2*maks;
-        }
-      }
-    }
-
-  koor_abs(){
-    prefix();
+  void koor_abs(){
+    prefix(*this);
     if(stupanj<0){
       stupanj*=-1;
       minuta*=-1;
@@ -108,9 +58,8 @@ koor_1D divide(koor_1D lhs, int rhs){
 
 
 bool operator>=(koor_1D lhs, koor_1D rhs){
-  lhs.prefix();
-  rhs.prefix();
-  
+  lhs=prefix(lhs);
+  rhs=prefix(rhs);
   if(lhs.stupanj>rhs.stupanj) return true;
   else if(lhs.stupanj<rhs.stupanj)return false;
   else {
@@ -142,10 +91,11 @@ bool operator==(koor_1D lhs, koor_1D rhs){
 
 
 koor_1D operator-(koor_1D lhs, koor_1D rhs){
-  
   koor_1D ret;
+  ret.maks=lhs.maks;
   if(lhs.maks==rhs.maks){
-    rhs.maks=lhs.maks; 
+    rhs.maks=lhs.maks;
+
   }
   else{
     return ret;
@@ -162,7 +112,7 @@ koor_1D operator-(koor_1D lhs, koor_1D rhs){
     }
 
     ret.sekunda=lhs.sekunda-rhs.sekunda;
-    while(ret.sekunda<0){
+    while(ret.sekunda<0){                        
       ret.sekunda+=60;
       rhs.minuta+=1;
     }
@@ -184,31 +134,44 @@ koor_1D operator-(koor_1D lhs, koor_1D rhs){
   }
   else{
     ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;
-    if(ret.decimala_sekunde>0){
+    while(ret.decimala_sekunde>0){
       ret.decimala_sekunde-=1;
       lhs.sekunda+=1;
     }
+    while(ret.decimala_sekunde<=-1){
+      ret.decimala_sekunde+=1;
+      lhs.sekunda-=1;
+    }
 
     ret.sekunda=lhs.sekunda-rhs.sekunda;
-    if(ret.sekunda>0){
+    while(ret.sekunda>0){
       ret.sekunda-=60;
       lhs.minuta+=1;
     }
-    
+    while(ret.sekunda<=-60){
+      ret.sekunda+=60;
+      lhs.minuta-=1;
+    }
     ret.minuta=lhs.minuta-rhs.minuta;
-    if(ret.minuta>0){
+    while(ret.minuta>0){
       ret.minuta-=60;
       lhs.stupanj+=1;
     }
-    ret.stupanj=lhs.stupanj-rhs.stupanj;
-
-    if(ret.stupanj>ret.maks){
-      ret.stupanj-=2*ret.maks;
+    while(ret.minuta<=-60){
+      ret.minuta+=60;
+      lhs.stupanj-=1;
     }
-    if(ret.stupanj<-1*ret.maks){
+    ret.stupanj=lhs.stupanj-rhs.stupanj;
+    while(ret.stupanj>ret.maks){
+      ret.stupanj-=2*ret.maks;
+    }    
+    
+    while(ret.stupanj<-1*ret.maks){
       ret.stupanj+=2*ret.maks;
     }
+     
   }
+  ret=prefix(ret);
   return ret;
 }
 
@@ -218,9 +181,65 @@ koor_1D operator+(koor_1D lhs, koor_1D rhs){
   ret.sekunda=lhs.sekunda+rhs.sekunda;
   ret.minuta=lhs.minuta+rhs.minuta;
   ret.stupanj=lhs.stupanj+rhs.stupanj;
-
+  ret=prefix(ret);
   return ret;
 }
+
+koor_1D prefix(koor_1D kor){
+  if(kor>=koor_1D(0,0,0,0.0,kor.maks)){
+    while(kor.decimala_sekunde<=-1){
+      kor.decimala_sekunde+=1;
+      kor.sekunda-=1;
+    }
+    while(kor.decimala_sekunde<0){
+      kor.decimala_sekunde+=1;
+      kor.sekunda-=1;
+    }
+    while(kor.decimala_sekunde>=1){
+      kor.decimala_sekunde-=1;
+      kor.sekunda+=1;
+    }
+    
+    while(kor.sekunda<=-60){
+      kor.minuta+=1;
+      kor.sekunda+=60;
+    }
+    while(kor.sekunda<0){
+      kor.minuta+=1;
+      kor.sekunda+=60;
+    }
+    while(kor.sekunda>60){
+      kor.minuta-=1;
+      kor.sekunda-=60;
+    }
+
+    while(kor.minuta<=-60){
+      kor.stupanj+=1;
+      kor.minuta+=60;
+    }
+    while(kor.minuta<0){
+      kor.stupanj+=1;
+      kor.minuta+=60;
+    }
+    while(kor.minuta>60){
+      kor.stupanj-=1;
+      kor.minuta-=60;
+    }
+
+    while(kor.stupanj<-1*kor.maks){
+      kor.stupanj+=2*kor.maks;
+    }
+    while(kor.stupanj>kor.maks){
+      kor.stupanj-=2*kor.maks;
+    }
+  }
+  return kor;
+}
+
+
+
+
+
 
 
 
@@ -242,6 +261,7 @@ koor_1D operator+(koor_1D lhs, koor_1D rhs){
 
 
 class lokacija{
+  friend void testiranje();
   private:
     koor_1D X;
     koor_1D Y;
