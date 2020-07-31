@@ -1,25 +1,28 @@
 #include <SoftwareSerial.h>
 #include"funkcije.h"
 #include"stanja.h"
-#include"testiranje.h"
+//#include"testiranje.h"
+#include"test_operatora.h"
 SoftwareSerial GSMSerial(10, 11);
 SoftwareSerial GPSSerial(4,3);
-//TinyGPS gps;
+
 
 unsigned long int timer_check;
 int T_check=1*1000;
 lokacija trenutno_online;
 
-void setup() {
+void setup() {  
+  Serial.begin(9600);
+  Serial.println("DJESI");
   randomSeed(analogRead(A0));
   // put your setup code here, to run once:
   
   GSMSerial.begin(9600);
   GPSSerial.begin(4800);
-  Serial.begin(9600);
-  Serial.println("DJESI");
+
   //test
-  testiranje();
+  //testiranje();
+  test_jednakosti();
   //test end
   
   

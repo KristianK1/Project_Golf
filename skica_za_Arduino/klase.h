@@ -58,8 +58,8 @@ koor_1D divide(koor_1D lhs, int rhs){
 
 
 bool operator>=(const koor_1D& lhs, const koor_1D& rhs){
-  prefix(&lhs);
-  prefix(&rhs);
+  //prefix(&lhs);
+  //prefix(&rhs);
   if(lhs.stupanj>rhs.stupanj) return true;
   else if(lhs.stupanj<rhs.stupanj)return false;
   else {
@@ -183,6 +183,9 @@ koor_1D& operator+(const koor_1D& lhs, const koor_1D& rhs){
 
 void prefix(koor_1D *kor){
   if(*kor==koor_1D(0,0,0,0.0,kor->maks)){
+    if(kor->decimala_sekunde<0){
+      kor->decimala_sekunde*=-1;
+    }
     return kor;
   }
   else if(*kor>=koor_1D(0,0,0,0.0,kor->maks)){
@@ -221,7 +224,6 @@ void prefix(koor_1D *kor){
     }
   }
   else{
-    ///
     while(kor->decimala_sekunde<=-1){
       kor->decimala_sekunde+=1;
       kor->sekunda-=1;
@@ -257,7 +259,6 @@ void prefix(koor_1D *kor){
       kor->stupanj-=2*kor->maks;
     }
     
-    ///
   }
   return kor;
 }
@@ -317,11 +318,16 @@ lokacija& operator-(const lokacija& lhs, const lokacija& rhs){
   return ret;
 }
 
+bool operator==(const lokacija& lhs, const lokacija& rhs){
+  if(lhs.getX()==rhs.getX()&&lhs.getY()==rhs.getY()) return true;
+  return false;
+}
 lokacija divide_lokacija(const lokacija& lhs, int rhs){
   lokacija ret;
   ret.setX(divide(lhs.getX(), rhs));
   ret.setY(divide(lhs.getY(), rhs));
 }
+
 
 
 lokacija srednja_vrijednost(lokacija* polje, int n){
