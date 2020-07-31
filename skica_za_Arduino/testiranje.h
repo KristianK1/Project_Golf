@@ -6,8 +6,8 @@ void testiranje(){
   lok1->setY(koor_1D(45, 33, 21, 0.2158, 90));
   lok2->setY(koor_1D(43, 53, 37, 0.8349, 90));
 
-  lok1->setX(koor_1D(19, 7, 21, 0.1037, 180));
-  lok2->setX(koor_1D(13, 8, 43, 0.3749, 180));
+  lok1->setX(koor_1D(-37,-21,-33,-0.1153, 180));
+  lok2->setX(koor_1D(-21,-43,-27,-0.2138, 180));
   
   *lok=*lok1-*lok2;
   Serial.print("X= ");
@@ -27,7 +27,6 @@ void testiranje(){
   Serial.print(lok->getY().get_sekunda());
   Serial.print("  ");
   Serial.println(lok->getY().get_decimala());
-  
   
   while(1);
 }
