@@ -1,10 +1,10 @@
 class koor_1D{
   friend koor_1D divide(koor_1D, int);
-  friend bool operator>=(koor_1D, koor_1D);
-  friend bool operator==(koor_1D lhs, koor_1D rhs);
-  friend koor_1D operator-(koor_1D, koor_1D);
-  friend koor_1D operator+(koor_1D, koor_1D);
-  friend koor_1D prefix(koor_1D);
+  friend bool operator>=(const koor_1D&, const koor_1D&);
+  friend bool operator==(const koor_1D& lhs, const koor_1D& rhs);
+  friend koor_1D& operator-(const koor_1D&, const koor_1D&);
+  friend koor_1D& operator+(const koor_1D&, const koor_1D&);
+  friend void prefix(koor_1D*);
   private:
     int stupanj;
     int minuta;
@@ -25,7 +25,7 @@ class koor_1D{
     void set_decimala(double new_decimala){ decimala_sekunde=new_decimala;}
 
   void koor_abs(){
-    prefix(*this);
+    prefix(this);
     if(stupanj<0){
       stupanj*=-1;
       minuta*=-1;
@@ -57,9 +57,9 @@ koor_1D divide(koor_1D lhs, int rhs){
 }
 
 
-bool operator>=(koor_1D lhs, koor_1D rhs){
-  lhs=prefix(lhs);
-  rhs=prefix(rhs);
+bool operator>=(const koor_1D& lhs, const koor_1D& rhs){
+  prefix(&lhs);
+  prefix(&rhs);
   if(lhs.stupanj>rhs.stupanj) return true;
   else if(lhs.stupanj<rhs.stupanj)return false;
   else {
@@ -76,7 +76,7 @@ bool operator>=(koor_1D lhs, koor_1D rhs){
   }
 }
 
-bool operator==(koor_1D lhs, koor_1D rhs){
+bool operator==(const koor_1D& lhs, const koor_1D& rhs){
   if(lhs.get_stupanj()==rhs.get_stupanj()){
     if(lhs.get_minuta()==rhs.get_minuta()){
       if(lhs.get_sekunda()==rhs.get_sekunda()){
@@ -90,78 +90,74 @@ bool operator==(koor_1D lhs, koor_1D rhs){
 }
 
 
-koor_1D operator-(koor_1D lhs, koor_1D rhs){
+koor_1D& operator-(const koor_1D& lhs, const koor_1D& rhs){
   koor_1D ret;
   ret.maks=lhs.maks;
-  if(lhs.maks==rhs.maks){
-    rhs.maks=lhs.maks;
-
-  }
-  else{
+  if(lhs.maks!=rhs.maks){
     return ret;
   }
   if(lhs>=rhs){
-    ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;
+    ret.decimala_sekunde+=lhs.decimala_sekunde-rhs.decimala_sekunde;
     while(ret.decimala_sekunde<0){
       ret.decimala_sekunde+=1;
-      rhs.sekunda+=1;
+      ret.sekunda-=1;
     }
     while(ret.decimala_sekunde>=1){
       ret.decimala_sekunde-=1;
-      rhs.sekunda-=1;
+      ret.sekunda+=1;
     }
 
-    ret.sekunda=lhs.sekunda-rhs.sekunda;
+    ret.sekunda+=lhs.sekunda-rhs.sekunda;
     while(ret.sekunda<0){                        
       ret.sekunda+=60;
-      rhs.minuta+=1;
+      ret.minuta-=1;
     }
     while(ret.sekunda>=60){
       ret.sekunda-=60;
-      rhs.minuta-=1;
+      ret.minuta+=1;
     }
     
-    ret.minuta=lhs.minuta-rhs.minuta;
+    ret.minuta+=lhs.minuta-rhs.minuta;
     while(ret.minuta<0){
       ret.minuta+=60;
-      rhs.stupanj+=1;
+      ret.stupanj-=1;
     }
     while(ret.minuta>=60){
       ret.minuta-=60;
-      rhs.stupanj-=1;
+      ret.stupanj+=1;
     }
-    ret.stupanj=lhs.stupanj-rhs.stupanj;
+    ret.stupanj+=lhs.stupanj-rhs.stupanj;
   }
   else{
-    ret.decimala_sekunde=lhs.decimala_sekunde-rhs.decimala_sekunde;
+    ret.decimala_sekunde+=lhs.decimala_sekunde-rhs.decimala_sekunde;
     while(ret.decimala_sekunde>0){
       ret.decimala_sekunde-=1;
-      lhs.sekunda+=1;
+      ret.sekunda+=1;
     }
     while(ret.decimala_sekunde<=-1){
       ret.decimala_sekunde+=1;
-      lhs.sekunda-=1;
+      ret.sekunda-=1;
     }
 
-    ret.sekunda=lhs.sekunda-rhs.sekunda;
+    ret.sekunda+=lhs.sekunda-rhs.sekunda;
     while(ret.sekunda>0){
       ret.sekunda-=60;
-      lhs.minuta+=1;
+      ret.minuta+=1;
     }
     while(ret.sekunda<=-60){
       ret.sekunda+=60;
-      lhs.minuta-=1;
+      ret.minuta-=1;
     }
-    ret.minuta=lhs.minuta-rhs.minuta;
+    ret.minuta=+lhs.minuta-rhs.minuta;
     while(ret.minuta>0){
       ret.minuta-=60;
-      lhs.stupanj+=1;
+      ret.stupanj+=1;
     }
     while(ret.minuta<=-60){
       ret.minuta+=60;
-      lhs.stupanj-=1;
+      ret.stupanj-=1;
     }
-    ret.stupanj=lhs.stupanj-rhs.stupanj;
+    ret.stupanj=+lhs.stupanj-rhs.stupanj;
     while(ret.stupanj>ret.maks){
       ret.stupanj-=2*ret.maks;
     }    
@@ -171,94 +167,94 @@ koor_1D operator-(koor_1D lhs, koor_1D rhs){
     }
      
   }
-  ret=prefix(ret);
+  prefix(&ret);
   return ret;
 }
 
-koor_1D operator+(koor_1D lhs, koor_1D rhs){
+koor_1D& operator+(const koor_1D& lhs, const koor_1D& rhs){
   koor_1D ret;
   ret.decimala_sekunde=lhs.decimala_sekunde+rhs.decimala_sekunde;
   ret.sekunda=lhs.sekunda+rhs.sekunda;
   ret.minuta=lhs.minuta+rhs.minuta;
   ret.stupanj=lhs.stupanj+rhs.stupanj;
-  ret=prefix(ret);
+  prefix(&ret);
   return ret;
 }
 
-koor_1D prefix(koor_1D kor){
-  if(kor==koor_1D(0,0,0,0.0,kor.maks)){
+void prefix(koor_1D *kor){
+  if(*kor==koor_1D(0,0,0,0.0,kor->maks)){
     return kor;
   }
-  else if(kor>=koor_1D(0,0,0,0.0,kor.maks)){
-    while(kor.decimala_sekunde<0){
-      kor.decimala_sekunde+=1;
-      kor.sekunda-=1;
+  else if(*kor>=koor_1D(0,0,0,0.0,kor->maks)){
+    while(kor->decimala_sekunde<0){
+      kor->decimala_sekunde+=1;
+      kor->sekunda-=1;
     }
-    while(kor.decimala_sekunde>=1){
-      kor.decimala_sekunde-=1;
-      kor.sekunda+=1;
+    while(kor->decimala_sekunde>=1){
+      kor->decimala_sekunde-=1;
+      kor->sekunda+=1;
     }
     
-    while(kor.sekunda<0){
-      kor.minuta+=1;
-      kor.sekunda+=60;
+    while(kor->sekunda<0){
+      kor->minuta+=1;
+      kor->sekunda+=60;
     }
-    while(kor.sekunda>=60){
-      kor.minuta-=1;
-      kor.sekunda-=60;
-    }
-
-    while(kor.minuta<0){
-      kor.stupanj+=1;
-      kor.minuta+=60;
-    }
-    while(kor.minuta>=60){
-      kor.stupanj-=1;
-      kor.minuta-=60;
+    while(kor->sekunda>=60){
+      kor->minuta-=1;
+      kor->sekunda-=60;
     }
 
-    while(kor.stupanj<0){
-      kor.stupanj+=2*kor.maks;
+    while(kor->minuta<0){
+      kor->stupanj+=1;
+      kor->minuta+=60;
     }
-    while(kor.stupanj>kor.maks){
-      kor.stupanj-=2*kor.maks;
+    while(kor->minuta>=60){
+      kor->stupanj-=1;
+      kor->minuta-=60;
+    }
+
+    while(kor->stupanj<0){
+      kor->stupanj+=2*kor->maks;
+    }
+    while(kor->stupanj>kor->maks){
+      kor->stupanj-=2*kor->maks;
     }
   }
   else{
     ///
-    while(kor.decimala_sekunde<=-1){
-      kor.decimala_sekunde+=1;
-      kor.sekunda-=1;
+    while(kor->decimala_sekunde<=-1){
+      kor->decimala_sekunde+=1;
+      kor->sekunda-=1;
     }
-    while(kor.decimala_sekunde>0){
-      kor.decimala_sekunde-=1;
-      kor.sekunda+=1;
+    while(kor->decimala_sekunde>0){
+      kor->decimala_sekunde-=1;
+      kor->sekunda+=1;
     }
     
-    while(kor.sekunda<=-60){
-      kor.minuta+=1;
-      kor.sekunda+=60;
+    while(kor->sekunda<=-60){
+      kor->minuta+=1;
+      kor->sekunda+=60;
     }
-    while(kor.sekunda>0){
-      kor.minuta-=1;
-      kor.sekunda-=60;
-    }
-
-    while(kor.minuta<=-60){
-      kor.stupanj+=1;
-      kor.minuta+=60;
+    while(kor->sekunda>0){
+      kor->minuta-=1;
+      kor->sekunda-=60;
     }
 
-    while(kor.minuta>0){
-      kor.stupanj-=1;
-      kor.minuta-=60;
+    while(kor->minuta<=-60){
+      kor->stupanj+=1;
+      kor->minuta+=60;
     }
 
-    while(kor.stupanj<-1*kor.maks){
-      kor.stupanj+=2*kor.maks;
+    while(kor->minuta>0){
+      kor->stupanj-=1;
+      kor->minuta-=60;
     }
-    while(kor.stupanj>0){
-      kor.stupanj-=2*kor.maks;
+
+    while(kor->stupanj<-1*kor->maks){
+      kor->stupanj+=2*kor->maks;
+    }
+    while(kor->stupanj>0){
+      kor->stupanj-=2*kor->maks;
     }
     
     ///
@@ -307,21 +303,21 @@ class lokacija{
     }
 };
 
-lokacija operator+(lokacija lhs, lokacija rhs){
+lokacija operator+(const lokacija& lhs, const lokacija& rhs){
   lokacija ret;
   ret.setX(lhs.getX()+rhs.getX());
   ret.setY(lhs.getY()+rhs.getY());
   return ret;
 }
 
-lokacija operator-(lokacija lhs, lokacija rhs){
+lokacija& operator-(const lokacija& lhs, const lokacija& rhs){
   lokacija ret;
   ret.setX(lhs.getX()-rhs.getX());
   ret.setY(lhs.getY()-rhs.getY());
   return ret;
 }
 
-lokacija divide_lokacija(lokacija lhs, int rhs){
+lokacija divide_lokacija(const lokacija& lhs, int rhs){
   lokacija ret;
   ret.setX(divide(lhs.getX(), rhs));
   ret.setY(divide(lhs.getY(), rhs));

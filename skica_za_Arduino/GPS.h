@@ -21,8 +21,8 @@ bool GPS_mjerenje(lokacija* novo_mjerenje, lokacija mjesta[]) { //jos jedan argu
   GPS_power(1);
   for (i = 0; i < br_ponavljanja; i++) {
     gps.f_get_position(&flat, &flon, &age);
-    mjerenja[i].setY(koor_1D((int)flat, (int)(flat * 60), (int)(flat * 60 * 60), flat - (int)(flat * 60 * 60), 90));
-    mjerenja[i].setX(koor_1D((int)flon, (int)(flon * 60), (int)(flon * 60 * 60), flat - (int)(flon * 60 * 60), 180));
+    mjerenja[i].setY(koor_1D((int)flat, (int)(flat * 60), (int)(flat * 60 * 60), flat - (int)(flat * 60 * 60), 32000));
+    mjerenja[i].setX(koor_1D((int)flon, (int)(flon * 60), (int)(flon * 60 * 60), flat - (int)(flon * 60 * 60), 32000));
     if((TinyGPS::GPS_INVALID_F_ANGLE == flat) || (TinyGPS::GPS_INVALID_F_ANGLE == flon)==0){
       delete(mjerenja);
       return LOW;

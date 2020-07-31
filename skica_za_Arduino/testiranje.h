@@ -14,8 +14,9 @@ void testiranje(){
     //}
     lok1->setY(koor_1D(random(0,180)-90, random(0,120)-60, random(0,120)-60, random(0,100000)/100000.0, 90));
     lok2->setY(koor_1D(random(0,180)-90, random(0,120)-60, random(0,120)-60, random(0,100000)/100000.0, 90));
-    lok1->setY(prefix(lok1->getY()));
-    lok2->setY(prefix(lok2->getY()));
+    prefix(&lok1->Y);
+    prefix(&lok2->Y);
+    
     //lok2->getY().prefix();
   
     lok1->setX(koor_1D(-30,-21,-47,-0.3217, 180));
@@ -84,10 +85,10 @@ void testiranje(){
       Serial.println();
     }
     
-    lokacija LOL=*lok;
-    lok->setX(prefix(lok->getX()));
+    prefix(&lok->X);
+    prefix(&lok->Y);
     
-    if(LOL.getX()==lok->getX()){
+    if("DOSLOVNO NE ZNAM"==0){
       
     }
     else{
