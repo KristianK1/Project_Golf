@@ -24,8 +24,8 @@
 
 
 void test_jednakosti(){
-  koor_1D fixed(0,0,2,0.21,90);
-  koor_1D var(0,0,-2,0.0,90);
+  koor_1D fixed(-89, -58, -2,-0.21, 90);
+    koor_1D var(90, 58,  2, 0.0,  90);
 
   Serial.println(var.get_stupanj());
   Serial.println(var.get_minuta());
@@ -39,7 +39,7 @@ void test_jednakosti(){
   Serial.println("\n\n\n");
   while(true){
     Serial.println("Provjera za stop");
-    if(var>=fixed) while(true);
+    if(fixed>=var) while(true);
 
     Serial.println("\n\n\n\n Novo:");
     var.set_decimala(var.get_decimala()+0.1);
