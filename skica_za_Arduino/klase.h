@@ -90,8 +90,8 @@ bool operator>=(const koor_1D& lhs, const koor_1D& rhs) {
     }*/
   long int lhss = (long int)lhs.get_stupanj() * 3600 + lhs.get_minuta() * 60 + lhs.get_sekunda() + (int)lhs.get_decimala();
   long int rhss = (long int)rhs.get_stupanj() * 3600 + rhs.get_minuta() * 60 + rhs.get_sekunda() + (int)rhs.get_decimala();
-  Serial.print("YOOOOOOOOO: "); Serial.println(rhss);
-  Serial.print("YOOOOOO LHS: "); Serial.println(lhss);
+  //Serial.print("YOOOOOOOOO: "); Serial.println(rhss);
+  //Serial.print("YOOOOOO LHS: "); Serial.println(lhss);
   if (lhss > rhss) {
     return true;
   }
@@ -99,7 +99,7 @@ bool operator>=(const koor_1D& lhs, const koor_1D& rhs) {
     return false;
   }
   else {
-    Serial.println("fuck");
+    //Serial.println("fuck");
     return (lhs.get_decimala() >= rhs.get_decimala());
 
   }
@@ -223,62 +223,62 @@ void prefix(koor_1D *kor) {
   while(ispravno==false){
     ispravno=true;
     if (*kor >= koor_1D(0, 0, 0, 0.0, kor->maks)) {
-      Serial.println("vece od nule");
+      //Serial.println("vece od nule");
       //while(kor->decimala_sekunde < 0||kor->decimala_sekunde >= 1||kor->sekunda < 0||kor->sekunda >=60||kor->minuta < 0||kor->minuta>=60||kor->stupanj < 0||kor->stupanj >= kor->maks){
-        Serial.println("eo me");
+        //Serial.println("eo me");
         while (kor->decimala_sekunde < 0) {
-          Serial.println("Decimala <0");
+          //Serial.println("Decimala <0");
           kor->decimala_sekunde += 1;
           kor->sekunda -= 1;
           ispravno=false;
         }
         while (kor->decimala_sekunde >= 1) {
-          Serial.println("Decimala >=1");
+          //Serial.println("Decimala >=1");
           kor->decimala_sekunde -= 1;
           kor->sekunda += 1;
           ispravno=false;
         }
     
         while (kor->sekunda < 0) {
-          Serial.println("sekunda <0");
+          //Serial.println("sekunda <0");
           kor->minuta -= 1;
           kor->sekunda += 60;
           ispravno=false;
         }
         while (kor->sekunda >= 60) {
-          Serial.println("Sekunda >6=0");
+          //Serial.println("Sekunda >6=0");
           kor->minuta += 1;
           kor->sekunda -= 60;
           ispravno=false;
         }
     
         while (kor->minuta < 0) {
-          Serial.println("Minuta <0");
+          //Serial.println("Minuta <0");
           kor->stupanj -= 1;
           kor->minuta += 60;
           ispravno=false;
         }
         while (kor->minuta >= 60) {
-          Serial.println("Minuta >=60");
+          //Serial.println("Minuta >=60");
           kor->stupanj += 1;
           kor->minuta -= 60;
           ispravno=false;
         }
     
         while (kor->stupanj < 0) {
-          Serial.println("Stupanj <0");
+          //Serial.println("Stupanj <0");
           kor->stupanj += 2 * kor->maks;
           ispravno=false;
         }
         while (kor->stupanj >= kor->maks) {  //>=
-          Serial.println("Stupanj >maks");
+          //Serial.println("Stupanj >maks");
           kor->stupanj -= 2 * kor->maks;
           ispravno=false;
         }
       //}
     }
     else if(*kor >= koor_1D(0, 0, 0, 0.0, kor->maks)==0){
-      Serial.println("manje od nule");
+      //Serial.println("manje od nule");
       //while(kor->decimala_sekunde <= -1||kor->decimala_sekunde > 0.001||kor->sekunda <= -60||kor->sekunda > 0||kor->minuta <= -60||kor->minuta > 0||kor->stupanj < -1 * kor->maks||kor->stupanj > 0){
           while (kor->decimala_sekunde <= -1) {
             kor->decimala_sekunde += 1.0;

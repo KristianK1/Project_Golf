@@ -2,7 +2,7 @@
 #include"funkcije.h"
 #include"stanja.h"
 //#include"testiranje.h"
-#include"test_operatora.h"
+//#include"test_operatora.h"
 SoftwareSerial GSMSerial(10, 11);
 SoftwareSerial GPSSerial(4,3);
 
@@ -22,12 +22,12 @@ void setup() {
 
   //test
   //testiranje();
-  test_jednakosti();
+  //test_jednakosti();
   //test end
-  
-  
 
-    
+
+
+
   mjesta=new lokacija[broj_lokacija];
   int i;
   for(i=0;i<broj_lokacija;i++){
