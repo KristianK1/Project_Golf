@@ -2,8 +2,8 @@ class koor_1D {
     friend koor_1D divide(koor_1D, int);
     friend bool operator>=(const koor_1D&, const koor_1D&);
     friend bool operator==(const koor_1D& lhs, const koor_1D& rhs);
-    friend koor_1D& operator-(const koor_1D&, const koor_1D&);
-    friend koor_1D& operator+(const koor_1D&, const koor_1D&);
+    friend koor_1D operator-(const koor_1D&, const koor_1D&);
+    friend koor_1D operator+(const koor_1D&, const koor_1D&);
     friend void prefix(koor_1D*);
   private:
     int stupanj;
@@ -14,16 +14,16 @@ class koor_1D {
   public:
     koor_1D(): stupanj(0), minuta(0), sekunda(0), decimala_sekunde(0.0), maks(0) {}
     koor_1D(int mStupnjevi, int mMinute, int mSekunde, double mDecimala, int mmaks): stupanj(mStupnjevi), minuta(mMinute), sekunda(mSekunde), decimala_sekunde(mDecimala), maks(mmaks) {}
-    int get_stupanj() {
+    int get_stupanj() const {
       return stupanj;
     }
-    int get_minuta() {
+    int get_minuta() const {
       return minuta;
     }
-    int get_sekunda() {
+    int get_sekunda() const {
       return sekunda;
     }
-    double get_decimala() {
+    double get_decimala() const {
       return decimala_sekunde;
     };
 
@@ -42,7 +42,7 @@ class koor_1D {
 
     void koor_abs() {
       prefix(this);
-      if (stupanj < 0) {
+      if (stupanj*3600+minuta*60+sekunda+decimala_sekunde<0) {
         stupanj *= -1;
         minuta *= -1;
         sekunda *= -1;
@@ -70,6 +70,7 @@ koor_1D divide(koor_1D lhs, int rhs) {
     lhs.decimala_sekunde += lhs.sekunda * 1.0;
     ret.decimala_sekunde = lhs.decimala_sekunde / rhs;
   }
+  return ret;
 }
 
 
@@ -88,7 +89,7 @@ bool operator>=(const koor_1D& lhs, const koor_1D& rhs) {
       }
     }
     }*/
-  long int lhss = (long int)lhs.get_stupanj() * 3600 + lhs.get_minuta() * 60 + lhs.get_sekunda() + (int)lhs.get_decimala();
+  long int lhss = (long int)(lhs.get_stupanj()) * 3600 + (lhs.get_minuta()) * 60 + (lhs.get_sekunda()) + (int)lhs.get_decimala();
   long int rhss = (long int)rhs.get_stupanj() * 3600 + rhs.get_minuta() * 60 + rhs.get_sekunda() + (int)rhs.get_decimala();
   //Serial.print("YOOOOOOOOO: "); Serial.println(rhss);
   //Serial.print("YOOOOOO LHS: "); Serial.println(lhss);
@@ -119,7 +120,7 @@ bool operator==(const koor_1D& lhs, const koor_1D& rhs) {
 }
 
 
-koor_1D& operator-(const koor_1D& lhs, const koor_1D& rhs) {
+koor_1D operator-(const koor_1D& lhs, const koor_1D& rhs) {
   koor_1D ret;
   ret.maks = lhs.maks;
   if (lhs.maks != rhs.maks) {
@@ -202,12 +203,15 @@ koor_1D& operator-(const koor_1D& lhs, const koor_1D& rhs) {
   return ret;
 }
 
-koor_1D& operator+(const koor_1D& lhs, const koor_1D& rhs) {
+koor_1D operator+(const koor_1D& lhs, const koor_1D& rhs) {
   koor_1D ret;
+  ret.maks=32000;
   ret.decimala_sekunde = lhs.decimala_sekunde + rhs.decimala_sekunde;
   ret.sekunda = lhs.sekunda + rhs.sekunda;
   ret.minuta = lhs.minuta + rhs.minuta;
   ret.stupanj = lhs.stupanj + rhs.stupanj;
+  
+  //Serial.println("ZBRAJANJE KOORDINATA");
   prefix(&ret);
   return ret;
 }
@@ -218,7 +222,7 @@ void prefix(koor_1D *kor) {
     /*if (kor->decimala_sekunde < 0) {
       kor->decimala_sekunde *= -1;
     }*/
-    return kor;
+    return;
   }
   while(ispravno==false){
     ispravno=true;
@@ -277,7 +281,7 @@ void prefix(koor_1D *kor) {
         }
       //}
     }
-    else if(*kor >= koor_1D(0, 0, 0, 0.0, kor->maks)==0){
+    else if((*kor >= koor_1D(0, 0, 0, 0.0, kor->maks))==0){
       //Serial.println("manje od nule");
       //while(kor->decimala_sekunde <= -1||kor->decimala_sekunde > 0.001||kor->sekunda <= -60||kor->sekunda > 0||kor->minuta <= -60||kor->minuta > 0||kor->stupanj < -1 * kor->maks||kor->stupanj > 0){
           while (kor->decimala_sekunde <= -1) {
@@ -325,7 +329,9 @@ void prefix(koor_1D *kor) {
      //}
   }
   }
-  return kor;
+  
+  //Serial.println("KRAJ PREFIXA");
+  return;
 }
 
 
@@ -359,10 +365,10 @@ class lokacija {
     koor_1D Y;
   public:
     lokacija(): X(1000, 0, 0, 0.0, 180), Y(1000, 0, 0, 0.0, 90) {}
-    koor_1D getX() {
+    koor_1D getX() const {
       return X;
     }
-    koor_1D getY() {
+    koor_1D getY() const {
       return Y;
     }
     void setX(koor_1D x) {
@@ -384,7 +390,7 @@ lokacija operator+(const lokacija& lhs, const lokacija& rhs) {
   return ret;
 }
 
-lokacija& operator-(const lokacija& lhs, const lokacija& rhs) {
+lokacija operator-(const lokacija& lhs, const lokacija& rhs) {
   lokacija ret;
   ret.setX(lhs.getX() - rhs.getX());
   ret.setY(lhs.getY() - rhs.getY());
@@ -399,22 +405,35 @@ lokacija divide_lokacija(const lokacija& lhs, int rhs) {
   lokacija ret;
   ret.setX(divide(lhs.getX(), rhs));
   ret.setY(divide(lhs.getY(), rhs));
+  return ret;
 }
 
 
 
 lokacija srednja_vrijednost(lokacija* polje, int n) {
   lokacija srednja;
+  srednja.setX(koor_1D(0,0,0,0.0,32000));
+  srednja.setY(koor_1D(0,0,0,0.0,32000));
+  
   int i;
+  //Serial.println("STEP 1");
   for (i = 0; i < n; i++) {
+    //Serial.println("STEPS");
     srednja = srednja + polje[i];
   }
+  
+  //Serial.println("FINAL STEP");
   srednja = divide_lokacija(srednja, n);
+  return srednja;
 }
 
 lokacija srednje_apsolutno_odstupanje(lokacija *polje, int n) {
   lokacija srednja = srednja_vrijednost(polje, n);
   lokacija odstupanje;
+  odstupanje.setX(koor_1D(0,0,0,0.0,32000));
+  odstupanje.setY(koor_1D(0,0,0,0.0,32000));
+  
+  //odstupanje
   int i;
   for (i = 0; i < n; i++) {
     lokacija razlika = polje[i] - srednja;

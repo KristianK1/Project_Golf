@@ -3,7 +3,7 @@ int ulaz2=8;
 
 int input_time=0;
 
-int istek_minute=3;
+unsigned int istek_minute=3;
 
 bool citanje_ulaza(){
   if(digitalRead(ulaz1)||digitalRead(ulaz2)){

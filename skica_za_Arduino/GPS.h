@@ -10,12 +10,12 @@ lokacija *mjesta;
 
 
 
-bool GPS_mjerenje(lokacija* novo_mjerenje, lokacija mjesta[]) { //jos jedan argument je broj_lokacija koji je globalna varijabla
+bool GPS_mjerenje(lokacija* novo_mjerenje/*,lokacija mjesta[]*/) { //jos jedan argument je broj_lokacija koji je globalna varijabla
   lokacija *mjerenja = new lokacija[5];
   float flat, flon;
   unsigned long age;
   int i;
-  bool valid=true;
+  //bool valid=HIGH;
 
 
   GPS_power(1);
@@ -62,7 +62,7 @@ bool GPS_update(lokacija *mjesta) {
   lokacija *novo_mjerenje = new lokacija();
   bool valid;
   Serial.println("Ulazak u GPS_mjerenje");
-  valid=GPS_mjerenje(novo_mjerenje, mjesta);
+  valid=GPS_mjerenje(novo_mjerenje/*, mjesta*/);
   Serial.println("Izlazak iz GPS_mjerenje");
   if (valid == HIGH) {
     int i;
