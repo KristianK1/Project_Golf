@@ -1,62 +1,78 @@
-#include <SoftwareSerial.h>
-SoftwareSerial mySerial(4,5); // RX, TX
+class HTTP{
+private: 
+  String *primljeno;
+  int *stage;
+  int *repeat;
+  long int *stamp;
+  SoftwareSerial *serial
+  String link;
 
-String *primljeno;
-int *stage;
-int *repeat;
-long int *stamp;
-String link="http://api.thingspeak.com/update?api_key=PY57W7KMYYBE2MDP&field1=";
-int i=0;
-
-int AsadrziB(String A, String B){
-  /*Serial.print("A i B: |");
-  Serial.print(A);
-  Serial.print("| |");
-  Serial.print(B);
-  Serial.println("|");*/
-  if(A.length()<B.length()) {
+  int AsadrziB(String A, String B){
+    /*Serial.print("A i B: |");
+    Serial.print(A);
+    Serial.print("| |");
+    Serial.print(B);
+    Serial.println("|");*/
+    if(A.length()<B.length()) {
+      return 0;
+    }
+    for(int i=0;i<=(A.length()-B.length());i++){
+      String C="";
+      for(int j=0;j<B.length();j++){
+        C+=A[i+j];
+      }
+      if(C==B) return 1;
+    }
     return 0;
   }
-  for(int i=0;i<=(A.length()-B.length());i++){
-    String C="";
-    for(int j=0;j<B.length();j++){
-      C+=A[i+j];
+  void Send(SoftwareSerial *serial, String out){
+    serial->println(out);
+    Serial.println(out);
+  }
+  void Recive(SoftwareSerial *serial, String *recive){
+    while(serial->available()){
+      int c=serial->read();
+      if(c!=10||c!=13) *recive=*recive+(char)c;
+      //Serial.print((char)c);
     }
-    if(C==B) return 1;
+    //Serial.print(*recive);
+  }   
+  int Reset_happend(String recived) {
+    if(AsadrziB(recived,"CPIN")) {
+      return 1;
+    }
+    if(AsadrziB(recived,"Ready")){
+      return 1;
+    }
+    if(AsadrziB(recived,"CALL")){
+      return 1;
+    }
+    if(AsadrziB(recived,"SMS")){
+      return 1;
+    }
+    return 0;
   }
-  return 0;
-}
 
-void Send(SoftwareSerial *serial, String out){
-  serial->println(out);
-  Serial.println(out);
-}
 
-void Recive(SoftwareSerial *serial, String *recive){
-  while(serial->available()){
-    int c=serial->read();
-    if(c!=10||c!=13) *recive=*recive+(char)c;
-    //Serial.print((char)c);
+public:
+  HTTP(SoftwareSerial *mSerial): serial(mSerial){
+    primljeno=new String();
+    stage=new int();
+    repeat=new int();
+    stamp=new long int();
   }
-  //Serial.print(*recive);
-}              
-int Reset_happend(String recived) {
-  if(AsadrziB(recived,"CPIN")) {
-    return 1;
+  ~HTTP(){
+    delete(primljeno);
+    delete(stage);
+    delete(repeat);
+    delete(stamp);
   }
-  if(AsadrziB(recived,"Ready")){
-    return 1;
+  void setLink(String new_link){
+    link=new_link;
   }
-  if(AsadrziB(recived,"CALL")){
-    return 1;
-  }
-  if(AsadrziB(recived,"SMS")){
-    return 1;
-  }
-  return 0;
-}
-int HtttP(SoftwareSerial *serial, int *stage, long int *timeStamp, String *recived, String link, int *repeat){
-  String link_AT="";
+  
+  int access(){
+    String link_AT="";
   switch(*stage){
     case 0: *recived="";
             while(serial->available()) serial->read();
@@ -368,30 +384,5 @@ int HtttP(SoftwareSerial *serial, int *stage, long int *timeStamp, String *reciv
             break;        
   }
   return 2;
-}
-
-void setup() {
-  // put your setup code here, to run once:
-  primljeno=new String("");
-  stage=new int(0);
-  repeat=new int(0);
-  stamp=new long int(0);
-  Serial.begin(9600);
-  mySerial.begin(9600);
-}
-
-void loop() {
-  //Serial.println(*stage);
-  int q=HtttP(&mySerial, stage, stamp, primljeno, link+String(i), repeat);
-  if(1==q){
-    i++;
-    Serial.println("Uspjesno poslano");
-    delay(10000);
   }
-  //if(q==2) Serial.println("ne jos");
-  if(q==0) {
-    Serial.println("Failed");
-    delay(10000);
-  }
-  delay(100);
 }
