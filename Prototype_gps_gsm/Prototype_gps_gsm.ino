@@ -73,7 +73,7 @@ void GSM(String link){
 void loop() {
   // put your main code here, to run repeatedly:
   Location current_loc=GPS();
-  GSM(loc_to_link(current_loc));
+  GSM(loc_to_link(current_loc)); //provjeri jel 181,91
   
   SerialBT.println("\n\n\n\n\n\n\n\n\n\nGOTOV LOOP");
   delay(1000);

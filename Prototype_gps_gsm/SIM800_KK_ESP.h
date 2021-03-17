@@ -331,7 +331,7 @@ public:
               }
               break;
       case 16: *recived="";
-              Send("AT+HTTPREAD=0,20");
+              Send("AT+HTTPREAD=0,5");//0,20?
               *timeStamp=millis();
               *stage=17;
               if(true) SerialBT.println("Stage 16");
