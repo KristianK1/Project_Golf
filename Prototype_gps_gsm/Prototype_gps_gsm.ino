@@ -1,7 +1,7 @@
 #include "BluetoothSerial.h"
 #include"SIM800_KK_ESP.h"
 #include "Location.h"
-
+#include "codes.h"
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
@@ -9,12 +9,18 @@
 
 //BluetoothSerial SerialBT;
 
-#define N 5
+SIM800L_KK *SIM800LL;
 
-String Link="http://api.thingspeak.com/update?api_key=PY57W7KMYYBE2MDP&field1=";
-int i=0;
-SIM800L_KK *object;
-
+int GSM(String link){
+  SIM800LL->setLink(link);
+  int q=0;
+  q=SIM800LL->access();
+  if(q==0) SerialBT.println("\n\n\nExit code: Failed");
+  if(q==1) SerialBT.println("\n\n\nExit code: Success");
+  if(q==2) ; //not yet
+  if(q==3) SerialBT.println("\n\n\nExit code: reset");
+  return q;
+}
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,56 +31,41 @@ void setup() {
   digitalWrite(32, LOW);
   pinMode(33, OUTPUT);
   digitalWrite(33, LOW);
+
+  //Location loccc(121.123456,-44.998855);
+  //SerialBT.println(big_packet(loccc.getX(), loccc.getY(), 2));
   
-  object=new SIM800L_KK(); 
-}
-Location GPS(){
-  Location p[N];
-  for(int i=0;i<N;i++){
-    Location new_data=Load_data_from_GPS();
-    if(new_data.getX()!=181){
-      SerialBT.println();
-      SerialBT.println(new_data.getX());
-      SerialBT.println(new_data.getY());
-      p[i]=new_data;
-    }  
-    else i--;
-  }
-  Location Average=average(p,N);
-  Location Sigma=sigma(p,N);
-  if(Sigma.getX()<0.01 && Sigma.getY()<0.01 && Average.getX()!=181){ 
-    //Location_print(Average);
-    //Location_print(Sigma);   
-    return Average;
-  }
-  return Location(181,91);
+  SIM800LL=new SIM800L_KK();
+  delay(1000);
 }
 
-String loc_to_link(Location location){
-  //String link="http://api.thingspeak.com/update?api_key=PY57W7KMYYBE2MDP&status=http://maps.google.com/maps?q=loc:47.557240,18.719575";
-  String link="http://api.thingspeak.com/update?api_key=PY57W7KMYYBE2MDP&status=http://maps.google.com/maps?q=loc:";
-  link=link+String(location.getY(),7)+","+String(location.getX(),7);
-  
-  return link;
-}
 
-void GSM(String link){
-  object->setLink(link);
-  int q=0;
-  while(q!=1){
-     q=object->access();
-     if(q==0) SerialBT.println("\n\n\nExit code: Failed");
-     if(q==1) SerialBT.println("\n\n\nExit code: Success");
-     if(q==3) SerialBT.println("\n\n\nExit code: reset");
-     delay(1000);
-  }
-}
+
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Location current_loc=GPS();
-  GSM(loc_to_link(current_loc)); //provjeri jel 181,91
+  Location current_loc(181,91);
+  long int timer=millis();
+  while(current_loc.getX()==181 && (millis()-timer)>6000) current_loc=GPS();
+
+  int ret=0;
+  String link;
+  if(current_loc.getX()==181) {
+    link=small_link(0);
+    SerialBT.println("krute");
+  }
+  else link=loc_to_link(current_loc, 4);
   
-  SerialBT.println("\n\n\n\n\n\n\n\n\n\nGOTOV LOOP");
-  delay(1000);
+  while(ret!=1) {
+    ret=GSM(link);
+    delay(50);
+  }
+  switch(ret){
+    case 0: delay(10000);
+            break;
+    case 1: delay(15000);
+            break;
+    case 3: delay(5000);
+            break;
+  }
 }

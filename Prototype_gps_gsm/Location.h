@@ -127,25 +127,43 @@ Location sigma(Location *p, int n){
   return sigma;
 }
 
-Location Load_data_from_GPS(){
+void GPS_data_reset(){
   Serial.flush();
+}
+
+Location Load_data_from_GPS(){
+  //Serial.flush();
   Location new_location(181,91);
   unsigned long int timer=millis();
-  delay(1000);
-  while(Serial.available() > 0 || (millis()-timer)<3000){ //promjenit uvjet
+  //delay(1000);
+  //while(Serial.available() > 0 || (millis()-timer)<3000){ //promjenit uvjet
     gps.encode(Serial.read());
     if (gps.location.isUpdated()){
-      //Serial.print("Latitude= ");
-      //Serial.print(gps.location.lat(), 8);
-      //Serial.print(" Longitude= ");
-      //Serial.println(gps.location.lng(), 8);
-
       new_location.setX(gps.location.lng());
       new_location.setY(gps.location.lat());
-            
     }
-  }
+  //}
   return new_location;
+}
+
+Location GPS(){
+  Location *p=new Location [5];
+  for(int i=0;i<5;i++){
+    Location new_data=Load_data_from_GPS();
+    if(new_data.getX()!=181){
+      SerialBT.println();
+      SerialBT.println(new_data.getX());
+      SerialBT.println(new_data.getY());
+      p[i]=new_data;
+    }  
+    else i--;
+  }
+  Location Average=average(p,5);
+  Location Sigma=sigma(p,5);
+  if(Sigma.getX()<0.01 && Sigma.getY()<0.01 && Average.getX()!=181){ 
+    return Average;
+  }
+  return Location(181,91);
 }
 
 /*void Location_print(Location x){
