@@ -98,11 +98,11 @@ String small_packet(int code){
 String big_packet(double X_kor, double Y_kor, int code){
   String binary=make_binary(X_kor, Y_kor);
   binary+=make_parity(binary);
-  Serial.println(binary);
+  //Serial.println(binary);
   binary=binary_to_base64(binary);
   
   binary+=make_sending_code(code);
-  Serial.println(binary);
+  //Serial.println(binary);
   return binary;
 }
 
