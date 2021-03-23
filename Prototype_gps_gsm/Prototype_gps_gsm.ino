@@ -17,7 +17,7 @@ int GSM(String link){
   int q=0;
   q=SIM800LL->access();
   if(q==0) SerialBT.println("\n\n\nExit code: Failed");
-  if(q==1) SerialBT.println("\n\n\nExit code: Success"); //
+  if(q==1) SerialBT.println("\n\n\nExit code: Success"); //  
   if(q==2) ; //not yet
   if(q==3) SerialBT.println("\n\n\nExit code: reset");
   return q;
