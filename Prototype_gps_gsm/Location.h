@@ -153,7 +153,7 @@ Location GPS(){
     if(new_data.getX()!=181){
       SerialBT.println();
       SerialBT.println(new_data.getX());
-      SerialBT.println(new_data.getY());
+      SerialBT.println(new_data.getY()); 
       p[i]=new_data;
     }  
     else i--;
