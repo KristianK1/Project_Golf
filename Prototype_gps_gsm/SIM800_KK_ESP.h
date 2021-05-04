@@ -303,7 +303,7 @@ public:
               }
               break;
       case 14: *recived="";
-              Send("AT+HTTPACTION=0");
+              Send("AT+HTTPACTION=0"); //0?
               *timeStamp=millis();
               *stage=15;
               if(true) SerialBT.println("Stage 14");
@@ -331,7 +331,7 @@ public:
               }
               break;
       case 16: *recived="";
-              Send("AT+HTTPREAD=0,5");//0,20?
+              Send("AT+HTTPREAD=0,0");//0,20?
               *timeStamp=millis();
               *stage=17;
               if(true) SerialBT.println("Stage 16");
