@@ -57,7 +57,7 @@ public:
     };
   
   AT_command AT_commands_connect[3]{
-    AT_command("AT+SAPBR=0,1",                             "ERROR",     3, "OK",    4),
+    AT_command("AT+SAPBR=0,1",                             "ERROR",     10,"OK",    4),
     AT_command("AT+SAPBR=1,1",                             "ERROR",     20,"OK",    4),
     AT_command("AT+SAPBR=2,1",                             "1,1"       ,3, "1,3",   5)
   };
@@ -101,11 +101,7 @@ private:
   int power_pin;
 
   int AcontainsB(String A, String B){
-    /*Serial.print("A i B: |");
-    Serial.print(A);
-    Serial.print("| |");
-    Serial.print(B);
-    Serial.println("|");*/
+    
     if(A.length()<B.length()) {
       return 0;
     }
@@ -130,7 +126,7 @@ private:
     while(Serial2.available()){
       int c=Serial2.read();
       if(c!=10||c!=13) *recive=*recive+(char)c;
-      //Serial.print((char)c);
+      
     }
     SerialBT.print(*recive);
   }
@@ -154,6 +150,8 @@ private:
   
 public:
   SIM800L_S2(){
+    Serial2.begin(9600);
+    progress.setPart(1);
     recived=new String();
   }
 
