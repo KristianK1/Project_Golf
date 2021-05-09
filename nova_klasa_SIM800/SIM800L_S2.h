@@ -256,7 +256,104 @@ public:
         }
     }
     if(progress.getPart()==2){
-      
+      if(AcontainsB(*recived, progress.AT_commands_connect[progress.getStage()].getExpected())){
+          progress.incrementStage();
+          if(progress.getStage()>=progress.connect_size){
+            progress.setPart(3);
+            progress.setStage(0);
+            progress.setRepeat(0);
+            deleteRecive();
+            Send(progress.AT_commands_access[0].getSend());
+            return 1;
+          }
+          deleteRecive();
+          Send(progress.AT_commands_connect[progress.getStage()].getSend());
+        }
+        else if(AcontainsB(*recived, progress.AT_commands_connect[progress.getStage()].getErrorMes())){
+          progress.setRepeat(progress.getRepeat()+1);
+          SerialBT.println("error code");
+          if(progress.getRepeat()>=5){
+            for(int i=0;i<progress.AT_commands_connect[progress.getStage()].getStepsBack();i++){
+              progress.decrementStage();
+              deleteRecive();
+              Send(progress.AT_commands_connect[0].getSend());
+              return 2;
+            }  
+          }
+          deleteRecive();
+          Send(progress.AT_commands_connect[progress.getStage()].getSend());
+          return 1;
+        }
+        else if(millis()-progress.getTimeStamp()>progress.AT_commands_connect[progress.getStage()].getSeconds()*1000){
+          progress.setRepeat(progress.getRepeat()+1);
+          SerialBT.println("timeout");
+          if(progress.getRepeat()>=5){
+            for(int i=0;i<progress.AT_commands_connect[progress.getStage()].getStepsBack();i++){
+              progress.decrementStage();
+            }
+            deleteRecive();
+            Send(progress.AT_commands_connect[progress.getStage()].getSend());
+            progress.setRepeat(0);
+            SerialBT.println("too much repeat");
+            return 2;
+          }
+          Recive(recived);
+          deleteRecive();
+          Send(progress.AT_commands_connect[progress.getStage()].getSend());
+          return 1;
+        }
+    }
+    if(progress.getPart()==3){
+      if(AcontainsB(*recived, progress.AT_commands_access[progress.getStage()].getExpected())){
+          progress.incrementStage();
+          if(progress.getStage()>=progress.access_size){
+            progress.setPart(1);
+            progress.setStage(0);
+            progress.setRepeat(0);
+            deleteRecive();
+            return 3;
+          }
+          deleteRecive();
+          if(progress.AT_commands_access[progress.getStage()].getSend()=="LINK"){
+            Send("AT+HTTPPARA=\"URL\",\""+link+"\"");
+          }
+          else{
+            Send(progress.AT_commands_access[progress.getStage()].getSend());    
+          }
+        }
+        else if(AcontainsB(*recived, progress.AT_commands_access[progress.getStage()].getErrorMes())){
+          progress.setRepeat(progress.getRepeat()+1);
+          SerialBT.println("error code");
+          if(progress.getRepeat()>=5){
+            for(int i=0;i<progress.AT_commands_access[progress.getStage()].getStepsBack();i++){
+              progress.decrementStage();
+              deleteRecive();
+              Send(progress.AT_commands_access[0].getSend());
+              return 2;
+            }  
+          }
+          deleteRecive();
+          Send(progress.AT_commands_access[progress.getStage()].getSend());
+          return 1;
+        }
+        else if(millis()-progress.getTimeStamp()>progress.AT_commands_access[progress.getStage()].getSeconds()*1000){
+          progress.setRepeat(progress.getRepeat()+1);
+          SerialBT.println("timeout");
+          if(progress.getRepeat()>=5){
+            for(int i=0;i<progress.AT_commands_access[progress.getStage()].getStepsBack();i++){
+              progress.decrementStage();
+            }
+            deleteRecive();
+            Send(progress.AT_commands_access[progress.getStage()].getSend());
+            progress.setRepeat(0);
+            SerialBT.println("too much repeat");
+            return 2;
+          }
+          Recive(recived);
+          deleteRecive();
+          Send(progress.AT_commands_access[progress.getStage()].getSend());
+          return 1;
+        }
     }
     return 99;
   }
