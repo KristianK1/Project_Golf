@@ -28,9 +28,9 @@ void setup() {
   Serial.begin(9600); // connect gps sensor
   SerialBT.begin("ESP32test"); //Bluetooth device name
   Serial2.begin(9600);
-  digitalWrite(32, HIGH);
+  digitalWrite(32, LOW);
   pinMode(32, OUTPUT);
-  digitalWrite(33, HIGH);
+  digitalWrite(33, LOW);
   pinMode(33, OUTPUT);
   
   SIM800LL=new SIM800L_KK();
@@ -42,23 +42,23 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  /*Location current_loc(181,91);
+  Location current_loc(181,91);
   long int timer=millis();
-  while(current_loc.getX()==181 || (millis()-timer)>6000) {
+  while(current_loc.getX()==181/* || (millis()-timer)>6000*/) {
     SerialBT.println("učitavanje");
     current_loc=GPS();
   }
-*/
   int ret=0;
   String link;
   //if(current_loc.getX()==181) {
-    link=small_link(0);
+  //  link=small_link(0);
   //}
   //else link=loc_to_link(current_loc, 4);
-  
-  while(ret!=1) {
-    ret=GSM(link);
-    delay(50);
+  if(current_loc.getX()<180){
+    while(ret!=1) {
+      ret=GSM(link);
+      delay(50);
+    }
   }
   switch(ret){ //lol switch
     case 0: delay(10000);
