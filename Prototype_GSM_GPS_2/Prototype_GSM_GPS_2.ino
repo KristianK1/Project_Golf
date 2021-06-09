@@ -10,7 +10,6 @@ void setup() {
   Serial.begin(9600);
   digitalWrite(33, LOW);
   pinMode(33, OUTPUT);
-  
   SerialBT.begin("ESP32test");
   internet.setPowerpin(32);
   //internet.setLink(Link);
