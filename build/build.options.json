@@ -1,5 +1,5 @@
 {
-  "additionalFiles": "..",
+  "additionalFiles": "..,..,..,..",
   "builtInLibrariesFolders": "C:\\Program Files (x86)\\Arduino\\libraries",
   "builtInToolsFolders": "C:\\Program Files (x86)\\Arduino\\tools-builder,C:\\Program Files (x86)\\Arduino\\hardware\\tools\\avr,C:\\Users\\Kristian-PC\\AppData\\Local\\Arduino15\\packages",
   "compiler.optimization_flags": "",
@@ -8,5 +8,5 @@
   "hardwareFolders": "C:\\Program Files (x86)\\Arduino\\hardware,C:\\Users\\Kristian-PC\\AppData\\Local\\Arduino15\\packages",
   "otherLibrariesFolders": "D:\\Documents\\Arduino\\libraries",
   "runtime.ide.version": "10813",
-  "sketchLocation": "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\bluetooth_comms\\bluetooth_comms.ino"
+  "sketchLocation": "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\Prototype_GSM_GPS_2\\Prototype_GSM_GPS_2.ino"
 }

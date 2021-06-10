@@ -46,6 +46,8 @@ public:
   const int connect_size=3;
   const int access_size=7;  
   
+
+  
   AT_command AT_commands_setup[7]{
       AT_command("AT",                                     "OK",        5, "ERROR", 0),
       AT_command("AT+CSQ",                                 "+CSQ:",     5, "ERROR", 1),
