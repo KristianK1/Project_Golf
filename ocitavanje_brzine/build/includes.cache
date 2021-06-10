@@ -1,0 +1,37 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\Kristian-PC\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\1.0.6\\cores\\esp32"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\Kristian-PC\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\1.0.6\\variants\\esp32"
+  },
+  {
+    "Sourcefile": "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\ocitavanje_brzine\\build\\sketch\\ocitavanje_brzine.ino.cpp",
+    "Include": "TinyGPS++.h",
+    "Includepath": "D:\\Documents\\Arduino\\libraries\\TinyGPSPlus-master\\src"
+  },
+  {
+    "Sourcefile": "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\ocitavanje_brzine\\build\\sketch\\ocitavanje_brzine.ino.cpp",
+    "Include": "BluetoothSerial.h",
+    "Includepath": "C:\\Users\\Kristian-PC\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\1.0.6\\libraries\\BluetoothSerial\\src"
+  },
+  {
+    "Sourcefile": "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\ocitavanje_brzine\\build\\sketch\\ocitavanje_brzine.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\TinyGPSPlus-master\\src\\TinyGPS++.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Kristian-PC\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\1.0.6\\libraries\\BluetoothSerial\\src\\BluetoothSerial.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
