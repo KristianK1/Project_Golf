@@ -9,6 +9,7 @@ class Location{
 private:
   double X;  //  <-180,180]
   double Y;  //   [-90,90]
+  double speed_kmh;
 public:
   Location(double mX, double mY): X(mX), Y(mY){}
   Location(const Location &mLoc){
@@ -18,6 +19,7 @@ public:
   Location(){
     X=0;
     Y=0;
+    speed_kmh=0;
   }
   void setX(double mX){
     X=mX;
@@ -25,11 +27,17 @@ public:
   void setY(double mY){
     Y=mY;
   }
+  void setSpeed(double mSpeed){
+    speed_kmh=mSpeed;
+  }
   double getX(){
     return X;
   }
   double getY(){
     return Y;
+  }
+  double getSpeed(){
+    return speed_kmh ;
   }
   void prefix(){
     while(this->getX()>180){
@@ -78,9 +86,6 @@ Location operator/(Location lhs, int rhs){
 }
 
 Location sqrtt(Location input){
-  //if(input.getX()<0) throw "Negative number";
-  //if(input.getY()<0) throw "Negative number";
-  
   input.setX(sqrt(input.getX()));
   input.setY(sqrt(input.getY()));
   return input;
@@ -99,6 +104,7 @@ Location average(Location *p, int n){
   for(int i=0;i<n;i++){
     sum.setX(sum.getX()+p[i].getX()/n);
     sum.setY(sum.getY()+p[i].getY()/n);
+    sum.setSpeed(sum.getSpeed()+p[i].getSpeed()/n);
   }
   sum.prefix();
   return sum;
@@ -131,24 +137,30 @@ void GPS_data_reset(){
   Serial.flush();
 }
 
+
+unsigned long int GPS_non_double_timer;
+unsigned long int overflow_detector=-5000;
 Location Load_data_from_GPS(){
   //Serial.flush();
   Location new_location(181,91);
-  //unsigned long int timer=millis();
   //delay(1000);
-  //while(Serial.available() > 0 || (millis()-timer)<3000){ //promjenit uvjet
-    gps.encode(Serial.read());
-    if (gps.location.isUpdated()){
-      new_location.setX(gps.location.lng());
-      new_location.setY(gps.location.lat());
+  while(Serial.available() > 0){ 
+    if (gps.encode(Serial.read()) && gps.location.age()<5000){
+      if((millis()-GPS_non_double_timer)>1000 || (millis()>overflow_detector)){
+        new_location.setX(gps.location.lng());
+        new_location.setY(gps.location.lat());
+        SerialBT.println(gps.speed.kmph());
+        new_location.setSpeed(gps.speed.kmph());
+        GPS_non_double_timer=millis();
+      }
     }
-  //}
+  }
   return new_location;
 }
 
 Location GPS(){
-  Location *p=new Location [5];
-  for(int i=0;i<5;i++){
+  Location *p=new Location [10];
+  for(int i=0;i<10;i++){
     Location new_data=Load_data_from_GPS();
     if(new_data.getX()!=181){
       SerialBT.println();
@@ -163,7 +175,7 @@ Location GPS(){
   if(Sigma.getX()<0.01 && Sigma.getY()<0.01 && Average.getX()!=181){ 
     return Average;
   }
-  return Location(181,91);
+ return Location(181,91);
 }
 
 /*void Location_print(Location x){

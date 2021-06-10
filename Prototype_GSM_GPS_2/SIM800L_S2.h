@@ -7,7 +7,7 @@ private:
   String send;
   String expected;
   int seconds; //how many seconds should it take
-  String error_mes;
+  String error_mes; 
   int steps_back;
 public:
   AT_command(String mSend, String mExpected, int mSeconds, String mError, int mSteps): send(mSend), expected(mExpected), seconds(mSeconds), error_mes(mError), steps_back(mSteps){}
@@ -42,26 +42,23 @@ private:
   // part=2 - connect commands
   // part=3 - access commands
 public:
-  const int setup_size=7;              //BITNO ZA PROMJENITI NAKON MIJENJANJA AT NAREDBI
-  const int connect_size=3;
+  const int setup_size=5;              //BITNO ZA PROMJENITI NAKON MIJENJANJA AT NAREDBI
+  const int connect_size=2;
   const int access_size=7;  
   
-
-  
-  AT_command AT_commands_setup[7]{
+  AT_command AT_commands_setup[5]{
       AT_command("AT",                                     "OK",        5, "ERROR", 0),
-      AT_command("AT+CSQ",                                 "+CSQ:",     5, "ERROR", 1),
-      AT_command("AT+CGATT?",                              "+CGATT:",   2, "ERROR", 1),
-      AT_command("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"",      "OK",        2, "ERROR", 1),
+      //AT_command("AT+CSQ",                                 "+CSQ:",     5, "ERROR", 1),
+      //AT_command("AT+CGATT?",                              "+CGATT:",   2, "ERROR", 1),
+      AT_command("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"",      "OK",       30, "ERROR", 1),
       AT_command("AT+SAPBR=3,1,\"APN\",\"TM\"",            "OK",        2, "ERROR", 1),
       AT_command("AT+SAPBR=3,1,\"USER\",\"\"",             "OK",        2, "ERROR", 1),
       AT_command("AT+SAPBR=3,1,\"PWD\",\"\"",              "OK",        2, "ERROR", 1)
     };
   
-  AT_command AT_commands_connect[3]{
-    AT_command("AT+SAPBR=0,1",                             "ERROR",     10,"OK",    4),
-    AT_command("AT+SAPBR=1,1",                             "ERROR",     20,"OK",    4),
-    AT_command("AT+SAPBR=2,1",                             "1,1"       ,3, "1,3",   5)
+  AT_command AT_commands_connect[2]{
+    AT_command("AT+SAPBR=1,1",                             "ERROR",     20,"OK",    0),
+    AT_command("AT+SAPBR=2,1",                             "1,1"       ,3, "1,3",   1)
   };
   
   AT_command AT_commands_access[7]{
@@ -121,9 +118,7 @@ private:
     SerialBT.println(out);
     progress.setTimeStamp(millis());
   }
-  
-  void deleteRecive(){ *recived="";}
-  
+  void deleteRecive(){ *recived="";} 
   void Recive(String *recive){
     while(Serial2.available()){
       int c=Serial2.read();
@@ -131,8 +126,7 @@ private:
       
     }
     SerialBT.print(*recive);
-  }
-     
+  }    
   int Reset_happend(String recived) {
     if(AcontainsB(recived,"CPIN")) {
       return 1;
@@ -148,7 +142,6 @@ private:
     }
     return 0;
   }
-
   
 public:
   SIM800L_S2(){
@@ -203,7 +196,6 @@ public:
       delay(200);
       Recive(recived);
       deleteRecive();
-      SerialBT.println("boga oca");
       Send("AT");
       return 0;
     }
@@ -272,7 +264,7 @@ public:
         else if(AcontainsB(*recived, progress.AT_commands_connect[progress.getStage()].getErrorMes())){
           progress.setRepeat(progress.getRepeat()+1);
           SerialBT.println("error code");
-          if(progress.getRepeat()>=5){
+          if(progress.getRepeat()>=3){
             for(int i=0;i<progress.AT_commands_connect[progress.getStage()].getStepsBack();i++){
               progress.decrementStage();
               deleteRecive();

@@ -2,22 +2,20 @@
 #include "Location.h"
 #include "codes.h"
 
-
 SIM800L_S2 internet;
-//String Link="http://api.thingspeak.com/update?api_key=" + thingspeak_API_key + "&field1="+"2000";
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  digitalWrite(33, LOW);
   pinMode(33, OUTPUT);
+  digitalWrite(33, LOW);
+  
   SerialBT.begin("ESP32test");
   internet.setPowerpin(32);
-  //internet.setLink(Link);
   internet.turn_off();
   delay(3000);
   internet.turn_on();
   delay(3000);
-  Serial.println("POCETAK");
   SerialBT.println("pocetak");
 }
 
@@ -48,7 +46,7 @@ void loop() {
     }
     if(q==3) {
       SerialBT.println("\n\n\n\n uspjeh");
-      delay(40000);
+      delay(10000);
     }
     delay(300);
   }
