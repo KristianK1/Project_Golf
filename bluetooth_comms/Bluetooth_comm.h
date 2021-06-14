@@ -5,7 +5,7 @@ class Bluetooth_comm{
   private:
   BluetoothSerial *SerialBT;
   int BT_state; //0 normal, 1 ignore
- 
+  
   String recived_chars;
   
   String question_request="T?";
@@ -16,8 +16,13 @@ class Bluetooth_comm{
   int minutes_ignore;
 
   public:
-  Bluetooth_comm(BluetoothSerial *BS){
-    SerialBT=BS;
+  Bluetooth_comm(){
+    SerialBT=new BluetoothSerial();
+    
+    SerialBT->enableSSP();
+    SerialBT->begin("Project Golf", true); 
+
+    
     BT_state=0;
     recived_chars="";
   }
@@ -53,6 +58,7 @@ class Bluetooth_comm{
  void update_state(){
     if(millis()-ignore_begin>(minutes_ignore*1000*60)){
       Serial.println("Ignore ended");
+      minutes_ignore=0;
       BT_state=0;
     }
   }
@@ -104,10 +110,6 @@ class Bluetooth_comm{
         }
         
         if(tt=extend_request){
-          Serial.println("tt:"+tt+" i,j:"+i+","+j);
-          Serial.print(recived_chars[i+j]);
-          Serial.print(recived_chars[i+j+1]);
-          Serial.println(recived_chars[i+j+2]);
           
           if(recived_chars[i+j]-48>9 || recived_chars[i+j]-48<0){
             sendBTerror();
@@ -115,7 +117,6 @@ class Bluetooth_comm{
             return 2;
           }
           minutes_ignore =100*(recived_chars[i+j]-48);
-          Serial.println(minutes_ignore);
           
           
           if(recived_chars[i+j+1]-48>9 || recived_chars[i+j+1]-48<0){
@@ -124,7 +125,6 @@ class Bluetooth_comm{
             return 2;
           }
           minutes_ignore+= 10*(recived_chars[i+j+1]-48);
-          Serial.println(minutes_ignore);
           
           
           if(recived_chars[i+j+2]-48>9 || recived_chars[i+j+2]-48<0){
@@ -133,11 +133,9 @@ class Bluetooth_comm{
             return 2;
           }
           minutes_ignore+=recived_chars[i+j+2]-48;
-          Serial.println(minutes_ignore);
           
           ignore_begin=millis();
           BT_state=1;
-          Serial.println("Ignore_begin");
           sendBTstate();
           clean_recived();
           return 1;
