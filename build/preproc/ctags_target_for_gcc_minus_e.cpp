@@ -1,23 +1,54 @@
-# 1 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\bluetooth_comms\\bluetooth_comms.ino"
-# 2 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\bluetooth_comms\\bluetooth_comms.ino" 2
+# 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\Prototype_GSM_GPS_2\\Prototype_GSM_GPS_2.ino"
+# 2 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\Prototype_GSM_GPS_2\\Prototype_GSM_GPS_2.ino" 2
+# 3 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\Prototype_GSM_GPS_2\\Prototype_GSM_GPS_2.ino" 2
+# 4 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\Prototype_GSM_GPS_2\\Prototype_GSM_GPS_2.ino" 2
 
-
-
-
-Bluetooth_comm *ESP_BT;
+SIM800L_S2 internet;
 
 void setup() {
-  Serial.begin(115200);
-  Serial.println("The device started, now you can pair it with bluetooth!");
-  ESP_BT=new Bluetooth_comm();
-  Serial.println("The device started, now you can pair it with bluetooth!");
-  pinMode(2, 0x02);
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(33, 0x02);
+  digitalWrite(33, 0x0);
+
+  SerialBT.begin("ESP32test");
+  internet.setPowerpin(32);
+  internet.turn_off();
+  delay(3000);
+  internet.turn_on();
+  delay(3000);
+  SerialBT.println("pocetak");
 }
 
 void loop() {
-  ESP_BT->reciveing();
-  ESP_BT->checking();
-  ESP_BT->update_state();
-  digitalWrite(2, ESP_BT->getBTstate());
-  delay(20);
+  // put your main code here, to run repeatedly:
+
+  Location current_loc(181,91);
+  //long int timer=millis();
+  while(current_loc.getX()==181) {
+    SerialBT.println("učitavanje");
+    current_loc=GPS();
+  }
+  String s=loc_to_link(current_loc,4);
+  internet.setLink(s);
+  SerialBT.println(s);
+
+
+  int q=1;
+  while(q!=3){
+    q=internet.access();
+    SerialBT.println("\nizasao");
+    if(q==2){
+      internet.turn_off();
+      delay(3000);
+      internet.turn_on();
+      delay(12000);
+      internet.reset_recive();
+    }
+    if(q==3) {
+      SerialBT.println("\n\n\n\n uspjeh");
+      delay(10000);
+    }
+    delay(300);
+  }
 }
