@@ -23,10 +23,10 @@ class Bluetooth_comm{
     SerialBT->enableSSP();
     SerialBT->begin("Project Golf", true); 
 
-    
     BT_state=0;
     recived_chars="";
   }
+
   void clean_recived(){
     recived_chars="";
   }
@@ -145,4 +145,9 @@ class Bluetooth_comm{
     }
     return 0;
   }
+  
+  void Send_message(String mess){
+    SerialBT->println(mess);
+  }
+  
 };

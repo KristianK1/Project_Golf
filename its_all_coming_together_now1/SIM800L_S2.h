@@ -50,7 +50,7 @@ public:
       AT_command("AT",                                     "OK",        5, "ERROR", 0),
       //AT_command("AT+CSQ",                                 "+CSQ:",     5, "ERROR", 1),
       //AT_command("AT+CGATT?",                              "+CGATT:",   2, "ERROR", 1),
-      AT_command("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"",      "OK",       30, "ERROR", 1),
+      AT_command("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"",      "OK",       45, "ERROR", 1),
       AT_command("AT+SAPBR=3,1,\"APN\",\"TM\"",            "OK",        2, "ERROR", 1),
       AT_command("AT+SAPBR=3,1,\"USER\",\"\"",             "OK",        2, "ERROR", 1),
       AT_command("AT+SAPBR=3,1,\"PWD\",\"\"",              "OK",        2, "ERROR", 1)
@@ -164,6 +164,15 @@ public:
     turn_off();
   }
   
+  void GSM_power(bool state){
+    if(state==true){
+      turn_on();
+    }
+    else{
+      turn_off();
+    }
+  }
+
   void turn_on(){
     digitalWrite(power_pin, LOW);
     //SerialBT.println("upaljen");

@@ -18,15 +18,7 @@ void __attribute__((section(".iram1" "." "17"))) input2RISING(){
   MyDevice->lock();
 }
 
-void __attribute__((section(".iram1" "." "18"))) input3RISING(){
-
-}
-
-void __attribute__((section(".iram1" "." "19"))) input4RISING(){
-
-}
-
-void __attribute__((section(".iram1" "." "20"))) pushed(){
+void __attribute__((section(".iram1" "." "18"))) pushed(){
 
 }
 
@@ -35,9 +27,7 @@ void setup() {
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_pp, GSM_pp, GPS_pp);
   attachInterrupt(input1, input1RISING, 0x01);
   attachInterrupt(input2, input2RISING, 0x01);
-  attachInterrupt(input3, input3RISING, 0x01);
-  attachInterrupt(input4, input4RISING, 0x01);
-  attachInterrupt(push_pp, input4RISING, 0x01);
+  attachInterrupt(push_pp, pushed, 0x01);
 
 
 }

@@ -5,7 +5,7 @@ int input2=21;
 int input3=22;
 int input4=23;
 int charge_pp;
-int push_pp=18;
+int push_p=18;
 int GSM_pp=32;
 int GPS_pp=33;
 
@@ -17,26 +17,16 @@ void IRAM_ATTR input2RISING(){
   MyDevice->lock();
 }
 
-void IRAM_ATTR input3RISING(){
-
-}
-
-void IRAM_ATTR input4RISING(){
-
-}
-
 void IRAM_ATTR pushed(){
 
 }
 
 void setup() {
   // put your setup code here, to run once:
-  MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_pp, GSM_pp, GPS_pp);
+  MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
   attachInterrupt(input1, input1RISING, RISING);
   attachInterrupt(input2, input2RISING, RISING);
-  attachInterrupt(input3, input3RISING, RISING);
-  attachInterrupt(input4, input4RISING, RISING);
-  attachInterrupt(push_pp, input4RISING, RISING);
+  attachInterrupt(push_p, pushed, RISING);
   
   
 }
