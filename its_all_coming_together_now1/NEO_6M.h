@@ -51,7 +51,7 @@ public:
         digitalWrite(power_pin, power_state);
     }
 
-    bool get_power(){
+    bool get_GPS_power(){
         return power_state;
     }
 

@@ -132,3 +132,31 @@ Location sigma(Location *p, int n){
   }
   return sigma;
 }
+
+#define pi 3.141592654
+#define Terra 6300
+double distance(Location A, Location B){ //vraca udaljenost u kilometrima
+  if(A.getX()>180 || A.getX()<-180) return 10000;
+  if(A.getY()>90  || A.getY()<-90)  return 10000;
+  if(B.getX()>180 || B.getX()<-180) return 10000;
+  if(B.getY()>90  || B.getY()<-90)  return 10000;
+  
+  double deltaY=A.getY()-B.getY();
+  Serial.println("deltaY");
+  Serial.println(deltaY);
+  
+  deltaY*=pi*Terra/180;
+  Serial.println(deltaY);
+
+  double deltaX=(A.getX()-B.getX());
+  Serial.println("deltaX");
+    Serial.println(deltaX);
+
+  deltaX*=cos(A.getY()*pi/180);
+    Serial.println(deltaX);
+
+  deltaX*=2*pi*Terra/360;
+    Serial.println(deltaX);
+  
+  return sqrt(deltaX*deltaX+deltaY*deltaY);
+}

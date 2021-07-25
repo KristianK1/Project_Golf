@@ -15,7 +15,7 @@ private:
     long int last_time_pushed;
     bool moving;
     Location *last_sent;
-
+    Location *current_location;
 
     bool first_block=false; //da samo jedanput attacha na pocetku (nakon 20 sekundi)
 public:
@@ -36,7 +36,8 @@ public:
         digitalWrite(u4, INPUT);
         digitalWrite(akc, INPUT);
         moving=false;
-        last_sent= new Location(181,91);
+        last_sent= new Location(-181,-91);
+        current_location = new Location(181,91);
         last_time_pushed=millis();
     }
     void GPS_power(bool state){
@@ -131,7 +132,12 @@ public:
     }
     
     void GPS_loop(){
+        if(isMoveing()){
+            if(get_GPS_power()==false){
+                GPS_power(true);
+            }
 
+        }
 
     }
 
