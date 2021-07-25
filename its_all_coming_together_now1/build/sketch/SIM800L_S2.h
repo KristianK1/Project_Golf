@@ -119,7 +119,7 @@ protected:
   }
   void Send(String out){
     Serial2.println(out);
-    send_error_message(out);
+    //send_error_message(out);
     progress.setTimeStamp(millis());
   }
   void deleteRecive(){ *recived="";} 
@@ -128,7 +128,7 @@ protected:
       int c=Serial2.read();
       if(c!=10&&c!=13) {
         *recive=*recive+(char)c;
-        send_error_message(*recive);
+        //send_error_message(*recive);
       }
     }
     //SerialBT.print(*recive);
@@ -203,7 +203,7 @@ public:
 
   void GSM_autoshutdown(){
     if(getLink()==""){
-      if(millis()-timer_ON>1*60*1000){ //1 minuta
+      if(millis()-timer_ON>20*1000){ //5 minuta
         if(GSM_on==true){
           GSM_autoshutdown_main();
         }
