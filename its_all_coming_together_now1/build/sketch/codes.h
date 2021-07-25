@@ -1,8 +1,8 @@
 #line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\codes.h"
 #include "thingspeak_API_key.h"
-
+#include "Thingspeak_chars.h"
 class codes{
-private:
+protected:
 
   String base64="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.:";
   String Link_field1="http://api.thingspeak.com/update?api_key=" + thingspeak_API_key + "&field1=";
@@ -11,17 +11,18 @@ private:
       String binary="";
       
       switch (code){
-        case 0: binary+=",";
+        case 0: binary+=""; // NISTA
                 break;
-        case 1: binary+="@";
+        case 1: binary+=Unlock_char; // GOT UNLOCKED
                 break;
-        case 2: binary+="-";
+        case 2: binary+=lights_still_on; //LIGHTS STILL ON
                 break;
-        case 3: binary+="_";
+        case 3: binary+=left_unlocked; //STILL UNLOCKED
                 break;
-        case 4: break; //samo nastavak zbog prijasnje pobude
-        default: Serial.println("Sending code other than 0 1 2 3 4");
-                  break;
+        case 4: binary+=device_reset; //reset
+                break; 
+        case 5: binary+=car_hit; //hit
+                break;
       }
       return binary;
     }
@@ -111,6 +112,8 @@ private:
       return binary;
     }
 public:
+  codes(){}
+  virtual ~codes(){}
 
   String loc_to_link(double locX, double locY, int code){
     //code=4;

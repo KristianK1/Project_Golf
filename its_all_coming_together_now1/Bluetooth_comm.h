@@ -2,7 +2,7 @@
 #include "BluetoothSerial.h"
 
 class Bluetooth_comm{
-  private:
+  protected:
   BluetoothSerial *SerialBT;
   int BT_state; //0 normal, 1 ignore
   
@@ -19,11 +19,19 @@ class Bluetooth_comm{
   Bluetooth_comm(){
     SerialBT=new BluetoothSerial();
     
-    SerialBT->enableSSP();
-    SerialBT->begin("Project Golf", true); 
+    //SerialBT->enableSSP();
+    //SerialBT->begin("Project Golf", true); 
+    SerialBT->begin("Project Golf"); 
 
     BT_state=0;
     recived_chars="";
+  }
+  virtual ~Bluetooth_comm(){
+    delete (SerialBT);
+  }
+
+  void Send_message(String mess){
+    SerialBT->println(mess);
   }
 
   void clean_recived(){
@@ -143,10 +151,5 @@ class Bluetooth_comm{
       }
     }
     return 0;
-  }
-  
-  void Send_message(String mess){
-    SerialBT->println(mess);
-  }
-  
+  }  
 };

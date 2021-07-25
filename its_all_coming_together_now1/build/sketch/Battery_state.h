@@ -1,6 +1,6 @@
 #line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\Battery_state.h"
 class Battery_state{
-private:
+protected:
   //CS == Charging state
   bool CS;
   
@@ -34,12 +34,13 @@ public:
     GSM_state=false;
     message="";
   }
+  virtual ~Battery_state(){}
   void setGPSstate(bool s){
-    update_CS();
+    update_CS(true);
     GPS_state=s;
   }
   void setGSMstate(bool s){
-    update_CS();
+    update_CS(true);
     GSM_state=s;
   }
   float get_percentage(){
@@ -49,13 +50,16 @@ public:
     return CS;
   }
   void set_CS(boolean state){
-    update_CS();
+    update_CS(true);
     digitalWrite(Charge_pin, state);
     CS=state;
   }
   
-  int update_CS(){
-    if(millis()-timer<5000) return 0; //manje od 5 sekundi nemoj nista zbog pogreske malog diferecijala
+  int update_CS(bool important){
+    if(important==false){
+      if(millis()-timer<5000) return 0; //manje od 5 sekundi nemoj nista zbog pogreske malog diferecijala
+    }
+
     if(millis()-timer>1800000){
       current_charge=initial_charge;
       return 2; //previse je vremena proslo od updatanja, trebalo bi sendat error na GSM 30*60*1000 = 1.800.000
@@ -71,7 +75,13 @@ public:
       current_charge+=(millis()-timer)*0.001/60/60*CHARGING_CURRENT;
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
+
+    if(current_charge<0.1*TOTAL_CHARGE){
+      send_error_message("EMPTY BATTERY");  
+    }
   }
-
-
+  
+  
+  virtual void send_error_message(String message) = 0;
+    
 };

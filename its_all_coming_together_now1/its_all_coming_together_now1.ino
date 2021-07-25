@@ -27,10 +27,15 @@ void setup() {
   attachInterrupt(input1, input1RISING, RISING);
   attachInterrupt(input2, input2RISING, RISING);
   attachInterrupt(push_p, pushed, RISING);
+  MyDevice->Wakeup_message();
+  delay(5000);
+  pinMode(2, OUTPUT);
+  digitalWrite(2, HIGH);
   
   
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  MyDevice->Device_loop();
 }

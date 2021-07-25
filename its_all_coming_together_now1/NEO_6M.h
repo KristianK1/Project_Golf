@@ -1,7 +1,7 @@
 #include"Location.h"
 
 class NEO_6M{
-private:
+protected:
     int power_pin;
     bool power_state;
 
@@ -35,13 +35,17 @@ private:
 
 public:
     NEO_6M(int pp){
+        Serial.begin(9600);
         power_pin=pp;
+        power_state=false;
         pinMode(power_pin, OUTPUT);
         digitalWrite(power_pin, LOW);
         new_locations = new Location[5];
         new_loc_counter=0;
     }
-
+    virtual ~NEO_6M(){
+        delete(new_locations);
+    }
     int GPS_power(bool power){
         power_state=power;
         digitalWrite(power_pin, power_state);

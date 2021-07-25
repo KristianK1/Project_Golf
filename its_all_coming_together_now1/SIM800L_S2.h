@@ -94,10 +94,13 @@ public:
   
 class SIM800L_S2{
 private:
+  bool GSM_on;
+protected:
   Progress progress;
   String *recived;
   String link;
   int power_pin;
+  long int timer_ON;
 
   int AcontainsB(String A, String B){
     
@@ -115,19 +118,21 @@ private:
   }
   void Send(String out){
     Serial2.println(out);
-    //SerialBT.println(out);
+    send_error_message(out);
     progress.setTimeStamp(millis());
   }
   void deleteRecive(){ *recived="";} 
   void Recive(String *recive){
     while(Serial2.available()){
       int c=Serial2.read();
-      if(c!=10||c!=13) *recive=*recive+(char)c;
-      
+      if(c!=10&&c!=13) {
+        *recive=*recive+(char)c;
+        send_error_message(*recive);
+      }
     }
     //SerialBT.print(*recive);
   }    
-  int Reset_happend(String recived) {
+  int GSM_Reset_happend(String recived) {
     if(AcontainsB(recived,"CPIN")) {
       return 1;
     }
@@ -144,13 +149,16 @@ private:
   }
   
 public:
-  SIM800L_S2(){
+  SIM800L_S2(int pin){
+    power_pin=pin;
+    pinMode(power_pin, OUTPUT); //32
+    turn_off();
     Serial2.begin(9600);
     progress.setPart(1);
     recived=new String();
   }
 
-  ~SIM800L_S2(){
+  virtual ~SIM800L_S2(){
     delete(recived);
   }
 
@@ -158,11 +166,11 @@ public:
     Recive(recived);
     deleteRecive();
   }
-  void setPowerpin(int pin){ 
+  /*void setPowerpin(int pin){ 
     power_pin=pin;
     pinMode(32, OUTPUT);
     turn_off();
-  }
+  }*/
   
   void GSM_power(bool state){
     if(state==true){
@@ -175,22 +183,40 @@ public:
 
   void turn_on(){
     digitalWrite(power_pin, LOW);
+    GSM_on=true;
     //SerialBT.println("upaljen");
     progress.setPart(1);
     progress.setStage(0);
   }
   void turn_off(){
+    GSM_on=false;
     digitalWrite(power_pin, HIGH);
   }
   
   void setLink(String new_link){
     link=new_link;
   }
+  String getLink(){
+    return link;
+  }
 
+  void GSM_autoshutdown(){
+    if(getLink()==""){
+      if(millis()-timer_ON>1*60*1000){ //1 minuta
+        if(GSM_on==true){
+          GSM_autoshutdown_main();
+        }
+      }
+    }
+    
+  }
+  virtual void GSM_autoshutdown_main()=0;
+  virtual void send_error_message(String message) = 0;
+  
   int access(){
     deleteRecive();
     Recive(recived);
-    if(Reset_happend(*recived)){
+    if(GSM_Reset_happend(*recived)){
       progress.setPart(1);
       progress.setStage(0);
       progress.setRepeat(0);
@@ -313,6 +339,10 @@ public:
             progress.setStage(0);
             progress.setRepeat(0);
             deleteRecive();
+
+            //SUCCESS
+            timer_ON=millis();
+            setLink("");
             return 3;
           }
           deleteRecive();

@@ -7,7 +7,7 @@ class Location{
   friend Location operator-(Location lhs, Location rhs);
   friend Location operator*(Location lhs, Location rhs);
   friend Location operator/(Location lhs, int rhs);
-private:
+protected:
   double X;  //  <-180,180]
   double Y;  //   [-90,90]
   double speed_kmh;

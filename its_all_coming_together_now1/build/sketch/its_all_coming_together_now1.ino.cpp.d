@@ -135,6 +135,7 @@ c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\bui
  c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\build\sketch\Battery_state.h \
  c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\build\sketch\codes.h \
  c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\build\sketch\thingspeak_API_key.h \
+ c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\build\sketch\Thingspeak_chars.h \
  c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\build\sketch\NEO_6M.h \
  c:\Users\Kristian\Documents\GitHub\Project_Golf\its_all_coming_together_now1\build\sketch\Location.h \
  C:\Users\Kristian\Documents\Arduino\libraries\TinyGPSPlus-master\src/TinyGPS++.h \
