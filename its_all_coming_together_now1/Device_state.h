@@ -88,7 +88,7 @@ public:
         }
         if(millis()-last_time_pushed>60*1000){
             moving=false;
-            send_error_message("ponovno u stanju mirovanja");
+            //send_error_message("ponovno u stanju mirovanja");
             return 2;
         }
         if(millis()-last_time_pushed>5*1000){
@@ -135,7 +135,31 @@ public:
             if(get_GPS_power()==false){
                 GPS_power(true);
             }
+            *current_location = GPS_data();
+            if(current_location->getX()!=180){
+                //imamo novu lokaciju
+                double distance_new_last=distance(*last_sent, *current_location);
+                double speed_RN=current_location->getSpeed();
+                double needed_distance=10;
+                if(distance_new_last<0.05){
+                    needed_distance=100000;
+                }
+                else if(speed_RN>7 && speed_RN<=60){
+                    needed_distance=0.02*(speed_RN-7)+0.05;
+                }
+                else if(speed_RN>60 && speed_RN<=100){
+                    needed_distance=0.05*(speed_RN-60)+1.11;
+                }
+                else if(speed_RN>100 && speed_RN<=160){
+                    needed_distance=0.1*(speed_RN-100)+3.11;
+                }
 
+                if(distance_new_last > needed_distance){
+                    if(link_exists()=false){
+                        setLink(loc_to_link(current_location->getX(), current_location->getY(), 0))
+                    }
+                }
+            }
         }
 
     }

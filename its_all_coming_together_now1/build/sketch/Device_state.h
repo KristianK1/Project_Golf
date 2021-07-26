@@ -136,7 +136,15 @@ public:
             if(get_GPS_power()==false){
                 GPS_power(true);
             }
-
+            *current_location = GPS_data();
+            if(current_location->getX()!=180){
+                //imamo novu lokaciju
+                double distance_new_last=distance(*last_sent, *current_location);
+                if(distance_new_last<0.05){
+                    //dont send
+                }
+                else if(distance_new_last>=0.05 && distance)
+            }
         }
 
     }
