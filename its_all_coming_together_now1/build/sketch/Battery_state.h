@@ -59,7 +59,7 @@ public:
     if(important==false){
       if(millis()-timer<5000) return 0; //manje od 5 sekundi nemoj nista zbog pogreske malog diferecijala
     }
-
+    timer=millis();
     if(millis()-timer>1800000){
       current_charge=initial_charge;
       return 2; //previse je vremena proslo od updatanja, trebalo bi sendat error na GSM 30*60*1000 = 1.800.000
@@ -77,7 +77,7 @@ public:
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
 
     if(current_charge<0.1*TOTAL_CHARGE){
-      send_error_message("EMPTY BATTERY");  
+      //send_error_message("EMPTY BATTERY");  
     }
   }
   

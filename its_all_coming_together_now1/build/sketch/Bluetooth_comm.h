@@ -31,6 +31,12 @@ class Bluetooth_comm{
     delete (SerialBT);
   }
 
+  void Bluetooth_loop(){
+    reciveing();
+    checking();
+    
+  }
+
   void Send_message(String mess){
     SerialBT->println(mess);
   }

@@ -101,6 +101,7 @@ protected:
   String link;
   int power_pin;
   long int timer_ON;
+  long int access_timer;
 
   int AcontainsB(String A, String B){
     
@@ -202,13 +203,20 @@ public:
 
   void GSM_autoshutdown(){
     if(getLink()==""){
-      if(millis()-timer_ON>20*1000){ //5 minuta
+      if(millis()-timer_ON>4*60*1000){ //5 minuta
         if(GSM_on==true){
           GSM_autoshutdown_main();
         }
       }
     }
     
+  }
+
+  long int getAccessTimer(){
+    return access_timer;
+  }
+  void setAccessTimer(){
+    access_timer=millis();
   }
   virtual void GSM_autoshutdown_main()=0;
   virtual void send_error_message(String message) = 0;

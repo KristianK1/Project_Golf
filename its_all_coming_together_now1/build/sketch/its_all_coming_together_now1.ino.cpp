@@ -15,7 +15,7 @@ int GPS_pp=33;
 void akc_loop_main();
 #line 43 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void setup();
-#line 63 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 56 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void loop();
 #line 12 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void IRAM_ATTR input1RISING(){
@@ -50,17 +50,10 @@ void akc_loop_main(){
 }
 
 void setup() {
-  delay(5000);
-  Location ZG(15.966568, 45.815399);
-  Location SB(18.01556, 45.16028);
-  Location VK(15.993320, 45.201960);
-  Serial.begin(9600);
-  Serial.println(cos(90));
-  Serial.println(distance(ZG,SB));
-  delay(50000);
+ 
   // put your setup code here, to run once:
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
-  //MyDevice->Wakeup_message();
+  MyDevice->Wakeup_message();
   delay(5000);
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
@@ -74,6 +67,8 @@ void loop() {
   MyDevice->locks_loop();
   MyDevice->GSM_loop();
   akc_loop_main();
+  MyDevice->GPS_loop();
+  MyDevice->Battery_loop();
   delay(100);
 }
 

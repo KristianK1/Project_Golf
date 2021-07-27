@@ -36,7 +36,7 @@ public:
         digitalWrite(akc, INPUT);
         moving=false;
         last_sent= new Location(-181,-91);
-        current_location = new Location(181,91);
+        current_location = new Location(181, 91);
         last_time_pushed=millis();
     }
     void GPS_power(bool state){
@@ -86,7 +86,7 @@ public:
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
         }
-        if(millis()-last_time_pushed>60*1000){
+        if(millis()-last_time_pushed>2.5*60*1000){
             moving=false;
             //send_error_message("ponovno u stanju mirovanja");
             return 2;
@@ -120,8 +120,10 @@ public:
                 GSM_power(true);
                 SerialBT->println("Upaljen GSM");
             }
-            access();
-            delay(50);
+            if(millis() - getAccessTimer()>50){
+                access();
+                setAccessTimer();
+            }
         }
         GSM_autoshutdown();
     }
@@ -131,39 +133,60 @@ public:
     }
     
     void GPS_loop(){
+        if(isMoveing()==false && get_GPS_power()==true){
+            GPS_power(false);
+        }
         if(isMoveing()){
             if(get_GPS_power()==false){
                 GPS_power(true);
             }
             *current_location = GPS_data();
-            if(current_location->getX()!=180){
-                //imamo novu lokaciju
-                double distance_new_last=distance(*last_sent, *current_location);
-                double speed_RN=current_location->getSpeed();
-                double needed_distance=10;
-                if(distance_new_last<0.05){
-                    needed_distance=100000;
-                }
-                else if(speed_RN>7 && speed_RN<=60){
-                    needed_distance=0.02*(speed_RN-7)+0.05;
-                }
-                else if(speed_RN>60 && speed_RN<=100){
-                    needed_distance=0.05*(speed_RN-60)+1.11;
-                }
-                else if(speed_RN>100 && speed_RN<=160){
-                    needed_distance=0.1*(speed_RN-100)+3.11;
-                }
+            if(getBTstate()==0){
+                if(current_location->getX()<180  & current_location->getX()>-180){
+                    send_error_message("Ocitana je nova lokacija");
+                    //imamo novu lokaciju
+                    double distance_new_last=distance(*last_sent, *current_location);
+                    double speed_RN=current_location->getSpeed();
+                    double needed_distance;
+                    if(speed_RN<=7){
+                        needed_distance=0.05;
+                        send_error_message("less then 7kmh");
+                    }
+                    else if(speed_RN>7 && speed_RN<=60){
+                        needed_distance=0.02*(speed_RN-7)+0.05;
+                        send_error_message("between 7 and 60");
+                    }
+                    else if(speed_RN>60 && speed_RN<=100){
+                        needed_distance=0.05*(speed_RN-60)+1.11;
+                        send_error_message("between 60 and 100");
+                    }
+                    else if(speed_RN>100 && speed_RN<=160){
+                        needed_distance=0.1*(speed_RN-100)+3.11;
+                        send_error_message("between 100 and 160");
+                    }
+                    else{
+                        send_error_message("above 160");
+                        needed_distance=0.1*(160-100)+3.11;        
+                    }
 
-                if(distance_new_last > needed_distance){
-                    if(link_exists()=false){
-                        setLink(loc_to_link(current_location->getX(), current_location->getY(), 0))
+                    if(distance_new_last > needed_distance){
+                        if(link_exists()==false){
+                            if(getBTstate()==0){
+                                setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
+                                last_sent=current_location;
+                                send_error_message("setan je link na novu lokaciju");
+
+                            }
+                        }
                     }
                 }
             }
         }
-
     }
 
+    void Battery_loop(){
+        update_CS(false);
+    }
     void Wakeup_message(){
         setLink(small_link(4));
     }
