@@ -204,7 +204,7 @@ public:
 
   void GSM_autoshutdown(){
     if(getLink()==""){
-      if(millis()-timer_ON>4*60*1000){ //5 minuta
+      if(millis()-timer_ON>4*60*1000){ //4 minute
         if(GSM_on==true){
           GSM_autoshutdown_main();
         }

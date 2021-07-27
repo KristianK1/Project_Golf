@@ -187,6 +187,7 @@ public:
 
     void Battery_loop(){
         update_CS(false);
+        //send_error_message((String)(get_percentage()*1000));
     }
     void Wakeup_message(){
         setLink(small_link(4));
