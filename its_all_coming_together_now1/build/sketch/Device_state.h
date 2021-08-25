@@ -1,4 +1,3 @@
-#line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\Device_state.h"
 #include"Battery_state.h"
 #include"codes.h"
 #include"NEO_6M.h"

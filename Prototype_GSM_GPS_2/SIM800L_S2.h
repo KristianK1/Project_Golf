@@ -50,10 +50,10 @@ public:
       AT_command("AT",                                     "OK",        5, "ERROR", 0),
       //AT_command("AT+CSQ",                                 "+CSQ:",     5, "ERROR", 1),
       //AT_command("AT+CGATT?",                              "+CGATT:",   2, "ERROR", 1),
-      AT_command("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"",      "OK",       30, "ERROR", 1),
-      AT_command("AT+SAPBR=3,1,\"APN\",\"TM\"",            "OK",        2, "ERROR", 1),
-      AT_command("AT+SAPBR=3,1,\"USER\",\"\"",             "OK",        2, "ERROR", 1),
-      AT_command("AT+SAPBR=3,1,\"PWD\",\"\"",              "OK",        2, "ERROR", 1)
+      AT_command("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"",      "OK",       30, "ERROR", 1), //AT+SAPBR=3,1,"CONTYPE","GPRS"
+      AT_command("AT+SAPBR=3,1,\"APN\",\"TM\"",            "OK",        2, "ERROR", 1), //AT+SAPBR=3,1,"APN","TM"
+      AT_command("AT+SAPBR=3,1,\"USER\",\"\"",             "OK",        2, "ERROR", 1), //AT+SAPBR=3,1,"USER",""
+      AT_command("AT+SAPBR=3,1,\"PWD\",\"\"",              "OK",        2, "ERROR", 1)  //AT+SAPBR=3,1,"PWD",""
     };
   
   AT_command AT_commands_connect[2]{
@@ -64,7 +64,7 @@ public:
   AT_command AT_commands_access[7]{
       AT_command("AT+HTTPTERM",                            "ERROR",     2, "",      0),
       AT_command("AT+HTTPINIT",                            "OK",        1, "ERROR", 1),
-      AT_command("AT+HTTPPARA=\"CID\",1",                  "OK",        2, "ERROR", 1),
+      AT_command("AT+HTTPPARA=\"CID\",1",                  "OK",        2, "ERROR", 1), //AT+HTTPPARA="CID",1
       AT_command("LINK",                                   "OK",        2, "ERROR", 2),
       AT_command("AT+HTTPACTION=1",                        "20",        2, "6",     3),
       AT_command("AT+HTTPREAD=0,20",                       "HTTPREAD",  2, "",      4),
