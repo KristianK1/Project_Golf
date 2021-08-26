@@ -65,15 +65,15 @@ public:
     }
     current_charge-=(millis()-timer)*0.001/60/60*BASE_discharge;
     if(GPS_state){
-      send_error_message("GPS is on");
+      //send_error_message("GPS is on");
       current_charge-=(millis()-timer)*0.001/60/60*GPS_discharge;
     }
     if(GSM_state){
-      send_error_message("GSM is on");
+      //send_error_message("GSM is on");
       current_charge-=(millis()-timer)*0.001/60/60*GSM_discharge;  
     }
     if(CS){
-      send_error_message("charging");
+      //send_error_message("charging");
       current_charge+=(millis()-timer)*0.001/60/60*CHARGING_CURRENT;
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
@@ -82,7 +82,7 @@ public:
       //send_error_message("EMPTY BATTERY");  
     }
     timer=millis();
-    send_error_message((String)(current_charge*1000000));
+    //send_error_message((String)(current_charge*1000000));
   }
   
   

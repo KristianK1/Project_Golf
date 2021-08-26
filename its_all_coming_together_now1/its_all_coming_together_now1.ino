@@ -60,5 +60,6 @@ void loop() {
   akc_loop_main();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
+  MyDevice->BT_loop();
   delay(100);
 }

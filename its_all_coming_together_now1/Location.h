@@ -11,10 +11,13 @@ protected:
   double Y;  //   [-90,90]
   double speed_kmh;
 public:
+//  virtual void send_error_message(String message) = 0;
+
   Location(double mX, double mY): X(mX), Y(mY){}
   Location(const Location &mLoc){
     this->X=mLoc.X;
     this->Y=mLoc.Y;
+    this->speed_kmh=mLoc.speed_kmh;
   }
   Location(){
     X=0;
@@ -104,7 +107,7 @@ Location average(Location *p, int n){
   for(int i=0;i<n;i++){
     sum.setX(sum.getX()+p[i].getX()/n);
     sum.setY(sum.getY()+p[i].getY()/n);
-    sum.setSpeed(sum.getSpeed()+p[i].getSpeed()/n);
+    //sum.setSpeed(sum.getSpeed()+p[i].getSpeed()/n);
   }
   sum.prefix();
   return sum;
@@ -142,21 +145,14 @@ double distance(Location A, Location B){ //vraca udaljenost u kilometrima
   if(B.getY()>90  || B.getY()<-90)  return 10000;
   
   double deltaY=A.getY()-B.getY();
-  Serial.println("deltaY");
-  Serial.println(deltaY);
   
-  deltaY*=pi*Terra/180;
-  Serial.println(deltaY);
+  deltaY*=pi*(double)Terra/180;
 
   double deltaX=(A.getX()-B.getX());
-  Serial.println("deltaX");
-    Serial.println(deltaX);
 
   deltaX*=cos(A.getY()*pi/180);
-    Serial.println(deltaX);
 
-  deltaX*=2*pi*Terra/360;
-    Serial.println(deltaX);
+  deltaX*=2*pi*(double)Terra/360;
   
   return sqrt(deltaX*deltaX+deltaY*deltaY);
 }
