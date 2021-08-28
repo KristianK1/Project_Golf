@@ -47,7 +47,7 @@ void setup() {
  
   // put your setup code here, to run once:
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
-  //MyDevice->Wakeup_message();
+  MyDevice->Wakeup_message();
   delay(5000);
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
