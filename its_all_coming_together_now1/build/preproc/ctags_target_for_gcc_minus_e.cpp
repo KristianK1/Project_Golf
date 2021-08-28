@@ -1,5 +1,5 @@
-# 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
-# 2 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino" 2
+# 1 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+# 2 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino" 2
 Device_state *MyDevice;
 int input1=19;
 int input2=21;
@@ -20,6 +20,7 @@ void __attribute__((section(".iram1" "." "17"))) input2RISING(){
 
 void __attribute__((section(".iram1" "." "18"))) pushed(){
   MyDevice->send_error_message("udaren");
+  MyDevice->setStoppedMoving();
   detachInterrupt(push_p);
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){

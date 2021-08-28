@@ -1,4 +1,3 @@
-#line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\codes.h"
 #include "thingspeak_API_key.h"
 #include "Thingspeak_chars.h"
 class codes{

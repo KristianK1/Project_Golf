@@ -1,4 +1,3 @@
-#line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\Battery_state.h"
 class Battery_state{
 protected:
   //CS == Charging state

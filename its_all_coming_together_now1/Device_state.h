@@ -95,6 +95,7 @@ public:
             moving=false;
             
             if(stopped_moving==true){
+                *last_sent= Location(-181,-91);
                 stopped_moving=false;
                 if(lock_state==false){
                     if(BT_state==0){
