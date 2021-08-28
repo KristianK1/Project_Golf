@@ -10,7 +10,6 @@ int GSM_pp=32;
 int GPS_pp=33;
 
 void IRAM_ATTR input1RISING(){
-
   MyDevice->unlock();
 }
 
