@@ -13,6 +13,7 @@ private:
     bool lock_changed;
     long int last_time_pushed;
     bool moving;
+    bool stopped_moving;
     Location *last_sent;
     Location *current_location;
 
@@ -35,6 +36,7 @@ public:
         pinMode(u4, INPUT);
         pinMode(akc, INPUT);
         moving=false;
+        stopped_moving=false;
         last_sent= new Location(-181,-91);
         current_location = new Location(181, 91);
         last_time_pushed=millis();
@@ -91,19 +93,23 @@ public:
         }
         if(millis()-last_time_pushed>1.5*60*1000){
             moving=false;
-            if(lock_state==false){
-                if(BT_state==0){
-                    setLink(small_link(3));
+            
+            if(stopped_moving==true){
+                stopped_moving=false;
+                if(lock_state==false){
+                    if(BT_state==0){
+                        setLink(small_link(3));
+                    }
                 }
-            }
-            else if(lightsState()==true){
-                if(BT_state==0){
-                    setLink(small_link(2));
+                else if(lightsState()==true){
+                    if(BT_state==0){
+                        setLink(small_link(2));
+                    }
                 }
             }
 
 
-            send_error_message("ponovno u stanju mirovanja");
+            //send_error_message("ponovno u stanju mirovanja");
             return 2;
         }
         if(millis()-last_time_pushed>5*1000){
@@ -247,6 +253,11 @@ public:
     bool isMoveing(){ return moving; }
 
     bool lightsState(){
+        send_error_message("stanje svjetala " + (String)(digitalRead(U3)^1));
         return digitalRead(U3)^1;
+    }
+
+    void setStoppedMoving(){
+       stopped_moving=true; 
     }
 };
