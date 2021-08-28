@@ -1,3 +1,4 @@
+#line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\Device_state.h"
 #include"Battery_state.h"
 #include"codes.h"
 #include"NEO_6M.h"
@@ -29,11 +30,11 @@ public:
         U3=u3;
         U4=u4;
         akc=akc_pin;
-        digitalWrite(u1, INPUT);
-        digitalWrite(u2, INPUT);
-        digitalWrite(u3, INPUT);
-        digitalWrite(u4, INPUT);
-        digitalWrite(akc, INPUT);
+        pinMode(u1, INPUT);
+        pinMode(u2, INPUT);
+        pinMode(u3, INPUT);
+        pinMode(u4, INPUT);
+        pinMode(akc, INPUT);
         moving=false;
         last_sent= new Location(-181,-91);
         current_location = new Location(181, 91);
@@ -62,6 +63,8 @@ public:
     void unlock(){
         if(lock_state!=0){
             lock_state=0; //unlocked
+            
+            send_error_message("otkljucan");
             lock_changed=true;
         }
     }
@@ -69,6 +72,7 @@ public:
     void lock(){
         if(lock_state!=1){
             lock_state=1;
+            send_error_message("zakljucan");
             lock_changed=true;
         }
     }
@@ -86,9 +90,21 @@ public:
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
         }
-        if(millis()-last_time_pushed>1*60*1000){
+        if(millis()-last_time_pushed>1.5*60*1000){
             moving=false;
-            //send_error_message("ponovno u stanju mirovanja");
+            if(lock_state==false){
+                if(BT_state==0){
+                    setLink(small_link(3));
+                }
+            }
+            else if(lightsState()==true){
+                if(BT_state==0){
+                    setLink(small_link(2));
+                }
+            }
+
+
+            send_error_message("ponovno u stanju mirovanja");
             return 2;
         }
         if(millis()-last_time_pushed>5*1000){
@@ -104,9 +120,12 @@ public:
 
     void locks_loop(){
         if(lock_changed){
+            send_error_message("status brave promjenjen");
             if(lock_state==false){
-                if(getBTstate()==0){
-                    setLink(small_link(1));
+                if(isMoveing()==false){
+                    if(getBTstate()==0){
+                        setLink(small_link(1));
+                    }
                 }
             }
             lock_changed=false;
@@ -227,4 +246,8 @@ public:
     }
 
     bool isMoveing(){ return moving; }
+
+    bool lightsState(){
+        return digitalRead(U3)^1;
+    }
 };

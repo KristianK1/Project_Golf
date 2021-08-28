@@ -1,5 +1,5 @@
-# 1 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
-# 2 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino" 2
+# 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+# 2 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino" 2
 Device_state *MyDevice;
 int input1=19;
 int input2=21;
@@ -11,7 +11,6 @@ int GSM_pp=32;
 int GPS_pp=33;
 
 void __attribute__((section(".iram1" "." "16"))) input1RISING(){
-
   MyDevice->unlock();
 }
 

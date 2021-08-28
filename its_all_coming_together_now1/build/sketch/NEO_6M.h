@@ -1,3 +1,4 @@
+#line 1 "c:\\Users\\Kristian\\Documents\\GitHub\\Project_Golf\\its_all_coming_together_now1\\NEO_6M.h"
 #include"Location.h"
 
 class NEO_6M{

@@ -63,7 +63,7 @@ public:
         if(lock_state!=0){
             lock_state=0; //unlocked
             
-        MyDevice->send_error_message("otkljucan");
+            send_error_message("otkljucan");
             lock_changed=true;
         }
     }
@@ -71,7 +71,7 @@ public:
     void lock(){
         if(lock_state!=1){
             lock_state=1;
-            MyDevice->send_error_message("zakljucan");
+            send_error_message("zakljucan");
             lock_changed=true;
         }
     }
