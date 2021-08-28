@@ -74,12 +74,22 @@ public:
             new_locations[new_loc_counter]=new_data;
             new_loc_counter++;
             String error=(String)new_loc_counter;
-            for(int i=0;i<5;i++) error+=error;
+            for(int i=0;i<4;i++) error+=error;
             send_error_message(error);
         }
         
         if(new_loc_counter>=5){
             Location Average=average(new_locations,5);
+            double minSpeed=new_locations[0].getSpeed();
+            for(int i=0;i<new_loc_counter;i++){
+                send_error_message((String)new_locations[i].getSpeed());
+              if(minSpeed>new_locations[i].getSpeed()){
+                minSpeed=new_locations[i].getSpeed();
+              }
+            }
+            send_error_message("speedmin"+(String)minSpeed);
+            Average.setSpeed(minSpeed);
+            send_error_message("speedmin"+(String)Average.getSpeed());
             Location Sigma=sigma(new_locations,5);
             if(Sigma.getX()<0.01 && Sigma.getY()<0.01 && Average.getX()!=181){ 
                 new_loc_counter=0;

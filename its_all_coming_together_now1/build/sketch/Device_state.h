@@ -86,7 +86,7 @@ public:
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
         }
-        if(millis()-last_time_pushed>2.5*60*1000){
+        if(millis()-last_time_pushed>1*60*1000){
             moving=false;
             //send_error_message("ponovno u stanju mirovanja");
             return 2;
@@ -133,6 +133,11 @@ public:
     }
     
     void GPS_loop(){
+        //Location A(18.715807,45.557249), B(18.719415, 45.557323);
+        // double dd=distance(A,B);
+        // send_error_message("udaljenost od damira do pocetka ulice:" + String(dd, DEC)+" km" );
+
+      
         if(isMoveing()==false && get_GPS_power()==true){
             GPS_power(false);
         }
@@ -142,12 +147,19 @@ public:
             }
             *current_location = GPS_data();
             if(getBTstate()==0){
-                if(current_location->getX()<180  & current_location->getX()>-180){
+                if(current_location->getX()<180 && current_location->getX()>-180){
                     send_error_message("Ocitana je nova lokacija");
                     //imamo novu lokaciju
                     double distance_new_last=distance(*last_sent, *current_location);
+                    send_error_message("brzinaMINREAD:"+(String)current_location->getSpeed());
+                    send_error_message("X:"+String(current_location->getX(),DEC));
+                    send_error_message("Y:"+String(current_location->getY(),DEC));
+                    
+                    
                     double speed_RN=current_location->getSpeed();
+                    send_error_message("udaljenost od zadnje:" + String(distance_new_last, DEC)+" km" );
                     double needed_distance;
+                    send_error_message((String)speed_RN);
                     if(speed_RN<=7){
                         needed_distance=0.05;
                         send_error_message("less then 7kmh");
@@ -168,12 +180,12 @@ public:
                         send_error_message("above 160");
                         needed_distance=0.1*(160-100)+3.11;        
                     }
-
+                    
                     if(distance_new_last > needed_distance){
                         if(link_exists()==false){
                             if(getBTstate()==0){
                                 setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
-                                last_sent=current_location;
+                                *last_sent=*current_location;
                                 send_error_message("setan je link na novu lokaciju");
 
                             }
@@ -188,6 +200,14 @@ public:
         update_CS(false);
         //send_error_message((String)(get_percentage()*1000));
     }
+    void BT_loop(){
+      Bluetooth_loop();
+    }
+
+    int getBTstate(){
+        return BT_state;
+    }
+
     void Wakeup_message(){
         setLink(small_link(4));
     }

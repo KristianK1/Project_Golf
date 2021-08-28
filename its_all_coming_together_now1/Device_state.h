@@ -88,6 +88,18 @@ public:
         }
         if(millis()-last_time_pushed>2.5*60*1000){
             moving=false;
+            if(lock_state==false){
+                if(BT_state==0){
+                    setLink(small_link(3));
+                }
+            }
+            else if(lightsState()==true){
+                if(BT_state==0){
+                    setLink(small_link(2));
+                }
+            }
+
+
             //send_error_message("ponovno u stanju mirovanja");
             return 2;
         }
@@ -105,8 +117,10 @@ public:
     void locks_loop(){
         if(lock_changed){
             if(lock_state==false){
-                if(getBTstate()==0){
-                    setLink(small_link(1));
+                if(isMoveing()==false){
+                    if(getBTstate()==0){
+                        setLink(small_link(1));
+                    }
                 }
             }
             lock_changed=false;
@@ -133,9 +147,9 @@ public:
     }
     
     void GPS_loop(){
-        Location A(18.715807,45.557249), B(18.719415, 45.557323);
-        double dd=distance(A,B);
-        send_error_message("udaljenost od damira do pocetka ulice:" + String(dd, DEC)+" km" );
+        //Location A(18.715807,45.557249), B(18.719415, 45.557323);
+        // double dd=distance(A,B);
+        // send_error_message("udaljenost od damira do pocetka ulice:" + String(dd, DEC)+" km" );
 
       
         if(isMoveing()==false && get_GPS_power()==true){
@@ -203,6 +217,11 @@ public:
     void BT_loop(){
       Bluetooth_loop();
     }
+
+    int getBTstate(){
+        return BT_state;
+    }
+
     void Wakeup_message(){
         setLink(small_link(4));
     }
@@ -222,4 +241,8 @@ public:
     }
 
     bool isMoveing(){ return moving; }
+
+    bool lightsState(){
+        return digitalRead(U3);
+    }
 };

@@ -11,7 +11,15 @@ int push_p=18;
 int GSM_pp=32;
 int GPS_pp=33;
 
+#line 34 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+void akc_loop_main();
+#line 46 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+void setup();
+#line 59 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+void loop();
+#line 12 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void IRAM_ATTR input1RISING(){
+
   MyDevice->unlock();
 }
 
@@ -22,9 +30,11 @@ void IRAM_ATTR input2RISING(){
 void IRAM_ATTR pushed(){
   MyDevice->send_error_message("udaren");
   detachInterrupt(push_p);
-  if(MyDevice->isMoveing()==false){
-    if(MyDevice->link_exists()==false){
-      MyDevice->Pushed_message();
+  if(MyDevice->getBTstate()==0){
+    if(MyDevice->isMoveing()==false){
+      if(MyDevice->link_exists()==false){
+        MyDevice->Pushed_message();
+      }
     }
   }
   MyDevice->setLastTimePushed();
@@ -46,7 +56,7 @@ void setup() {
  
   // put your setup code here, to run once:
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
-  MyDevice->Wakeup_message();
+  //MyDevice->Wakeup_message();
   delay(5000);
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
@@ -62,6 +72,7 @@ void loop() {
   akc_loop_main();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
+  MyDevice->BT_loop();
   delay(100);
 }
 

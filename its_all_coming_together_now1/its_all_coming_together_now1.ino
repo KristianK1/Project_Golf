@@ -10,6 +10,7 @@ int GSM_pp=32;
 int GPS_pp=33;
 
 void IRAM_ATTR input1RISING(){
+
   MyDevice->unlock();
 }
 
@@ -20,9 +21,11 @@ void IRAM_ATTR input2RISING(){
 void IRAM_ATTR pushed(){
   MyDevice->send_error_message("udaren");
   detachInterrupt(push_p);
-  if(MyDevice->isMoveing()==false){
-    if(MyDevice->link_exists()==false){
-      MyDevice->Pushed_message();
+  if(MyDevice->getBTstate()==0){
+    if(MyDevice->isMoveing()==false){
+      if(MyDevice->link_exists()==false){
+        MyDevice->Pushed_message();
+      }
     }
   }
   MyDevice->setLastTimePushed();
@@ -44,7 +47,7 @@ void setup() {
  
   // put your setup code here, to run once:
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
-  MyDevice->Wakeup_message();
+  //MyDevice->Wakeup_message();
   delay(5000);
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
