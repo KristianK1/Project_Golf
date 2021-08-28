@@ -95,8 +95,9 @@ public:
             moving=false;
             
             if(stopped_moving==true){
-                *last_sent= Location(-181,-91);
                 stopped_moving=false;
+                set_CS(false);                
+                *last_sent= Location(-181,-91);
                 if(lock_state==false){
                     if(BT_state==0){
                         setLink(small_link(3));
@@ -260,5 +261,9 @@ public:
 
     void setStoppedMoving(){
        stopped_moving=true; 
+    }
+
+    void set_CS(bool state){
+        Battery_state::set_CS(state);
     }
 };

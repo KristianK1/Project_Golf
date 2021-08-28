@@ -21,6 +21,7 @@ void IRAM_ATTR pushed(){
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
   detachInterrupt(push_p);
+  MyDevice->set_CS(true);
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){
@@ -65,4 +66,5 @@ void loop() {
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
+  MyDevice->send_error_message("Lights:"+(String)(digitalRead(22)^1));
 }

@@ -78,8 +78,16 @@ public:
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
 
-    if(current_charge<0.1*TOTAL_CHARGE){
+    if(current_charge<0.3*TOTAL_CHARGE){
+      if(get_CS()==false){
+        set_CS(true);
+      }
       //send_error_message("EMPTY BATTERY");  
+    }
+    if(current_charge>0.99*TOTAL_CHARGE){
+      if(get_CS()==true){
+        set_CS(false);
+      }
     }
     timer=millis();
     //send_error_message((String)(current_charge*1000000));
