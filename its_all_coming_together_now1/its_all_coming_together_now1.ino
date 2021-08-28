@@ -19,6 +19,7 @@ void IRAM_ATTR input2RISING(){
 
 void IRAM_ATTR pushed(){
   MyDevice->send_error_message("udaren");
+  MyDevice->setStoppedMoving();
   detachInterrupt(push_p);
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
