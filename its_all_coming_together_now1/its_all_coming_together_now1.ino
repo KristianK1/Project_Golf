@@ -66,5 +66,4 @@ void loop() {
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
-  MyDevice->send_error_message("Lights:"+(String)(digitalRead(22)^1));
 }

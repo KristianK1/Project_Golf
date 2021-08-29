@@ -86,7 +86,7 @@ public:
     }
     if(current_charge>0.99*TOTAL_CHARGE){
       if(get_CS()==true){
-        set_CS(false);
+        CS=false;
       }
     }
     timer=millis();
