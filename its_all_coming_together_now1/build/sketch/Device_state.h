@@ -14,6 +14,8 @@ private:
     long int last_time_pushed;
     bool moving;
     bool stopped_moving;
+    bool locks_attached=false;
+
     Location *last_sent;
     Location *current_location;
 
@@ -265,5 +267,12 @@ public:
 
     void setCS(bool state){
         set_CS(state);
+    }
+    void setLocksAttached(bool state){
+        locks_attached=state; 
+    }
+
+    bool getLocksAttached(){
+        return locks_attached;
     }
 };

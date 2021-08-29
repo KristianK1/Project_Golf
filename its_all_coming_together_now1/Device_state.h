@@ -14,6 +14,8 @@ private:
     long int last_time_pushed;
     bool moving;
     bool stopped_moving;
+    bool locks_attached=false;
+
     Location *last_sent;
     Location *current_location;
 
@@ -97,7 +99,7 @@ public:
             if(stopped_moving==true){
                 stopped_moving=false;
                 setCS(false);                
-                *last_sent= Location(-181,-91); //mozda se ovdje crasha
+                *last_sent= Location(-181,-91);
                 if(lock_state==false){
                     if(BT_state==0){
                         setLink(small_link(3));
@@ -265,5 +267,12 @@ public:
 
     void setCS(bool state){
         set_CS(state);
+    }
+    void setLocksAttached(bool state){
+        locks_attached=state; 
+    }
+
+    bool getLocksAttached(){
+        return locks_attached;
     }
 };

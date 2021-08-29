@@ -9,12 +9,22 @@ int push_p=18;
 int GSM_pp=32;
 int GPS_pp=33;
 
+unsigned long int locks_timer;
+
 void IRAM_ATTR input1RISING(){
   MyDevice->unlock();
+  detachInterrupt(input1);
+  detachInterrupt(input2);
+  locks_timer=millis();
+  MyDevice->setLocksAttached(false);
 }
 
 void IRAM_ATTR input2RISING(){
   MyDevice->lock();
+  detachInterrupt(input1);
+  detachInterrupt(input2);
+  locks_timer=millis();
+  MyDevice->setLocksAttached(false);
 }
 
 void IRAM_ATTR pushed(){
@@ -55,6 +65,7 @@ void setup() {
   
   attachInterrupt(input1, input1RISING, RISING);
   attachInterrupt(input2, input2RISING, RISING);
+  MyDevice->setLocksAttached(true);
 }
 
 void loop() {
@@ -66,4 +77,11 @@ void loop() {
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
+
+  if(millis()-locks_timer>800){
+    if(MyDevice->getLocksAttached()==false){
+      attachInterrupt(input1, input1RISING, RISING);
+      attachInterrupt(input2, input2RISING, RISING);
+    }
+  }
 }

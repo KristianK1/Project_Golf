@@ -11,19 +11,29 @@ int push_p=18;
 int GSM_pp=32;
 int GPS_pp=33;
 
-#line 35 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+unsigned long int locks_timer;
+
+#line 45 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void akc_loop_main();
-#line 47 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 57 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void setup();
-#line 60 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 71 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void loop();
-#line 12 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 14 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void IRAM_ATTR input1RISING(){
   MyDevice->unlock();
+  detachInterrupt(input1);
+  detachInterrupt(input2);
+  locks_timer=millis();
+  MyDevice->setLocksAttached(false);
 }
 
 void IRAM_ATTR input2RISING(){
   MyDevice->lock();
+  detachInterrupt(input1);
+  detachInterrupt(input2);
+  locks_timer=millis();
+  MyDevice->setLocksAttached(false);
 }
 
 void IRAM_ATTR pushed(){
@@ -64,6 +74,7 @@ void setup() {
   
   attachInterrupt(input1, input1RISING, RISING);
   attachInterrupt(input2, input2RISING, RISING);
+  MyDevice->setLocksAttached(true);
 }
 
 void loop() {
@@ -75,6 +86,12 @@ void loop() {
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
-  MyDevice->send_error_message("Lights:"+(String)(digitalRead(22)^1));
+
+  if(millis()-locks_timer>800){
+    if(MyDevice->getLocksAttached()==false){
+      attachInterrupt(input1, input1RISING, RISING);
+      attachInterrupt(input2, input2RISING, RISING);
+    }
+  }
 }
 
