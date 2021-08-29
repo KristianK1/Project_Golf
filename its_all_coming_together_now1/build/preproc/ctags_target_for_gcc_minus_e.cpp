@@ -22,6 +22,7 @@ void __attribute__((section(".iram1" "." "18"))) pushed(){
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
   detachInterrupt(push_p);
+  MyDevice->setCS(true);
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){
@@ -48,7 +49,7 @@ void setup() {
 
   // put your setup code here, to run once:
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
-  //MyDevice->Wakeup_message();
+  MyDevice->Wakeup_message();
   delay(5000);
   pinMode(2, 0x02);
   digitalWrite(2, 0x1);
@@ -66,4 +67,5 @@ void loop() {
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
+  MyDevice->send_error_message("Lights:"+(String)(digitalRead(22)^1));
 }

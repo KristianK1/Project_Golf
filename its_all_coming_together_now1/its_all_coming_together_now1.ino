@@ -21,7 +21,7 @@ void IRAM_ATTR pushed(){
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
   detachInterrupt(push_p);
-  MyDevice->set_CS(true);
+  MyDevice->setCS(true);
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){

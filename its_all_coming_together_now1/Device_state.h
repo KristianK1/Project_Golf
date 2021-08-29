@@ -96,7 +96,7 @@ public:
             
             if(stopped_moving==true){
                 stopped_moving=false;
-                set_CS(false);                
+                setCS(false);                
                 *last_sent= Location(-181,-91);
                 if(lock_state==false){
                     if(BT_state==0){
@@ -263,7 +263,7 @@ public:
        stopped_moving=true; 
     }
 
-    void set_CS(bool state){
-        Battery_state::set_CS(state);
+    void setCS(bool state){
+        set_CS(state);
     }
 };

@@ -96,6 +96,8 @@ public:
             
             if(stopped_moving==true){
                 stopped_moving=false;
+                setCS(false);                
+                *last_sent= Location(-181,-91);
                 if(lock_state==false){
                     if(BT_state==0){
                         setLink(small_link(3));
@@ -259,5 +261,9 @@ public:
 
     void setStoppedMoving(){
        stopped_moving=true; 
+    }
+
+    void setCS(bool state){
+        set_CS(state);
     }
 };

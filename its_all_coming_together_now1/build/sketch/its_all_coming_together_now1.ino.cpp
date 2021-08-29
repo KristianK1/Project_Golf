@@ -11,11 +11,11 @@ int push_p=18;
 int GSM_pp=32;
 int GPS_pp=33;
 
-#line 34 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 35 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void akc_loop_main();
-#line 46 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 47 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void setup();
-#line 59 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 60 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void loop();
 #line 12 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void IRAM_ATTR input1RISING(){
@@ -30,6 +30,7 @@ void IRAM_ATTR pushed(){
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
   detachInterrupt(push_p);
+  MyDevice->setCS(true);
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){
@@ -56,7 +57,7 @@ void setup() {
  
   // put your setup code here, to run once:
   MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
-  //MyDevice->Wakeup_message();
+  MyDevice->Wakeup_message();
   delay(5000);
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
@@ -74,5 +75,6 @@ void loop() {
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
+  MyDevice->send_error_message("Lights:"+(String)(digitalRead(22)^1));
 }
 
