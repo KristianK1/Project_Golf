@@ -51,6 +51,7 @@ public:
   void set_CS(bool state){
     update_CS(true);
     digitalWrite(Charge_pin, state);
+    send_error_message("punim");
     CS=state;
   }
   
@@ -83,12 +84,18 @@ public:
     if(current_charge<0.3*TOTAL_CHARGE){
       if(get_CS()==false){
         CS=true;
+        digitalWrite(Charge_pin, CS);
+        send_error_message("punim");
+    
       }
       send_error_message("EMPTY BATTERY");  
     }
     if(current_charge>0.99*TOTAL_CHARGE){
       if(get_CS()==true){
         CS=false;
+        digitalWrite(Charge_pin, CS);
+        send_error_message("ne punim vise");
+    
       }
       send_error_message("full battery");
     }
