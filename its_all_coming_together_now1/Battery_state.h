@@ -82,7 +82,7 @@ public:
       if(get_CS()==false){
         CS=true;
       }
-      send_error_message("EMPTY BATTERY");  
+      //send_error_message("EMPTY BATTERY");  
     }
     if(current_charge>0.99*TOTAL_CHARGE){
       if(get_CS()==true){

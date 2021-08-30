@@ -13,26 +13,28 @@ int GPS_pp=33;
 unsigned long int locks_timer;
 
 void __attribute__((section(".iram1" "." "16"))) input1RISING(){
-  MyDevice->unlock();
   detachInterrupt(input1);
   detachInterrupt(input2);
+  MyDevice->unlock();
   locks_timer=millis();
   MyDevice->setLocksAttached(false);
 }
 
 void __attribute__((section(".iram1" "." "17"))) input2RISING(){
-  MyDevice->lock();
-  detachInterrupt(input1);
   detachInterrupt(input2);
+  detachInterrupt(input1);
+  MyDevice->lock();
   locks_timer=millis();
   MyDevice->setLocksAttached(false);
 }
 
 void __attribute__((section(".iram1" "." "18"))) pushed(){
+  detachInterrupt(push_p);
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
-  detachInterrupt(push_p);
-  MyDevice->setCS(true);
+  if(MyDevice->device_get_percentage()<0.75){
+    MyDevice->setCS(true);
+  }
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){
@@ -55,6 +57,16 @@ void akc_loop_main(){
   }
 }
 
+void main_locks_loop(){
+  if(millis()-locks_timer>1500){
+      if(MyDevice->getLocksAttached()==false){
+        MyDevice->setLocksAttached(true);
+        MyDevice->send_error_message("locks attached");
+        attachInterrupt(input1, input1RISING, 0x01);
+        attachInterrupt(input2, input2RISING, 0x01);
+      }
+    }
+}
 void setup() {
 
   // put your setup code here, to run once:
@@ -72,17 +84,13 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   MyDevice->locks_loop();
+  main_locks_loop();
   MyDevice->GSM_loop();
   akc_loop_main();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
+  digitalWrite(2, digitalRead(push_p));
 
-  if(millis()-locks_timer>800){
-    if(MyDevice->getLocksAttached()==false){
-      attachInterrupt(input1, input1RISING, 0x01);
-      attachInterrupt(input2, input2RISING, 0x01);
-    }
-  }
 }

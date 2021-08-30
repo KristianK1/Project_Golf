@@ -64,6 +64,7 @@ public:
     }
 
     void unlock(){
+        send_error_message("otkljucan - interupt");
         if(lock_state!=0){
             lock_state=0; //unlocked
             
@@ -73,6 +74,7 @@ public:
     }
 
     void lock(){
+        send_error_message("zakljucan - interupt");
         if(lock_state!=1){
             lock_state=1;
             send_error_message("zakljucan");
@@ -93,12 +95,14 @@ public:
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
         }
-        if(millis()-last_time_pushed>1.5*60*1000){
+        if(millis()-last_time_pushed>0.75*60*1000){ //idealno 2.5 minute
             moving=false;
             
             if(stopped_moving==true){
                 stopped_moving=false;
-                setCS(false);                
+                
+                send_error_message("ponovno u stanju mirovanja");
+                //setCS(false);                
                 *last_sent= Location(-181,-91);
                 if(lock_state==false){
                     if(BT_state==0){
@@ -107,16 +111,14 @@ public:
                 }
                 else if(lightsState()==true){
                     if(BT_state==0){
+                        send_error_message("setan je link za svjetla");
                         setLink(small_link(2));
                     }
                 }
             }
-
-
-            //send_error_message("ponovno u stanju mirovanja");
             return 2;
         }
-        if(millis()-last_time_pushed>5*1000){
+        if(millis()-last_time_pushed>7*1000){
             return 2;
         }
         return 0;
@@ -176,36 +178,36 @@ public:
             *current_location = GPS_data();
             if(getBTstate()==0){
                 if(current_location->getX()<180 && current_location->getX()>-180){
-                    send_error_message("Ocitana je nova lokacija");
+                    //send_error_message("Ocitana je nova lokacija");
                     //imamo novu lokaciju
                     double distance_new_last=distance(*last_sent, *current_location);
-                    send_error_message("brzinaMINREAD:"+(String)current_location->getSpeed());
-                    send_error_message("X:"+String(current_location->getX(),DEC));
-                    send_error_message("Y:"+String(current_location->getY(),DEC));
+                    //send_error_message("brzinaMINREAD:"+(String)current_location->getSpeed());
+                    //send_error_message("X:"+String(current_location->getX(),DEC));
+                    //send_error_message("Y:"+String(current_location->getY(),DEC));
                     
                     
                     double speed_RN=current_location->getSpeed();
-                    send_error_message("udaljenost od zadnje:" + String(distance_new_last, DEC)+" km" );
+                    //send_error_message("udaljenost od zadnje:" + String(distance_new_last, DEC)+" km" );
                     double needed_distance;
                     send_error_message((String)speed_RN);
                     if(speed_RN<=7){
                         needed_distance=0.05;
-                        send_error_message("less then 7kmh");
+                        //send_error_message("less then 7kmh");
                     }
                     else if(speed_RN>7 && speed_RN<=60){
                         needed_distance=0.02*(speed_RN-7)+0.05;
-                        send_error_message("between 7 and 60");
+                        //send_error_message("between 7 and 60");
                     }
                     else if(speed_RN>60 && speed_RN<=100){
                         needed_distance=0.05*(speed_RN-60)+1.11;
-                        send_error_message("between 60 and 100");
+                        //send_error_message("between 60 and 100");
                     }
                     else if(speed_RN>100 && speed_RN<=160){
                         needed_distance=0.1*(speed_RN-100)+3.11;
-                        send_error_message("between 100 and 160");
+                        //send_error_message("between 100 and 160");
                     }
                     else{
-                        send_error_message("above 160");
+                        //send_error_message("above 160");
                         needed_distance=0.1*(160-100)+3.11;        
                     }
                     
@@ -258,7 +260,7 @@ public:
 
     bool lightsState(){
         send_error_message("stanje svjetala " + (String)(digitalRead(U3)^1));
-        return digitalRead(U3)^1;
+        return (digitalRead(U3)^1);
     }
 
     void setStoppedMoving(){
@@ -274,5 +276,9 @@ public:
 
     bool getLocksAttached(){
         return locks_attached;
+    }
+
+    double device_get_percentage(){
+        return get_percentage();
     }
 };

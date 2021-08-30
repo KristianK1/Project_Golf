@@ -13,34 +13,38 @@ int GPS_pp=33;
 
 unsigned long int locks_timer;
 
-#line 45 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 47 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void akc_loop_main();
-#line 57 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 59 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+void main_locks_loop();
+#line 69 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void setup();
-#line 71 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
+#line 83 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void loop();
 #line 14 "d:\\Zavrsni_rad_FERIT_Kristian_Kliskovic\\Arduino_programi\\Project_Golf\\its_all_coming_together_now1\\its_all_coming_together_now1.ino"
 void IRAM_ATTR input1RISING(){
-  MyDevice->unlock();
   detachInterrupt(input1);
   detachInterrupt(input2);
+  MyDevice->unlock();
   locks_timer=millis();
   MyDevice->setLocksAttached(false);
 }
 
 void IRAM_ATTR input2RISING(){
-  MyDevice->lock();
-  detachInterrupt(input1);
   detachInterrupt(input2);
+  detachInterrupt(input1);
+  MyDevice->lock();
   locks_timer=millis();
   MyDevice->setLocksAttached(false);
 }
 
 void IRAM_ATTR pushed(){
+  detachInterrupt(push_p);
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
-  detachInterrupt(push_p);
-  MyDevice->setCS(true);
+  if(MyDevice->device_get_percentage()<0.75){
+    MyDevice->setCS(true);
+  }
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){
@@ -63,6 +67,16 @@ void akc_loop_main(){
   }
 }
 
+void main_locks_loop(){
+  if(millis()-locks_timer>1500){
+      if(MyDevice->getLocksAttached()==false){
+        MyDevice->setLocksAttached(true);
+        MyDevice->send_error_message("locks attached");
+        attachInterrupt(input1, input1RISING, RISING);
+        attachInterrupt(input2, input2RISING, RISING);
+      }
+    }
+}
 void setup() {
  
   // put your setup code here, to run once:
@@ -80,18 +94,14 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   MyDevice->locks_loop();
+  main_locks_loop();
   MyDevice->GSM_loop();
   akc_loop_main();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
   MyDevice->BT_loop();
   delay(100);
-
-  if(millis()-locks_timer>800){
-    if(MyDevice->getLocksAttached()==false){
-      attachInterrupt(input1, input1RISING, RISING);
-      attachInterrupt(input2, input2RISING, RISING);
-    }
-  }
+  digitalWrite(2, digitalRead(push_p));
+  
 }
 
