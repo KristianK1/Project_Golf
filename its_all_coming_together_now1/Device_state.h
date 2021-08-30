@@ -228,7 +228,6 @@ public:
 
     void Battery_loop(){
         update_CS(false);
-        //send_error_message((String)(get_percentage()*1000));
     }
     void BT_loop(){
       Bluetooth_loop();

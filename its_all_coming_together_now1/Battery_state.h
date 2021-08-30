@@ -58,6 +58,8 @@ public:
     if(important==false){
       if(millis()-timer<5000) return 0; //manje od 5 sekundi nemoj nista zbog pogreske malog diferecijala
     }
+    
+    send_error_message(String(get_percentage(),DEC));
     if(millis()-timer>1800000){
       current_charge=initial_charge;
       send_error_message("too much time");
@@ -82,12 +84,13 @@ public:
       if(get_CS()==false){
         CS=true;
       }
-      //send_error_message("EMPTY BATTERY");  
+      send_error_message("EMPTY BATTERY");  
     }
     if(current_charge>0.99*TOTAL_CHARGE){
       if(get_CS()==true){
         CS=false;
       }
+      send_error_message("full battery");
     }
     timer=millis();
     //send_error_message((String)(current_charge*1000000));
