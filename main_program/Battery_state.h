@@ -24,7 +24,7 @@ public:
     pinMode(Charge_pin, OUTPUT);
     CS=false;
     digitalWrite(Charge_pin, LOW);
-    initial_charge=0.1*TOTAL_CHARGE;
+    initial_charge=TOTAL_CHARGE;
     current_charge=initial_charge;
     timer=millis();
     GPS_state=false;

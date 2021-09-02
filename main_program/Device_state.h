@@ -95,7 +95,7 @@ public:
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
         }
-        if(millis()-last_time_pushed>0.75*60*1000){ //idealno 2.5 minute
+        if(millis()-last_time_pushed>3*60*1000){ //idealno 2.5 minute
             moving=false;
             
             if(stopped_moving==true){
