@@ -24,7 +24,7 @@ protected:
             if((millis()-GPS_non_double_timer)>1000 || (millis()>overflow_detector)){
                 new_location.setX(gps.location.lng());
                 new_location.setY(gps.location.lat());
-                send_error_message("nova lokacija");
+                //send_error_message("nova lokacija");
                 new_location.setSpeed(gps.speed.kmph());
                 GPS_non_double_timer=millis();
             }
@@ -72,7 +72,7 @@ public:
         if(new_data.getX()!=181){
             new_locations[new_loc_counter]=new_data;
             new_loc_counter++;
-            send_error_message("new location");
+            //send_error_message("new location");
         }
         
         if(new_loc_counter>=5){

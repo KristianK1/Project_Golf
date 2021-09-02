@@ -57,7 +57,7 @@ public:
   
   int update_CS(bool important){
     if(important==false){
-      if(millis()-timer<5000) return 0; //manje od 5 sekundi nemoj nista zbog pogreske malog diferecijala
+      if(millis()-timer<10000) return 0; //manje od 10 sekundi nemoj nista zbog pogreske malog diferecijala
     }
     
     send_error_message(String(get_percentage(),DEC));
@@ -97,7 +97,7 @@ public:
         send_error_message("ne punim vise");
     
       }
-      send_error_message("full battery");
+      //send_error_message("full battery");
     }
     timer=millis();
     //send_error_message((String)(current_charge*1000000));

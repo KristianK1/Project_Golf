@@ -119,7 +119,7 @@ protected:
   }
   void Send(String out){
     Serial2.println(out);
-    //send_error_message(out);
+    send_error_message(out);
     progress.setTimeStamp(millis());
   }
   void deleteRecive(){ *recived="";} 
