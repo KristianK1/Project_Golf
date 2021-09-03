@@ -62,13 +62,13 @@ public:
   };
   
   AT_command AT_commands_access[7]{
-      AT_command("AT+HTTPTERM",                            "ERROR",     2, "",      0),
+      AT_command("AT+HTTPTERM",                            "ERROR",     2, "OK",      0),
       AT_command("AT+HTTPINIT",                            "OK",        1, "ERROR", 1),
       AT_command("AT+HTTPPARA=\"CID\",1",                  "OK",        2, "ERROR", 1),
       AT_command("LINK",                                   "OK",        2, "ERROR", 2),
       AT_command("AT+HTTPACTION=1",                        "20",        2, "6",     3),
-      AT_command("AT+HTTPREAD=0,20",                       "HTTPREAD",  2, "",      4),
-      AT_command("AT+HTTPTERM",                            "OK",        2, "",     -1)
+      AT_command("AT+HTTPREAD=0,20",                       "HTTPREAD",  2, "RANDOM STRING OF CHARACTERS",      4),
+      AT_command("AT+HTTPTERM",                            "ERROR",        2, "RANDOM STRING OF CHARACTERS",     -1)
     }; 
     
   Progress(): part(0), stage(0), repeat(0){
@@ -263,10 +263,10 @@ public:
           if(progress.getRepeat()>=10){
             for(int i=0;i<progress.AT_commands_setup[progress.getStage()].getStepsBack();i++){
               progress.decrementStage();
-              deleteRecive();
-              Send(progress.AT_commands_setup[0].getSend());
-              return 2;
-            }  
+            }
+            deleteRecive();
+            Send(progress.AT_commands_setup[0].getSend());
+            return 2;
           }
           deleteRecive();
           Send(progress.AT_commands_setup[progress.getStage()].getSend());
@@ -311,10 +311,10 @@ public:
           if(progress.getRepeat()>=3){
             for(int i=0;i<progress.AT_commands_connect[progress.getStage()].getStepsBack();i++){
               progress.decrementStage();
-              deleteRecive();
-              Send(progress.AT_commands_connect[0].getSend());
-              return 2;
             }  
+            deleteRecive();
+            Send(progress.AT_commands_connect[progress.getStage()].getSend());
+            return 2;
           }
           deleteRecive();
           Send(progress.AT_commands_connect[progress.getStage()].getSend());
@@ -367,10 +367,10 @@ public:
           if(progress.getRepeat()>=5){
             for(int i=0;i<progress.AT_commands_access[progress.getStage()].getStepsBack();i++){
               progress.decrementStage();
-              deleteRecive();
-              Send(progress.AT_commands_access[0].getSend());
-              return 2;
-            }  
+            }
+            deleteRecive();
+            Send(progress.AT_commands_access[progress.getStage()].getSend());
+            return 2;
           }
           deleteRecive();
           Send(progress.AT_commands_access[progress.getStage()].getSend());
