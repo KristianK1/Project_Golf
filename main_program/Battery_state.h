@@ -81,7 +81,7 @@ public:
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
 
-    if(current_charge<0.3*TOTAL_CHARGE){
+    if(current_charge<0.5*TOTAL_CHARGE){
       if(get_CS()==false){
         CS=true;
         digitalWrite(Charge_pin, CS);
@@ -92,10 +92,11 @@ public:
     }
     if(current_charge>0.99*TOTAL_CHARGE){
       if(get_CS()==true){
-        CS=false;
-        digitalWrite(Charge_pin, CS);
-        send_error_message("ne punim vise");
-    
+        if(GSM_state==false){
+          CS=false;
+          digitalWrite(Charge_pin, CS);
+          send_error_message("ne punim vise");
+        }
       }
       //send_error_message("full battery");
     }

@@ -87,10 +87,10 @@ public:
         //vraca jedan ako treba detachat
         //vraca dva ako treba attachat
         
-        if(millis()<20*1000){
+        if(millis()<3*1000){
             return 0;
         }
-        if(millis()>20*1000 && first_block==false){
+        if(millis()>3*1000 && first_block==false){
             first_block=true;
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
@@ -105,9 +105,9 @@ public:
                 //setCS(false);                
                 *last_sent= Location(-181,-91);
                 if(lock_state==false){
-                    if(BT_state==0){
+                    //if(BT_state==0){
                         setLink(small_link(3));
-                    }
+                    //}
                 }
                 else if(lightsState()==true){
                     if(BT_state==0){
@@ -168,13 +168,13 @@ public:
         // send_error_message("udaljenost od damira do pocetka ulice:" + String(dd, DEC)+" km" );
 
       
-        if(isMoveing()==false && get_GPS_power()==true){
-            GPS_power(false);
-        }
+        // if(isMoveing()==false && get_GPS_power()==true){
+        //     GPS_power(false);
+        // }
         if(isMoveing()){
-            if(get_GPS_power()==false){
-                GPS_power(true);
-            }
+            // if(get_GPS_power()==false){
+            //     GPS_power(true);
+            // }
             *current_location = GPS_data();
             if(getBTstate()==0){
                 if(current_location->getX()<180 && current_location->getX()>-180){
@@ -195,20 +195,20 @@ public:
                         //send_error_message("less then 7kmh");
                     }
                     else if(speed_RN>7 && speed_RN<=60){
-                        needed_distance=0.02*(speed_RN-7)+0.05;
+                        needed_distance=0.013*(speed_RN-7)+0.05;
                         //send_error_message("between 7 and 60");
                     }
                     else if(speed_RN>60 && speed_RN<=100){
-                        needed_distance=0.05*(speed_RN-60)+1.11;
+                        needed_distance=0.04*(speed_RN-60)+0.74;
                         //send_error_message("between 60 and 100");
                     }
                     else if(speed_RN>100 && speed_RN<=160){
-                        needed_distance=0.1*(speed_RN-100)+3.11;
+                        needed_distance=0.07*(speed_RN-100)+2.34;
                         //send_error_message("between 100 and 160");
                     }
                     else{
-                        //send_error_message("above 160");
-                        needed_distance=0.1*(160-100)+3.11;        
+                        //send_error_message("above 150");
+                        needed_distance=5.84;        
                     }
                     
                     if(distance_new_last > needed_distance){

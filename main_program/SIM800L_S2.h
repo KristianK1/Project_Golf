@@ -218,6 +218,14 @@ public:
   void setAccessTimer(){
     access_timer=millis();
   }
+
+  boolean access_ok(){
+    if(millis()-access_timer>20*1000){
+      return true;
+    }
+    return false;
+  }
+
   virtual void GSM_autoshutdown_main()=0;
   virtual void send_error_message(String message) = 0;
   

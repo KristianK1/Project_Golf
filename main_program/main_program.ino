@@ -78,6 +78,7 @@ void setup() {
   attachInterrupt(input1, input1RISING, RISING);
   attachInterrupt(input2, input2RISING, RISING);
   MyDevice->setLocksAttached(true);
+  MyDevice->GPS_power(true);
 }
 
 void loop() {
