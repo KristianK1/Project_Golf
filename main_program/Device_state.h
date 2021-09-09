@@ -135,7 +135,14 @@ public:
             if(lock_state==false){
                 if(isMoveing()==false){
                     if(getBTstate()==0){
-                        setLink(small_link(1));
+                        if(SIM800L_S2::access_ok()){
+                            setLink(small_link(1));
+                        }
+                        else{
+                            send_error_message("Preblizu prethodnog slanja");
+                        }
+                    
+                    
                     }
                 }
             }
@@ -214,10 +221,14 @@ public:
                     if(distance_new_last > needed_distance){
                         if(link_exists()==false){
                             if(getBTstate()==0){
-                                setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
-                                *last_sent=*current_location;
-                                send_error_message("setan je link na novu lokaciju");
-
+                                if(SIM800L_S2::access_ok()){
+                                    setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
+                                    *last_sent=*current_location;
+                                    send_error_message("setan je link na novu lokaciju");
+                                }
+                                else{
+                                    send_error_message("Preblizu prethodnog slanja");
+                                }
                             }
                         }
                     }
@@ -242,7 +253,12 @@ public:
     }
 
     void Pushed_message(){
-        setLink(small_link(5));
+        if(SIM800L_S2::access_ok()){
+            setLink(small_link(5));
+        }
+        else{
+            send_error_message("Preblizu prethodnog slanja");
+        }
     }
     void GSM_autoshutdown_main(){
         GSM_power(false);

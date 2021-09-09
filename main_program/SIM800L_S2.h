@@ -62,7 +62,7 @@ public:
   };
   
   AT_command AT_commands_access[7]{
-      AT_command("AT+HTTPTERM",                            "ERROR",     2, "OK",      0),
+      AT_command("AT+HTTPTERM",                            "ERROR",     2, "RANDOM STRING OF CHARACTERS",      0),
       AT_command("AT+HTTPINIT",                            "OK",        1, "ERROR", 1),
       AT_command("AT+HTTPPARA=\"CID\",1",                  "OK",        2, "ERROR", 1),
       AT_command("LINK",                                   "OK",        2, "ERROR", 2),
@@ -359,6 +359,7 @@ public:
             //SUCCESS
             timer_ON=millis();
             setLink("");
+            setAccessTimer();
             return 3;
           }
           deleteRecive();
