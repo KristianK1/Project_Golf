@@ -4,7 +4,7 @@ protected:
   bool CS;
   
   double TOTAL_CHARGE=10.0*3.7/5*0.8;
-  double CHARGING_CURRENT=0.95*0.85;
+  double CHARGING_CURRENT=0.6*0.85; //sa 0.95*0.85 je u roku 5 dana pao na 1 zvjezdicu dok je pokazivao nekih 60 posto.
   double GSM_discharge=0.33;
   double GPS_discharge=0.045;
   double BASE_discharge=0.11;

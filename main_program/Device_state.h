@@ -209,9 +209,9 @@ public:
                         needed_distance=0.04*(speed_RN-60)+0.74;
                         //send_error_message("between 60 and 100");
                     }
-                    else if(speed_RN>100 && speed_RN<=160){
+                    else if(speed_RN>100 && speed_RN<=150){
                         needed_distance=0.07*(speed_RN-100)+2.34;
-                        //send_error_message("between 100 and 160");
+                        //send_error_message("between 100 and 150");
                     }
                     else{
                         //send_error_message("above 150");
