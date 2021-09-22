@@ -7,7 +7,7 @@ protected:
   double CHARGING_CURRENT=0.55*0.85; //sa 0.95*0.85 je u roku 5 dana pao na 1 zvjezdicu dok je pokazivao nekih 60 posto.
   double GSM_discharge=0.20;
   double GPS_discharge=0.05;
-  double BASE_discharge=0.12;
+  double BASE_discharge=0.14;
 
   double initial_charge;
   double current_charge;
@@ -90,7 +90,7 @@ public:
       }
       send_error_message("EMPTY BATTERY");  
     }
-    if(current_charge>0.99*TOTAL_CHARGE){
+    if(current_charge>0.995*TOTAL_CHARGE){
       if(get_CS()==true){
         if(GSM_state==false){
           CS=false;
