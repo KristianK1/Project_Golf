@@ -33,7 +33,7 @@ class Bluetooth_comm{
   void Bluetooth_loop(){
     reciveing();
     checking();
-    
+    update_state();
   }
 
   void Send_message(String mess){
