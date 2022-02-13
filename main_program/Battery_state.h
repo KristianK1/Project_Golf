@@ -92,7 +92,7 @@ public:
     }
     if(current_charge>0.995*TOTAL_CHARGE){
       if(get_CS()==true){
-        if(GSM_state==false){
+        if(GSM_state==false && getBTstate()==0){
           CS=false;
           digitalWrite(Charge_pin, CS);
           send_error_message("ne punim vise");
@@ -106,5 +106,6 @@ public:
   
   
   virtual void send_error_message(String message) = 0;
-    
+  virtual int getBTstate() = 0;
+      
 };
