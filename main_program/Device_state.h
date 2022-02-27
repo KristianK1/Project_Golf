@@ -18,6 +18,8 @@ private:
 
     Location *last_sent;
     Location *current_location;
+    Location *last_saved;
+    String location_buffer;
 
     bool first_block=false; //da samo jedanput attacha na pocetku (nakon 20 sekundi)
 public:
@@ -41,7 +43,10 @@ public:
         stopped_moving=false;
         last_sent= new Location(-181,-91);
         current_location = new Location(181, 91);
+        last_saved = new Location(181,91);
+
         last_time_pushed=millis();
+        location_buffer = new String();
     }
     void GPS_power(bool state){
         if(GPS_isON!=state){
@@ -110,10 +115,10 @@ public:
                     //}
                 }
                 else if(lightsState()==true){
-                    if(BT_state==0){
+                    //if(BT_state==0){
                         send_error_message("setan je link za svjetla");
                         setLink(small_link(2));
-                    }
+                    //}
                 }
             }
             return 2;
@@ -188,6 +193,7 @@ public:
                     //send_error_message("Ocitana je nova lokacija");
                     //imamo novu lokaciju
                     double distance_new_last=distance(*last_sent, *current_location);
+                    double distance_new_last_saved(*last_saved, *current_location);
                     //send_error_message("brzinaMINREAD:"+(String)current_location->getSpeed());
                     //send_error_message("X:"+String(current_location->getX(),DEC));
                     //send_error_message("Y:"+String(current_location->getY(),DEC));
@@ -202,35 +208,49 @@ public:
                         //send_error_message("less then 7kmh");
                     }
                     else if(speed_RN>7 && speed_RN<=60){
-                        needed_distance=0.013*(speed_RN-7)+0.05;
+                        needed_distance=0.01*(speed_RN-7)+0.05;
                         //send_error_message("between 7 and 60");
                     }
                     else if(speed_RN>60 && speed_RN<=100){
-                        needed_distance=0.04*(speed_RN-60)+0.74;
+                        needed_distance=0.025*(speed_RN-60)+0.58;
                         //send_error_message("between 60 and 100");
                     }
                     else if(speed_RN>100 && speed_RN<=150){
-                        needed_distance=0.07*(speed_RN-100)+2.34;
+                        needed_distance=0.05*(speed_RN-100)+1.58;
                         //send_error_message("between 100 and 150");
                     }
                     else{
                         //send_error_message("above 150");
-                        needed_distance=5.84;        
+                        needed_distance=4.08;        
                     }
-                    
-                    if(distance_new_last > needed_distance){
-                        if(link_exists()==false){
-                            if(getBTstate()==0){
+                    if(getBTstate()==0){
+                        if(distance_new_last > needed_distance && link_exists()==false && SIM800L_S2::access_ok()){
+                            
                                 if(SIM800L_S2::access_ok()){
-                                    setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
-                                    *last_sent=*current_location;
-                                    send_error_message("setan je link na novu lokaciju");
-                                }
-                                else{
-                                    send_error_message("Preblizu prethodnog slanja");
+                                    if(location_buffer.length()<=1){
+                                        setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
+                                        *last_sent=*current_location;
+                                        send_error_message("setan je link na novu lokaciju");
+                                    }
+                                    else{
+                                        location_buffer += loc_to_link(current_location->getX(), current_location->getY());
+                                        setLink(location_buffer);
+                                        send_error_message("Setan je link na " + location_buffer);
+                                        location_buffer.clear();
+                                    }
                                 }
                             }
                         }
+                        else if(distance_new_last_saved > needed_distance/10 && distance_new_last>0.05){
+                            //save_to_string
+                            *last_saved = *current_location;
+                            send_error_message("sejvana lokacija za kasnije");
+                            location_buffer += loc_to_link(current_location->getX(), current_location->getY());
+                            location_buffer += '*';
+                        }
+                    }
+                    else{
+                        location_buffer.clear();
                     }
                 }
             }
