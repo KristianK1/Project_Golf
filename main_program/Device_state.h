@@ -233,8 +233,8 @@ public:
                                         send_error_message("setan je link na novu lokaciju");
                                     }
                                     else{
-                                        location_buffer += loc_to_link(current_location->getX(), current_location->getY());
-                                        setLink(location_buffer);
+                                        location_buffer += big_packet(current_location->getX(), current_location->getY());
+                                        setLink(string_to_link(location_buffer));
                                         send_error_message("Setan je link na " + location_buffer);
                                         location_buffer.clear();
                                     }
@@ -245,7 +245,7 @@ public:
                             //save_to_string
                             *last_saved = *current_location;
                             send_error_message("sejvana lokacija za kasnije");
-                            location_buffer += loc_to_link(current_location->getX(), current_location->getY());
+                            location_buffer += big_packet(current_location->getX(), current_location->getY(),0);
                             location_buffer += '*';
                         }
                     }

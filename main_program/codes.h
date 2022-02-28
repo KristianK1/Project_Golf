@@ -100,25 +100,34 @@ protected:
       return binary;
     }
 
-    String big_packet(double X_kor, double Y_kor, int code){
-      String binary=make_binary(X_kor, Y_kor);
-      binary+=make_parity(binary);
-      //Serial.println(binary);
-      binary=binary_to_base64(binary);
-      
-      binary+=make_sending_code(code);
-      //Serial.println(binary);
-      return binary;
-    }
+    
 public:
   codes(){}
   virtual ~codes(){}
+
+  String big_packet(double X_kor, double Y_kor, int code){
+    String binary=make_binary(X_kor, Y_kor);
+    binary+=make_parity(binary);
+    //Serial.println(binary);
+    binary=binary_to_base64(binary);
+    
+    binary+=make_sending_code(code);
+    //Serial.println(binary);
+    return binary;
+  }
+
+  String string_to_link(String input){
+    String link = Link_field1 + input;
+    return link;
+  }
 
   String loc_to_link(double locX, double locY, int code){
     //code=4;
     String link=Link_field1+big_packet(locX, locY, code);
     return link;
   }
+
+
 
   String small_link(int code){
     String link=Link_field1+small_packet(code);
