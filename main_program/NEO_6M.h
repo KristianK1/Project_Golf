@@ -79,7 +79,7 @@ public:
             Location Average=average(new_locations,5);
             double minSpeed=new_locations[0].getSpeed();
             for(int i=0;i<new_loc_counter;i++){
-                send_error_message((String)new_locations[i].getSpeed());
+                //send_error_message((String)new_locations[i].getSpeed());
               if(minSpeed>new_locations[i].getSpeed()){
                 minSpeed=new_locations[i].getSpeed();
               }
@@ -89,7 +89,7 @@ public:
             Location Sigma=sigma(new_locations,5);
             if(Sigma.getX()<0.01 && Sigma.getY()<0.01 && Average.getX()!=181){ 
                 new_loc_counter=0;
-                send_error_message("prihvacena mjerenja");
+                //send_error_message("prihvacena mjerenja");
                 return Average;
             }
             else{

@@ -3,7 +3,7 @@ protected:
   //CS == Charging state
   bool CS;
   
-  double TOTAL_CHARGE=10.0*3.7/5*0.8;
+  double TOTAL_CHARGE=10.0*3.7/5*0.8 * 0.5;
   double CHARGING_CURRENT=0.55*0.85; //sa 0.95*0.85 je u roku 5 dana pao na 1 zvjezdicu dok je pokazivao nekih 60 posto.
   double GSM_discharge=0.30;
   double GPS_discharge=0.05;
@@ -45,6 +45,10 @@ public:
   double get_percentage(){
     return current_charge/TOTAL_CHARGE*100;
   }
+
+  void set_percentage_low(){
+    current_charge = 0.1 * TOTAL_CHARGE;
+  }
   bool get_CS(){
     return CS;
   }
@@ -81,21 +85,21 @@ public:
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
 
-    if(current_charge<0.8*TOTAL_CHARGE){
+    if(current_charge<0.65*TOTAL_CHARGE){
       if(get_CS()==false){
         CS=true;
         digitalWrite(Charge_pin, CS);
-        send_error_message("punim");
+        //send_error_message("punim");
     
       }
-      send_error_message("EMPTY BATTERY");  
+      //send_error_message("EMPTY BATTERY");  
     }
     if(current_charge>0.995*TOTAL_CHARGE){
       if(get_CS()==true){
         if(GSM_state==false && getBTstate()==0){
           CS=false;
           digitalWrite(Charge_pin, CS);
-          send_error_message("ne punim vise");
+          //send_error_message("ne punim vise");
         }
       }
       //send_error_message("full battery");
@@ -107,5 +111,5 @@ public:
   
   virtual void send_error_message(String message) = 0;
   virtual int getBTstate() = 0;
-      
+
 };

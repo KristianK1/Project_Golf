@@ -44,7 +44,7 @@ private:
 public:
   const int setup_size=5;              //BITNO ZA PROMJENITI NAKON MIJENJANJA AT NAREDBI
   const int connect_size=2;
-  const int access_size=7;  
+  const int access_size=6;  
   
   AT_command AT_commands_setup[5]{
       AT_command("AT",                                     "OK",        5, "ERROR", 0),
@@ -61,14 +61,14 @@ public:
     AT_command("AT+SAPBR=2,1",                             "1,1"       ,3, "1,3",   1)
   };
   
-  AT_command AT_commands_access[7]{
+  AT_command AT_commands_access[6]{
       AT_command("AT+HTTPTERM",                            "ERROR",     2, "RANDOM STRING OF CHARACTERS",      0),
       AT_command("AT+HTTPINIT",                            "OK",        1, "ERROR", 1),
       AT_command("AT+HTTPPARA=\"CID\",1",                  "OK",        2, "ERROR", 1),
       AT_command("LINK",                                   "OK",        2, "ERROR", 2),
       AT_command("AT+HTTPACTION=1",                        "20",        2, "6",     3),
-      AT_command("AT+HTTPREAD=0,20",                       "HTTPREAD",  2, "RANDOM STRING OF CHARACTERS",      4),
-      AT_command("AT+HTTPTERM",                            "ERROR",        2, "RANDOM STRING OF CHARACTERS",     -1)
+      AT_command("AT+HTTPREAD=0,20",                       "HTTPREAD",  2, "RANDOM STRING OF CHARACTERS",      4)
+      //AT_command("AT+HTTPTERM",                            "ERROR",        2, "RANDOM STRING OF CHARACTERS",     -1)
     }; 
     
   Progress(): part(0), stage(0), repeat(0){

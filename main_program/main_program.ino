@@ -31,9 +31,10 @@ void IRAM_ATTR pushed(){
   detachInterrupt(push_p);
   MyDevice->send_error_message("udaren");
   MyDevice->setStoppedMoving();
-  if(MyDevice->device_get_percentage()<0.75){
-    MyDevice->setCS(true);
-  }
+  //if(MyDevice->device_get_percentage()<0.75){
+    //MyDevice->setCS(true);
+    MyDevice->send_error_message("gurnut");
+  //}
   if(MyDevice->getBTstate()==0){
     if(MyDevice->isMoveing()==false){
       if(MyDevice->link_exists()==false){

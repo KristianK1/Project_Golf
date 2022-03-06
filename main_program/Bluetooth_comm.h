@@ -12,6 +12,8 @@ class Bluetooth_comm{
   String end_request="T=111";
   String extend_request="T=222,";
 
+  String battery_empty_request = "BATT_EMPTY";
+
   unsigned long int ignore_begin;
   int minutes_ignore;
 
@@ -102,7 +104,11 @@ class Bluetooth_comm{
   }
   
   int checking(){
-    if(AcontainsB(recived_chars, question_request)){
+    if(AcontainsB(recived_chars, battery_empty_request)){
+      clean_recived();
+      begin_charging_on_request();
+    }
+    else if(AcontainsB(recived_chars, question_request)){
       clean_recived();
       update_state();
       sendBTstate();
@@ -157,5 +163,8 @@ class Bluetooth_comm{
       }
     }
     return 0;
-  }  
+  }
+
+  virtual void begin_charging_on_request() = 0;
+      
 };
