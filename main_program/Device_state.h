@@ -192,9 +192,9 @@ public:
                     double distance_new_last=distance(*last_sent, *current_location);
                     double distance_new_last_saved = distance(*last_saved, *current_location);
                     
-                    send_error_message("Pocetak obrade GPS lokacije\n\n");
+                    send_error_message("\nPocetak obrade GPS lokacije");
                     double speed_RN=current_location->getSpeed();
-                    send_error_message("udaljenost od zadnje spremljene:" + String(distance_new_last, DEC)+" km" );
+                    send_error_message("udaljenost od zadnje spremljene:" + String(distance_new_last_saved, DEC)+" km" );
                     send_error_message("udaljenost od zadnje poslane:" + String(distance_new_last, DEC)+" km" );
                     
                     double needed_distance;
@@ -235,7 +235,9 @@ public:
                             location_buffer = "";    
                         }
                         else{
-                            location_buffer += big_packet(current_location->getX(), current_location->getY(),0);
+                            if(distance(*last_saved, *current_location)<0.05){ //da pri "paljenju auta" ne posalje dvije "iste" lokacije
+                                location_buffer += big_packet(current_location->getX(), current_location->getY(),0);
+                            }
                             setLink(string_to_link(location_buffer));
                             send_error_message("(vise njih) Setan je link na " + location_buffer);
                             location_buffer ="";
