@@ -192,11 +192,13 @@ public:
                     double distance_new_last=distance(*last_sent, *current_location);
                     double distance_new_last_saved = distance(*last_saved, *current_location);
                     
-                    
+                    send_error_message("Pocetak obrade GPS lokacije\n\n");
                     double speed_RN=current_location->getSpeed();
-                    //send_error_message("udaljenost od zadnje:" + String(distance_new_last, DEC)+" km" );
+                    send_error_message("udaljenost od zadnje spremljene:" + String(distance_new_last, DEC)+" km" );
+                    send_error_message("udaljenost od zadnje poslane:" + String(distance_new_last, DEC)+" km" );
+                    
                     double needed_distance;
-                    send_error_message((String)speed_RN);
+                    send_error_message("Trenutna brzina: " + (String)speed_RN);
                     if(speed_RN<=7){
                         needed_distance=0.05;
                         //send_error_message("less then 7kmh");
@@ -228,6 +230,7 @@ public:
                         if(location_buffer.length()<2){
                             setLink(loc_to_link(current_location->getX(), current_location->getY(), 0));
                             *last_sent=*current_location;
+                            *last_saved = *current_location;
                             send_error_message("setan je link na novu lokaciju");
                             location_buffer = "";    
                         }
@@ -250,6 +253,7 @@ public:
                 }
             }
         }
+        else location_buffer = "";
     }
     
 

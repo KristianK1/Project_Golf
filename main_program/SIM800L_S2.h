@@ -220,6 +220,10 @@ public:
   }
 
   boolean access_ok(){
+    if(GSM_on == false){
+      return true;
+    }
+
     if(millis()-access_timer>20*1000){
       return true;
     }
