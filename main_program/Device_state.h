@@ -240,6 +240,8 @@ public:
                             }
                             setLink(string_to_link(location_buffer));
                             send_error_message("(vise njih) Setan je link na " + location_buffer);
+                            *last_sent = *current_location;
+                            *last_saved = *current_location;
                             location_buffer ="";
                         }
                     }
