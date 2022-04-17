@@ -85,7 +85,7 @@ public:
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
 
-    if(current_charge<0.65*TOTAL_CHARGE){
+    if(current_charge<0.85*TOTAL_CHARGE){
       if(get_CS()==false){
         CS=true;
         digitalWrite(Charge_pin, CS);

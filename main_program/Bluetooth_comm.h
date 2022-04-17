@@ -11,11 +11,13 @@ class Bluetooth_comm{
   String question_request="T?";
   String end_request="T=111";
   String extend_request="T=222,";
+  String small_request="T=222,00x";
+  
 
   String battery_empty_request = "BATT_EMPTY";
 
   unsigned long int ignore_begin;
-  int minutes_ignore;
+  double minutes_ignore;
 
   public:
   Bluetooth_comm(){
@@ -117,6 +119,14 @@ class Bluetooth_comm{
     else if(AcontainsB(recived_chars, end_request)){
       BT_state=0;
       minutes_ignore=0;
+      clean_recived();
+      sendBTstate();
+      return 1;
+    }
+    else if(AcontainsB(recived_chars, small_request)){
+      BT_state=1;
+      ignore_begin=millis();
+      minutes_ignore=0.5;
       clean_recived();
       sendBTstate();
       return 1;
