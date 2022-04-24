@@ -95,6 +95,7 @@ public:
 class SIM800L_S2{
 private:
   bool GSM_on;
+  int link_active;
 protected:
   Progress progress;
   String *recived;
@@ -196,6 +197,7 @@ public:
   
   void setLink(String new_link){
     link=new_link;
+    link_active = millis();
   }
   String getLink(){
     return link;
@@ -233,7 +235,18 @@ public:
   virtual void GSM_autoshutdown_main()=0;
   virtual void send_error_message(String message) = 0;
   
+
   int access(){
+    if(millis() - link_active > 2.5 * 60 * 1000){
+      link_active = millis();
+      send_error_message("resetiram GSM modul");
+      GSM_power(false);
+      delay(3000);
+      GSM_power(true);
+      progress.setPart(0);
+      progress.setStage(0);
+      progress.setRepeat(0);
+    }
     deleteRecive();
     Recive(recived);
     if(GSM_Reset_happend(*recived)){
