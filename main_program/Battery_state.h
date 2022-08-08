@@ -64,7 +64,7 @@ public:
       if(millis()-timer<10000) return 0; //manje od 10 sekundi nemoj nista zbog pogreske malog diferecijala
     }
     
-    send_error_message(String(get_percentage(),DEC));
+    send_error_message("Battery percentage: " + String(get_percentage(),DEC));
     if(millis()-timer>1800000){
       current_charge=initial_charge;
       send_error_message("too much time");

@@ -12,6 +12,7 @@ class Bluetooth_comm{
   String end_request="T=111";
   String extend_request="T=222,";
   String small_request="T=222,00x";
+  String reset_device="RESET_DEVICE";
   
 
   String battery_empty_request = "BATT_EMPTY";
@@ -130,6 +131,9 @@ class Bluetooth_comm{
       clean_recived();
       sendBTstate();
       return 1;
+    }
+    else if(AcontainsB(recived_chars, reset_device)){
+      throw("doviđenja");
     }
     else if(AcontainsB(recived_chars, extend_request)){
       for(int i=0;i<recived_chars.length()-8;i++){

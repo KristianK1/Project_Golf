@@ -241,7 +241,7 @@ public:
       link_active = millis();
       send_error_message("resetiram GSM modul");
       GSM_power(false);
-      delay(3000);
+      delay(7000);
       GSM_power(true);
       progress.setPart(0);
       progress.setStage(0);
