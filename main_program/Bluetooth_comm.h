@@ -109,6 +109,7 @@ class Bluetooth_comm{
   int checking(){
     if(AcontainsB(recived_chars, battery_empty_request)){
       clean_recived();
+      SerialBT->println("Battery set to empty");
       begin_charging_on_request();
     }
     else if(AcontainsB(recived_chars, question_request)){
@@ -133,6 +134,7 @@ class Bluetooth_comm{
       return 1;
     }
     else if(AcontainsB(recived_chars, reset_device)){
+      SerialBT->println("Reseting device");
       throw("doviđenja");
     }
     else if(AcontainsB(recived_chars, extend_request)){
