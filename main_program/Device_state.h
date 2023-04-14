@@ -9,8 +9,6 @@ private:
     
     int U1, U2, U3, U4;
     int akc;
-    int lock_state; // 0 - unlocked, 1 - locked, else - unkown
-    bool lock_changed;
     long int last_time_pushed;
     bool moving;
     bool stopped_moving;
@@ -25,10 +23,8 @@ private:
 public:
     Device_state(int u1, int u2, int u3, int u4, int charging, int akc_pin, int GSM_powerpin, int GPS_powerpin): 
                     Battery_state(charging), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
-        lock_changed=false;
         GSM_isON=false;
         GPS_isON=false;
-        lock_state=2; // unkown if it is locked
         U1=u1;
         U2=u2;
         U3=u3;
@@ -67,25 +63,6 @@ public:
         Send_message(message);
     }
 
-    void unlock(){
-        send_error_message("otkljucan - interupt");
-        if(lock_state!=0){
-            lock_state=0; //unlocked
-            
-            send_error_message("otkljucan");
-            lock_changed=true;
-        }
-    }
-
-    void lock(){
-        send_error_message("zakljucan - interupt");
-        if(lock_state!=1){
-            lock_state=1;
-            send_error_message("zakljucan");
-            lock_changed=true;
-        }
-    }
-
     int akc_loop(){
         //vraca nulu ako nista ne treba napravit
         //vraca jedan ako treba detachat
@@ -108,17 +85,6 @@ public:
                 send_error_message("ponovno u stanju mirovanja");
                 //setCS(false);                
                 *last_sent= Location(-181,-91);
-                if(lock_state==false){
-                    //if(BT_state==0){
-                        setLink(small_link(3));
-                    //}
-                }
-                else if(lightsState()==true){
-                    //if(BT_state==0){
-                        send_error_message("setan je link za svjetla");
-                        setLink(small_link(2));
-                    //}
-                }
             }
             return 2;
         }
@@ -131,27 +97,6 @@ public:
     void setLastTimePushed(){
         last_time_pushed=millis();
         moving=true;
-    }
-
-    void locks_loop(){
-        if(lock_changed){
-            send_error_message("status brave promjenjen");
-            if(lock_state==false){
-                if(isMoveing()==false){
-                    if(getBTstate()==0){
-                        if(SIM800L_S2::access_ok()){
-                            setLink(small_link(1));
-                        }
-                        else{
-                            send_error_message("Preblizu prethodnog slanja");
-                        }
-                    
-                    
-                    }
-                }
-            }
-            lock_changed=false;
-        }
     }
 
     void GSM_loop(){
@@ -174,11 +119,7 @@ public:
     }
     
     void GPS_loop(){
-        //Location A(18.715807,45.557249), B(18.719415, 45.557323);
-        // double dd=distance(A,B);
-        // send_error_message("udaljenost od damira do pocetka ulice:" + String(dd, DEC)+" km" );
-
-      
+          
         // if(isMoveing()==false && get_GPS_power()==true){
         //     GPS_power(false);
         // }
@@ -297,10 +238,10 @@ public:
 
     bool isMoveing(){ return moving; }
 
-    bool lightsState(){
-        send_error_message("stanje svjetala " + (String)(digitalRead(U3)^1));
-        return (digitalRead(U3)^1);
-    }
+    // bool lightsState(){
+    //     send_error_message("stanje svjetala " + (String)(digitalRead(U3)^1));
+    //     return (digitalRead(U3)^1);
+    // }
 
     void setStoppedMoving(){
        stopped_moving=true; 
@@ -309,6 +250,7 @@ public:
     void setCS(bool state){
         Battery_state::set_CS(state);
     }
+
     void setLocksAttached(bool state){
         locks_attached=state; 
     }
