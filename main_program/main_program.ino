@@ -3,7 +3,7 @@ Device_state *MyDevice;
 int input1=19;
 int input2=21;
 int input3=22;
-int input4=23;
+int input4=23; //tu ce ici 12V
 int charge_pp=25;
 int push_p=18;
 int GSM_pp=32;
@@ -73,6 +73,7 @@ void loop() {
   // MyDevice->locks_loop();
   MyDevice->GSM_loop();
   akc_loop_main();
+  MyDevice->check12V_loop();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
   MyDevice->BT_loop();

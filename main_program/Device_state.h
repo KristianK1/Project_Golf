@@ -20,6 +20,10 @@ private:
     String location_buffer;
 
     bool first_block=false; //da samo jedanput attacha na pocetku (nakon 20 sekundi)
+
+    int powerSupply_12V_lastState = -1;
+    long int powerSupply_12V_lastChecked;
+
 public:
     Device_state(int u1, int u2, int u3, int u4, int charging, int akc_pin, int GSM_powerpin, int GPS_powerpin): 
                     Battery_state(charging), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
@@ -119,7 +123,7 @@ public:
     }
     
     void GPS_loop(){
-          
+
         // if(isMoveing()==false && get_GPS_power()==true){
         //     GPS_power(false);
         // }
@@ -265,5 +269,53 @@ public:
 
     void begin_charging_on_request(){
         Battery_state::set_percentage_low();
+    }
+
+    void check12V_loop(){
+        if(millis() - powerSupply_12V_lastChecked > 60 * 1000) {   //1 minute
+            bool newState = check12V_availability();
+            if(powerSupply_12V_lastState == -1){
+                //nije izmjereno nikada
+                if(newState){
+                    //ima struje, sve okej
+                }
+                else{
+                    //nema struje, nista okej
+                    if(getLink()!=""){
+                        setLink(small_link(6));
+                    }
+                    else{
+                        return;
+                    }
+                }
+            }
+            else if(powerSupply_12V_lastState == 0){
+                if(newState){
+                    //bratilo se nazad
+                }
+                else{
+                    //ostalo isto -> nema struje
+                }
+            }
+            else if(powerSupply_12V_lastChecked == 1){
+                if(newState){
+                    // ostalo isto -> ima struje
+                }
+                else{
+                    //otisla struja
+                    if(getLink()!=""){
+                        setLink(small_link(6));
+                    }
+                    else{
+                        return;
+                    }
+                }
+            }
+            powerSupply_12V_lastChecked = newState;
+        } 
+    }
+
+    bool check12V_availability(){
+        return (digitalRead(U4)^1); //flip because of the shematic
     }
 };
