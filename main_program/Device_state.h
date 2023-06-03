@@ -24,7 +24,7 @@ private:
     bool first_block=false; //da samo jedanput attacha na pocetku (nakon 20 sekundi)
 public:
     Device_state(int u1, int u2, int u3, int u4, int charging, int akc_pin, int GSM_powerpin, int GPS_powerpin): 
-                    Battery_state(charging), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
+                    Battery_state(charging, u1), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
         lock_changed=false;
         GSM_isON=false;
         GPS_isON=false;
