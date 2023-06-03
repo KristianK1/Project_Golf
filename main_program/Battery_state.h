@@ -12,6 +12,7 @@ protected:
   double initial_charge;
   double current_charge;
   int Charge_pin;
+  int Sensor_pin;
   long unsigned int timer;
 
   bool GPS_state;
@@ -19,9 +20,12 @@ protected:
 
   
 public:
-  Battery_state(int pin){
-    Charge_pin=pin;
+  Battery_state(int chargingPin, int sensorPin){
+    Charge_pin=chargingPin;
+    Sensor_pin=sensorPin;
+
     pinMode(Charge_pin, OUTPUT);
+    pinMode(Sensor_pin, INPUT);
     CS=false;
     digitalWrite(Charge_pin, LOW);
     initial_charge=TOTAL_CHARGE;
@@ -65,6 +69,14 @@ public:
     }
     
     send_error_message("Battery percentage: " + String(get_percentage(),DEC));
+    
+    if(digitalRead(Sensor_pin) == false){
+      send_error_message("___________12V is ON");
+    }else{
+      send_error_message("___________12V is OFF");
+    }
+
+    
     if(millis()-timer>1800000){
       current_charge=initial_charge;
       send_error_message("too much time");

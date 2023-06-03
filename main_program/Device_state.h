@@ -133,27 +133,6 @@ public:
         moving=true;
     }
 
-    void locks_loop(){
-        if(lock_changed){
-            send_error_message("status brave promjenjen");
-            if(lock_state==false){
-                if(isMoveing()==false){
-                    if(getBTstate()==0){
-                        if(SIM800L_S2::access_ok()){
-                            setLink(small_link(1));
-                        }
-                        else{
-                            send_error_message("Preblizu prethodnog slanja");
-                        }
-                    
-                    
-                    }
-                }
-            }
-            lock_changed=false;
-        }
-    }
-
     void GSM_loop(){
         if(getLink()!=""){
             //SerialBT->println("uso");
