@@ -26,7 +26,7 @@ class Bluetooth_comm{
     
     //SerialBT->enableSSP();
     //SerialBT->begin("Project Golf", true); 
-    SerialBT->begin("ProjectGolf"); 
+    SerialBT->begin("Vectra2"); 
 
     BT_state=0;
     recived_chars="";
