@@ -3,11 +3,11 @@ protected:
   //CS == Charging state
   bool CS;
   
-  double TOTAL_CHARGE=10.0*3.7/5*0.8 * 0.5;
-  double CHARGING_CURRENT=0.55*0.85; //sa 0.95*0.85 je u roku 5 dana pao na 1 zvjezdicu dok je pokazivao nekih 60 posto.
+  double TOTAL_CHARGE=10.0*3.6/5*0.9;
+  double CHARGING_CURRENT=1*0.85; //sa 0.95*0.85 je u roku 5 dana pao na 1 zvjezdicu dok je pokazivao nekih 60 posto.
   double GSM_discharge=0.30;
   double GPS_discharge=0.05;
-  double BASE_discharge=0.14;
+  double BASE_discharge=0.065;
 
   double initial_charge;
   double current_charge;
@@ -97,7 +97,7 @@ public:
     }
     if(current_charge>TOTAL_CHARGE) current_charge=TOTAL_CHARGE;
 
-    if(current_charge<0.85*TOTAL_CHARGE){
+    if(current_charge<0.2*TOTAL_CHARGE){
       if(get_CS()==false){
         CS=true;
         digitalWrite(Charge_pin, CS);

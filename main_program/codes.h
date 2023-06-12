@@ -22,6 +22,8 @@ protected:
                 break; 
         case 5: binary+=car_hit; //hit
                 break;
+        case 6: binary+=powerSupply12_unavailable;
+                break;
       }
       return binary;
     }
