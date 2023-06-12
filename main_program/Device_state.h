@@ -9,6 +9,9 @@ private:
     
     int U1, U2, U3, U4;
     int akc;
+    int lock_state; // 0 - unlocked, 1 - locked, else - unkown
+    bool lock_changed;
+    long int first_time_pushed;
     long int last_time_pushed;
     bool moving;
     bool stopped_moving;
@@ -85,7 +88,7 @@ public:
             
             if(stopped_moving==true){
                 stopped_moving=false;
-
+                first_time_pushed = 0;
                 send_error_message("ponovno u stanju mirovanja");
                 //setCS(false);                
                 *last_sent= Location(-181,-91);
@@ -99,7 +102,13 @@ public:
     }
 
     void setLastTimePushed(){
+        if(moving == false){
+            first_time_pushed = millis();
+        }
         last_time_pushed=millis();
+        if(last_time_pushed - first_time_pushed > 1000 * 60 * 15){
+            set_CS(true);
+        }
         moving=true;
     }
 
