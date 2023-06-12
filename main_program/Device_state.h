@@ -11,6 +11,7 @@ private:
     int akc;
     int lock_state; // 0 - unlocked, 1 - locked, else - unkown
     bool lock_changed;
+    long int first_time_pushed;
     long int last_time_pushed;
     bool moving;
     bool stopped_moving;
@@ -22,13 +23,16 @@ private:
     String location_buffer;
 
     bool first_block=false; //da samo jedanput attacha na pocetku (nakon 20 sekundi)
+
+    int powerSupply_12V_lastState = -1;
+    long int powerSupply_12V_lastChecked;
+
 public:
     Device_state(int u1, int u2, int u3, int u4, int charging, int akc_pin, int GSM_powerpin, int GPS_powerpin): 
                     Battery_state(charging, u1), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
         lock_changed=false;
         GSM_isON=false;
         GPS_isON=false;
-        lock_state=2; // unkown if it is locked
         U1=u1;
         U2=u2;
         U3=u3;
@@ -67,25 +71,6 @@ public:
         Send_message(message);
     }
 
-    void unlock(){
-        send_error_message("otkljucan - interupt");
-        if(lock_state!=0){
-            lock_state=0; //unlocked
-            
-            send_error_message("otkljucan");
-            lock_changed=true;
-        }
-    }
-
-    void lock(){
-        send_error_message("zakljucan - interupt");
-        if(lock_state!=1){
-            lock_state=1;
-            send_error_message("zakljucan");
-            lock_changed=true;
-        }
-    }
-
     int akc_loop(){
         //vraca nulu ako nista ne treba napravit
         //vraca jedan ako treba detachat
@@ -104,21 +89,10 @@ public:
             
             if(stopped_moving==true){
                 stopped_moving=false;
-
+                first_time_pushed = 0;
                 send_error_message("ponovno u stanju mirovanja");
                 //setCS(false);                
                 *last_sent= Location(-181,-91);
-                if(lock_state==false){
-                    //if(BT_state==0){
-                        setLink(small_link(3));
-                    //}
-                }
-                else if(lightsState()==true){
-                    //if(BT_state==0){
-                        send_error_message("setan je link za svjetla");
-                        setLink(small_link(2));
-                    //}
-                }
             }
             return 2;
         }
@@ -129,7 +103,13 @@ public:
     }
 
     void setLastTimePushed(){
+        if(moving == false){
+            first_time_pushed = millis();
+        }
         last_time_pushed=millis();
+        if(last_time_pushed - first_time_pushed > 1000 * 60 * 15){
+            set_CS(true);
+        }
         moving=true;
     }
 
@@ -153,11 +133,7 @@ public:
     }
     
     void GPS_loop(){
-        //Location A(18.715807,45.557249), B(18.719415, 45.557323);
-        // double dd=distance(A,B);
-        // send_error_message("udaljenost od damira do pocetka ulice:" + String(dd, DEC)+" km" );
 
-      
         // if(isMoveing()==false && get_GPS_power()==true){
         //     GPS_power(false);
         // }
@@ -276,10 +252,10 @@ public:
 
     bool isMoveing(){ return moving; }
 
-    bool lightsState(){
-        send_error_message("stanje svjetala " + (String)(digitalRead(U3)^1));
-        return (digitalRead(U3)^1);
-    }
+    // bool lightsState(){
+    //     send_error_message("stanje svjetala " + (String)(digitalRead(U3)^1));
+    //     return (digitalRead(U3)^1);
+    // }
 
     void setStoppedMoving(){
        stopped_moving=true; 
@@ -288,6 +264,7 @@ public:
     void setCS(bool state){
         Battery_state::set_CS(state);
     }
+
     void setLocksAttached(bool state){
         locks_attached=state; 
     }
@@ -302,5 +279,53 @@ public:
 
     void begin_charging_on_request(){
         Battery_state::set_percentage_low();
+    }
+
+    void check12V_loop(){
+        if(millis() - powerSupply_12V_lastChecked > 60 * 1000) {   //1 minute
+            bool newState = check12V_availability();
+            if(powerSupply_12V_lastState == -1){
+                //nije izmjereno nikada
+                if(newState){
+                    //ima struje, sve okej
+                }
+                else{
+                    //nema struje, nista okej
+                    if(getLink()!=""){
+                        setLink(small_link(6));
+                    }
+                    else{
+                        return;
+                    }
+                }
+            }
+            else if(powerSupply_12V_lastState == 0){
+                if(newState){
+                    //bratilo se nazad
+                }
+                else{
+                    //ostalo isto -> nema struje
+                }
+            }
+            else if(powerSupply_12V_lastChecked == 1){
+                if(newState){
+                    // ostalo isto -> ima struje
+                }
+                else{
+                    //otisla struja
+                    if(getLink()!=""){
+                        setLink(small_link(6));
+                    }
+                    else{
+                        return;
+                    }
+                }
+            }
+            powerSupply_12V_lastChecked = newState;
+        } 
+    }
+
+    bool check12V_availability(){
+        return (digitalRead(U4)^1); //flip because of the shematic
     }
 };
