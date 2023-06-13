@@ -326,6 +326,6 @@ public:
     }
 
     bool check12V_availability(){
-        return (digitalRead(U4)^1); //flip because of the shematic
+        return (digitalRead(Battery_state::Charge_pin)^1); //flip because of the shematic
     }
 };
