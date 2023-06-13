@@ -317,7 +317,7 @@ public:
                         setLink(small_link(6));
                     }
                     else{
-                        return;
+
                     }
                 }
             }
