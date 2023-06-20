@@ -53,6 +53,12 @@ public:
   void set_percentage_low(){
     current_charge = 0.1 * TOTAL_CHARGE;
   }
+
+  void set_battery_to_above_charging(){
+    current_charge = 0.31 * TOTAL_CHARGE;
+  }
+
+  
   bool get_CS(){
     return CS;
   }

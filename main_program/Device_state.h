@@ -280,6 +280,10 @@ public:
     void begin_charging_on_request(){
         Battery_state::set_percentage_low();
     }
+    
+    void setBatteryX(){
+        Battery_state::set_battery_to_above_charging();
+    }
 
     void check12V_loop(){
         if(millis() - powerSupply_12V_lastChecked > 60 * 1000) {   //1 minute
