@@ -4,7 +4,7 @@ protected:
   bool CS;
   
   double TOTAL_CHARGE=10.0*3.6/5*0.9;
-  double CHARGING_CURRENT=1*0.85;
+  double CHARGING_CURRENT=0.3*0.85;
   double GSM_discharge=0.30;
   double GPS_discharge=0.05;
   double BASE_discharge=0.065;
