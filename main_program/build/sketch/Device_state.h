@@ -324,4 +324,5 @@ public:
     void begin_charging_on_request(){
         Battery_state::set_percentage_low();
     }
+
 };

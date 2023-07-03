@@ -16,6 +16,8 @@ class Bluetooth_comm{
   
 
   String battery_empty_request = "BATT_EMPTY";
+  String battery_emptyX_request = "BATT_X";
+  
 
   unsigned long int ignore_begin;
   double minutes_ignore;
@@ -112,6 +114,11 @@ class Bluetooth_comm{
       SerialBT->println("Battery set to empty");
       begin_charging_on_request();
     }
+    else if(AcontainsB(recived_chars, battery_emptyX_request)){
+      clean_recived();
+      SerialBT->println("Battery set X");
+      setBatteryX();
+    }
     else if(AcontainsB(recived_chars, question_request)){
       clean_recived();
       update_state();
@@ -182,5 +189,7 @@ class Bluetooth_comm{
   }
 
   virtual void begin_charging_on_request() = 0;
+
+  virtual void setBatteryX() = 0;
       
 };
