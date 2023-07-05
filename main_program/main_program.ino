@@ -73,7 +73,7 @@ void loop() {
   // MyDevice->locks_loop();
   MyDevice->GSM_loop();
   akc_loop_main();
-  MyDevice->check12V_loop();
+  // MyDevice->check12V_loop();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
   MyDevice->BT_loop();

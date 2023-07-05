@@ -154,25 +154,27 @@ public:
                     
                     double needed_distance;
                     send_error_message("Trenutna brzina: " + (String)speed_RN);
-                    if(speed_RN<=7){
+
+                    double v0 = 7, v1 = 50, v2 = 100, v3 = 150;
+                    double d0 = 0.05, d1 = 0.3, d2 = 1, d3 = 5; 
+                    
+                    if(speed_RN<=v0){
                         needed_distance=0.05;
-                        //send_error_message("less then 7kmh");
                     }
-                    else if(speed_RN>7 && speed_RN<=60){
-                        needed_distance=0.013*(speed_RN-7)+0.05;
-                        //send_error_message("between 7 and 60");
+                    else if(speed_RN>v0 && speed_RN<=v1){
+                        double k = (d1-d0)/(v1-v0);
+                        needed_distance=k*(speed_RN-v0)+d0;
                     }
-                    else if(speed_RN>60 && speed_RN<=100){
-                        needed_distance=0.04*(speed_RN-60)+0.74;
-                        //send_error_message("between 60 and 100");
+                    else if(speed_RN>v1 && speed_RN<=v2){
+                        double k = (d2-d1)/(v2-v1);
+                        needed_distance=k*(speed_RN-v1)+d1;
                     }
-                    else if(speed_RN>100 && speed_RN<=150){
-                        needed_distance=0.07*(speed_RN-100)+2.34;
-                        //send_error_message("between 100 and 150");
+                    else if(speed_RN>v2 && speed_RN<=v3){
+                        double k = (d3-d2)/(v3-v2);
+                        needed_distance=k*(speed_RN-v2)+d2;
                     }
                     else{
-                        //send_error_message("above 150");
-                        needed_distance=5.84;          
+                        needed_distance=d3;          
                     }
                 
                     send_error_message("da posalje: " + String(distance_new_last/needed_distance*100,DEC) + "%");
