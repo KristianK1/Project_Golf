@@ -27,35 +27,37 @@ unsigned long int locks_timer;
 //   MyDevice->setLocksAttached(false);
 // }
 
-void IRAM_ATTR pushed(){
-  detachInterrupt(push_p);
-  MyDevice->send_error_message("udaren");
-  MyDevice->setStoppedMoving();
-  //if(MyDevice->device_get_percentage()<0.75){
-    //MyDevice->setCS(true);
-    MyDevice->send_error_message("gurnut");
-  //}
-  if(MyDevice->getBTstate()==0){
-    if(MyDevice->isMoveing()==false){
-      if(MyDevice->link_exists()==false){
-        MyDevice->Pushed_message();
-      }
-    }
-  }
-  MyDevice->setLastTimePushed();
-}
+//TODO return this
+// void IRAM_ATTR pushed(){
+//   detachInterrupt(push_p);
+//   MyDevice->send_error_message("udaren");
+//   MyDevice->setStoppedMoving();
+//   //if(MyDevice->device_get_percentage()<0.75){
+//     //MyDevice->setCS(true);
+//     MyDevice->send_error_message("gurnut");
+//   //}
+//   if(MyDevice->getBTstate()==0){
+//     if(MyDevice->isMoveing()==false){
+//       if(MyDevice->link_exists()==false){
+//         MyDevice->Pushed_message();
+//       }
+//     }
+//   }
+//   MyDevice->setLastTimePushed();
+// }
 
-void akc_loop_main(){
-  int temp=MyDevice->akc_loop();
-  if(temp==1){
-    MyDevice->send_error_message("pocetno attachanje");
-    attachInterrupt(push_p, pushed, RISING);
-  }
-  else if(temp==2){
-    //MyDevice->send_error_message("reatach");
-    attachInterrupt(push_p, pushed, RISING);
-  }
-}
+//TODO return this
+// void akc_loop_main(){
+//   int temp=MyDevice->akc_loop();
+//   if(temp==1){
+//     MyDevice->send_error_message("pocetno attachanje");
+//     attachInterrupt(push_p, pushed, RISING);
+//   }
+//   else if(temp==2){
+//     //MyDevice->send_error_message("reatach");
+//     attachInterrupt(push_p, pushed, RISING);
+//   }
+// }
 
 void setup() {
  
@@ -72,7 +74,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   // MyDevice->locks_loop();
   MyDevice->GSM_loop();
-  akc_loop_main();
+  // akc_loop_main();
   // MyDevice->check12V_loop();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
