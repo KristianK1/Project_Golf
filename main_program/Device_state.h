@@ -95,7 +95,7 @@ public:
         if(millis()<3*1000){
             return 0;
         }
-        if(millis()>3*1000 && first_block==false){
+        if(millis()>10*1000 && first_block==false){
             first_block=true;
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
