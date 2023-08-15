@@ -207,10 +207,15 @@ public:
                     else if((distance_new_last_saved > (needed_distance/5)) && distance_new_last_saved>0.05){
                         //save_to_string
                         *last_saved = *current_location;
-                        send_error_message("sejvana lokacija za kasnije");  
-                        location_buffer += big_packet(current_location->getX(), current_location->getY(),0);
-                        location_buffer += '*';
-                        send_error_message(location_buffer);
+                        if(location_buffer.length() < 80){
+                            send_error_message("sejvana lokacija za kasnije");  
+                            location_buffer += big_packet(current_location->getX(), current_location->getY(),0);
+                            location_buffer += '*';
+                            send_error_message(location_buffer);
+                        }
+                        else{
+                            send_error_message("nije spremljena lokacija za kasnije");
+                        }
                         
                     }
                 }

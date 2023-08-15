@@ -241,7 +241,7 @@ public:
       link_active = millis();
       send_error_message("resetiram GSM modul");
       GSM_power(false);
-      delay(7000);
+      delay(18000);
       GSM_power(true);
       progress.setPart(0);
       progress.setStage(0);
@@ -257,7 +257,7 @@ public:
       Recive(recived);
       deleteRecive();
       Send(progress.AT_commands_setup[0].getSend());
-      //SerialBT.println("reset happend");
+      send_error_message("reset happend");
       return 1;
     }
 
