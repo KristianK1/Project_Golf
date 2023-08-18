@@ -242,6 +242,7 @@ public:
       send_error_message("resetiram GSM modul");
       GSM_power(false);
       delay(18000);
+      Serial2.flush();
       GSM_power(true);
       progress.setPart(0);
       progress.setStage(0);
