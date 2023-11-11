@@ -62,7 +62,7 @@ unsigned long int locks_timer;
 void setup() {
  
   // put your setup code here, to run once:
-  MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp);
+  MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp, 100.0, false);
   //MyDevice->Wakeup_message();
   //delay(5000);
   pinMode(2, OUTPUT);
@@ -73,7 +73,18 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   // MyDevice->locks_loop();
-  MyDevice->GSM_loop();
+  try{
+    MyDevice->GSM_loop();
+  } catch(String e){
+    if(e == "GSM ne funkcionira"){
+      double batteryPercentage = MyDevice->device_get_percentage();
+      int isCharging = MyDevice->getCS();
+      free(MyDevice);
+      MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp, batteryPercentage, isCharging);
+    }else{
+      throw("rlly throw");
+    }
+  }
   // akc_loop_main();
   // MyDevice->check12V_loop();
   MyDevice->GPS_loop();

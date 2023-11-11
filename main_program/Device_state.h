@@ -28,8 +28,8 @@ private:
     long int powerSupply_12V_lastChecked;
 
 public:
-    Device_state(int u1, int u2, int u3, int u4, int charging, int akc_pin, int GSM_powerpin, int GPS_powerpin): 
-                    Battery_state(charging, u1), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
+    Device_state(int u1, int u2, int u3, int u4, int charging, int akc_pin, int GSM_powerpin, int GPS_powerpin, double initBatteryState, int initChargingState): 
+                    Battery_state(charging, u1, initBatteryState, initChargingState), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
         lock_changed=false;
         GSM_isON=false;
         GPS_isON=false;
@@ -272,6 +272,10 @@ public:
 
     void setCS(bool state){
         Battery_state::set_CS(state);
+    }
+
+    bool getCS(){
+        return Battery_state::get_CS();
     }
 
     void setLocksAttached(bool state){

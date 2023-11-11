@@ -20,16 +20,16 @@ protected:
 
   
 public:
-  Battery_state(int chargingPin, int sensorPin){
+  Battery_state(int chargingPin, int sensorPin, double initBatteryState, int initChargingState){
     Charge_pin=chargingPin;
     Sensor_pin=sensorPin;
 
     pinMode(Charge_pin, OUTPUT);
     pinMode(Sensor_pin, INPUT);
     CS=false;
-    digitalWrite(Charge_pin, LOW);
+    digitalWrite(Charge_pin, initChargingState);
     initial_charge=TOTAL_CHARGE;
-    current_charge=initial_charge;
+    current_charge=initBatteryState;
     timer=millis();
     GPS_state=false;
     GSM_state=false;

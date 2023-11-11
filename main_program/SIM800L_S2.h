@@ -243,7 +243,14 @@ public:
       GSM_power(false);
       delay(18000);
       Serial2.flush();
+      // delay(20000);
+
+      //new line for crashing
+      throw("GSM ne funkcionira");
+      
       GSM_power(true);
+      Serial2.flush();
+      deleteRecive();
       progress.setPart(0);
       progress.setStage(0);
       progress.setRepeat(0);
