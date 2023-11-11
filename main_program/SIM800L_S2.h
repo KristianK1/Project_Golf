@@ -241,8 +241,14 @@ public:
       link_active = millis();
       send_error_message("resetiram GSM modul");
       GSM_power(false);
-      delay(7000);
+      // delay(20000);
+
+      //new line for crashing
+      throw("GSM ne funkcionira");
+      
       GSM_power(true);
+      Serial2.flush();
+      deleteRecive();
       progress.setPart(0);
       progress.setStage(0);
       progress.setRepeat(0);
