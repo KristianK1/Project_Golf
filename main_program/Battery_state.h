@@ -28,10 +28,10 @@ public:
 
     pinMode(Charge_pin, OUTPUT);
     pinMode(Sensor_pin, INPUT);
-    CS=false;
-    digitalWrite(Charge_pin, initChargingState);
+
+    set_CS(initChargingState);
     initial_charge=TOTAL_CHARGE;
-    current_charge=initBatteryState;
+    current_charge= (TOTAL_CHARGE > initBatteryState)? TOTAL_CHARGE: initBatteryState;
     timer=millis();
     GPS_state=false;
     GSM_state=false;
