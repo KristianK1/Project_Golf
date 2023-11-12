@@ -105,6 +105,8 @@ protected:
   long int timer_ON;
   long int access_timer;
 
+  int numberOfSoftResets = 0;
+
   int AcontainsB(String A, String B){
     
     if(A.length()<B.length()) {
@@ -203,6 +205,7 @@ public:
   void setLink(String new_link){
     link=new_link;
     link_active = millis();
+    numberOfSoftResets = 0;
   }
   String getLink(){
     return link;
@@ -248,24 +251,30 @@ public:
     send_error_message("COUNT MILLIS");
     send_error_message(String(millis()/1000));
     
-
-    if(millis() - link_active > 5 * 60 * 1000){
+    if(numberOfSoftResets >= 3){
+      //new line for crashing
+      GSM_power(false);
+      delay(18000);
+      Serial2.flush();
+      throw(7993);
+      
+    }
+    if(millis() - link_active > 1.5 * 60 * 1000){
       link_active = millis();
-      send_error_message("resetiram GSM modul");
+      send_error_message("resetiram GSM modul - SOFT");
       GSM_power(false);
       delay(18000);
       Serial2.flush();
       // delay(20000);
 
-      //new line for crashing
-      throw(7993);
       
       // GSM_power(true);
-      // Serial2.flush();
-      // deleteRecive();
-      // progress.setPart(0);
-      // progress.setStage(0);
-      // progress.setRepeat(0);
+      Serial2.flush();
+      deleteRecive();
+      progress.setPart(0);
+      progress.setStage(0);
+      progress.setRepeat(0);
+      numberOfSoftResets++;
     }
     deleteRecive();
     Recive(recived);
