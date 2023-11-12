@@ -31,7 +31,7 @@ class Bluetooth_comm{
     BT_state=0;
     recived_chars="";
   }
-  virtual ~Bluetooth_comm(){
+  ~Bluetooth_comm(){
     delete (SerialBT);
   }
 

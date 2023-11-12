@@ -1,6 +1,7 @@
 //#include "BluetoothSerial.h"
 
 //BluetoothSerial SerialBT;
+#include "btObjectHolder.h"
 
 class AT_command{
 private:
@@ -158,9 +159,13 @@ public:
     Serial2.begin(9600);
     progress.setPart(1);
     recived=new String();
+    // if(mainSerialBT != NULL){
+    //   mainSerialBT->println("ended SIM800 constructor");
+    //   delay(2000);
+    // }
   }
 
-  virtual ~SIM800L_S2(){
+  ~SIM800L_S2(){
     delete(recived);
   }
 
@@ -237,6 +242,10 @@ public:
   
 
   int access(){
+    send_error_message("COUNT MILLIS");
+    send_error_message(String(millis()/1000));
+    
+
     if(millis() - link_active > 2.5 * 60 * 1000){
       link_active = millis();
       send_error_message("resetiram GSM modul");
@@ -246,14 +255,14 @@ public:
       // delay(20000);
 
       //new line for crashing
-      throw("GSM ne funkcionira");
+      throw(7993);
       
-      GSM_power(true);
-      Serial2.flush();
-      deleteRecive();
-      progress.setPart(0);
-      progress.setStage(0);
-      progress.setRepeat(0);
+      // GSM_power(true);
+      // Serial2.flush();
+      // deleteRecive();
+      // progress.setPart(0);
+      // progress.setStage(0);
+      // progress.setRepeat(0);
     }
     deleteRecive();
     Recive(recived);

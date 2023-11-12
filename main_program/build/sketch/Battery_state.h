@@ -31,7 +31,7 @@ public:
     GSM_state=false;
   }
 
-  virtual ~Battery_state(){}
+  ~Battery_state(){}
 
   void setGPSstate(bool s){
     update_CS(true);

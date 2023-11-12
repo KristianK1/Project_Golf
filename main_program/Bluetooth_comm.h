@@ -1,5 +1,4 @@
-
-#include "BluetoothSerial.h"
+#include "btObjectHolder.h"
 
 class Bluetooth_comm{
   protected:
@@ -24,17 +23,28 @@ class Bluetooth_comm{
 
   public:
   Bluetooth_comm(){
-    SerialBT=new BluetoothSerial();
-    
-    //SerialBT->enableSSP();
-    //SerialBT->begin("Project Golf", true); 
-    SerialBT->begin("Vectra2"); 
+    if(mainSerialBT != NULL){
+      SerialBT = mainSerialBT;
+    }
+    else{
+      SerialBT=new BluetoothSerial();
+      mainSerialBT = SerialBT;
+      //SerialBT->enableSSP();
+      //SerialBT->begin("Project Golf", true); 
+      SerialBT->begin("Vectra2"); 
+    }
 
     BT_state=0;
     recived_chars="";
+
+    
+    // if(mainSerialBT != NULL){
+    //   mainSerialBT->println("ended BLUETOOTH constructor");
+    //   delay(2000);
+    // }
   }
-  virtual ~Bluetooth_comm(){
-    delete (SerialBT);
+  ~Bluetooth_comm(){
+    // delete (SerialBT);
   }
 
   void Bluetooth_loop(){

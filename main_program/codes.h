@@ -1,5 +1,7 @@
 #include "thingspeak_API_key.h"
 #include "Thingspeak_chars.h"
+#include "btObjectHolder.h"
+
 class codes{
 protected:
 
@@ -104,8 +106,13 @@ protected:
 
     
 public:
-  codes(){}
-  virtual ~codes(){}
+  codes(){
+    // if(mainSerialBT != NULL){
+    //   mainSerialBT->println("ended CODES constructor");
+    //   delay(2000);
+    // }
+  }
+  ~codes(){}
 
   String big_packet(double X_kor, double Y_kor, int code){
     String binary=make_binary(X_kor, Y_kor);

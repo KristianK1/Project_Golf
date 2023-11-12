@@ -32,7 +32,7 @@ public:
                     Battery_state(charging, u1, initBatteryState, initChargingState), SIM800L_S2(GSM_powerpin), NEO_6M(GPS_powerpin), codes(), Bluetooth_comm(){
         lock_changed=false;
         GSM_isON=false;
-        GPS_isON=false;
+        GPS_isON=true;
         U1=u1;
         U2=u2;
         U3=u3;
@@ -52,6 +52,14 @@ public:
 
         last_time_pushed=millis();
     }
+
+    ~Device_state(){
+        delete(last_sent);
+        delete(current_location);
+        delete(last_saved);
+    }
+
+
     void GPS_power(bool state){
         if(GPS_isON!=state){
             GPS_isON=state;
@@ -135,7 +143,9 @@ public:
     }
     
     void GPS_loop(){
-
+        // if(getLink() != "") return;
+        // setLink(string_to_link("exampleX"));
+        // return;
         // if(isMoveing()==false && get_GPS_power()==true){
         //     GPS_power(false);
         // }

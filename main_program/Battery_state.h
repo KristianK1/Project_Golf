@@ -1,3 +1,5 @@
+#include "btObjectHolder.h"
+
 class Battery_state{
 protected:
   //CS == Charging state
@@ -33,9 +35,13 @@ public:
     timer=millis();
     GPS_state=false;
     GSM_state=false;
+    // if(mainSerialBT != NULL){
+    //   mainSerialBT->println("ended battery state constructor");
+    //   delay(2000);
+    // }
   }
 
-  virtual ~Battery_state(){}
+  ~Battery_state(){}
 
   void setGPSstate(bool s){
     update_CS(true);

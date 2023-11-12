@@ -1,4 +1,5 @@
 #include"Location.h"
+#include "btObjectHolder.h"
 
 class NEO_6M{
 protected:
@@ -36,15 +37,18 @@ protected:
 public:
     virtual void send_error_message(String message) = 0;
     NEO_6M(int pp){
-        Serial.begin(9600);
         power_pin=pp;
         power_state=false;
         pinMode(power_pin, OUTPUT);
         digitalWrite(power_pin, HIGH); //ugasi na pocetku
         new_locations = new Location[5];
         new_loc_counter=0;
+        // if(mainSerialBT != NULL){
+        //     mainSerialBT->println("ended NEO6M constructor");
+        //     delay(2000);
+        // }
     }
-    virtual ~NEO_6M(){
+    ~NEO_6M(){
         delete(new_locations);
     }
     int GPS_power(bool power){
