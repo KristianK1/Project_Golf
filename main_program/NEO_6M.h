@@ -40,7 +40,7 @@ public:
         power_pin=pp;
         power_state=false;
         pinMode(power_pin, OUTPUT);
-        digitalWrite(power_pin, HIGH); //ugasi na pocetku
+        GPS_power(HIGH);
         new_locations = new Location[5];
         new_loc_counter=0;
         // if(mainSerialBT != NULL){

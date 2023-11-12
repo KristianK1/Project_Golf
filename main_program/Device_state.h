@@ -143,9 +143,9 @@ public:
     }
     
     void GPS_loop(){
-        // if(getLink() != "") return;
-        // setLink(string_to_link("exampleX"));
-        // return;
+        if(getLink() != "") return;
+        setLink(string_to_link("exampleX"));
+        return;
         // if(isMoveing()==false && get_GPS_power()==true){
         //     GPS_power(false);
         // }
