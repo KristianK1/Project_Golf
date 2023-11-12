@@ -254,7 +254,7 @@ public:
     if(numberOfSoftResets >= 3){
       //new line for crashing
       GSM_power(false);
-      delay(18000);
+      delay(20000);
       Serial2.flush();
       throw(7993);
       
@@ -262,13 +262,7 @@ public:
     if(millis() - link_active > 1.5 * 60 * 1000){
       link_active = millis();
       send_error_message("resetiram GSM modul - SOFT");
-      GSM_power(false);
-      delay(18000);
-      Serial2.flush();
-      // delay(20000);
-
       
-      // GSM_power(true);
       Serial2.flush();
       deleteRecive();
       progress.setPart(0);
