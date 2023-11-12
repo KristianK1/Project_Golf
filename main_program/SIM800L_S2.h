@@ -156,7 +156,7 @@ public:
     power_pin=pin;
     pinMode(power_pin, OUTPUT); //32
     turn_off();
-    Serial2.begin(9600);
+    // Serial2.begin(9600);
     progress.setPart(1);
     recived=new String();
     // if(mainSerialBT != NULL){
@@ -242,11 +242,14 @@ public:
   
 
   int access(){
+    send_error_message("COUNT access");
+    send_error_message(String(millis() - link_active));
+
     send_error_message("COUNT MILLIS");
     send_error_message(String(millis()/1000));
     
 
-    if(millis() - link_active > 2.5 * 60 * 1000){
+    if(millis() - link_active > 5 * 60 * 1000){
       link_active = millis();
       send_error_message("resetiram GSM modul");
       GSM_power(false);

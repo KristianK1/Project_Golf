@@ -70,11 +70,16 @@ void setup() {
   Serial2.begin(9600);
   digitalWrite(2, HIGH);
   MyDevice->GPS_power(true);
+  MyDevice->send_error_message("GPS Power??");
+  MyDevice->send_error_message(String(MyDevice->get_GPS_power()));
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   // MyDevice->locks_loop();
+  
+  // MyDevice->send_error_message("GPS Power??");
+  // MyDevice->send_error_message(String(MyDevice->get_GPS_power()));
   try{
     MyDevice->GSM_loop();
   } catch(int e){
@@ -87,6 +92,7 @@ void loop() {
       int isCharging = MyDevice->getCS();
       delete(MyDevice);
       MyDevice = new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp, batteryPercentage, isCharging);
+      MyDevice->GPS_power(true);
     }else{
       throw("rlly throw");
     }
