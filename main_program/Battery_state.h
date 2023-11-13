@@ -1,5 +1,3 @@
-#include "btObjectHolder.h"
-
 class Battery_state{
 protected:
   //CS == Charging state
@@ -22,23 +20,17 @@ protected:
 
   
 public:
-  Battery_state(int chargingPin, int sensorPin, double initBatteryState, int initChargingState){
+  Battery_state(int chargingPin, int sensorPin){
     Charge_pin=chargingPin;
     Sensor_pin=sensorPin;
 
     pinMode(Charge_pin, OUTPUT);
     pinMode(Sensor_pin, INPUT);
 
-    set_CS(initChargingState);
     initial_charge=TOTAL_CHARGE;
-    current_charge= (TOTAL_CHARGE > initBatteryState)? TOTAL_CHARGE: initBatteryState;
     timer=millis();
     GPS_state=false;
     GSM_state=false;
-    // if(mainSerialBT != NULL){
-    //   mainSerialBT->println("ended battery state constructor");
-    //   delay(2000);
-    // }
   }
 
   ~Battery_state(){}
@@ -56,12 +48,17 @@ public:
     return current_charge/TOTAL_CHARGE*100;
   }
 
+
   void set_percentage_low(){
     current_charge = 0.1 * TOTAL_CHARGE;
   }
 
   void set_battery_to_above_charging(){
     current_charge = 0.305 * TOTAL_CHARGE;
+  }
+
+  void setBatteryPercentage(double state){
+    current_charge = state * TOTAL_CHARGE;
   }
 
   
@@ -71,7 +68,6 @@ public:
   void set_CS(bool state){
     update_CS(true);
     digitalWrite(Charge_pin, state);
-    send_error_message("punim");
     CS=state;
   }
   

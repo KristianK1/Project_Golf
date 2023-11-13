@@ -1,6 +1,5 @@
 #include "thingspeak_API_key.h"
 #include "Thingspeak_chars.h"
-#include "btObjectHolder.h"
 
 class codes{
 protected:
@@ -106,12 +105,7 @@ protected:
 
     
 public:
-  codes(){
-    // if(mainSerialBT != NULL){
-    //   mainSerialBT->println("ended CODES constructor");
-    //   delay(2000);
-    // }
-  }
+  codes(){}
   ~codes(){}
 
   String big_packet(double X_kor, double Y_kor, int code){

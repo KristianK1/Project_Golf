@@ -1,8 +1,3 @@
-//#include "BluetoothSerial.h"
-
-//BluetoothSerial SerialBT;
-#include "btObjectHolder.h"
-
 class AT_command{
 private:
   String send;
@@ -161,10 +156,6 @@ public:
     // Serial2.begin(9600);
     progress.setPart(1);
     recived=new String();
-    // if(mainSerialBT != NULL){
-    //   mainSerialBT->println("ended SIM800 constructor");
-    //   delay(2000);
-    // }
   }
 
   ~SIM800L_S2(){

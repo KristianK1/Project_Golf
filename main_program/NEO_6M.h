@@ -1,5 +1,4 @@
 #include"Location.h"
-#include "btObjectHolder.h"
 
 class NEO_6M{
 protected:
@@ -44,10 +43,6 @@ public:
         digitalWrite(power_pin, HIGH);
         new_locations = new Location[5];
         new_loc_counter=0;
-        // if(mainSerialBT != NULL){
-        //     mainSerialBT->println("ended NEO6M constructor");
-        //     delay(2000);
-        // }
     }
     ~NEO_6M(){
         delete(new_locations);

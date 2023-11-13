@@ -1,5 +1,6 @@
-#include "btObjectHolder.h"
+#include "BluetoothSerial.h"
 
+BluetoothSerial *mainSerialBT = NULL;
 class Bluetooth_comm{
   protected:
   BluetoothSerial *SerialBT;
@@ -28,7 +29,6 @@ class Bluetooth_comm{
     }
     else{
       SerialBT=new BluetoothSerial();
-      mainSerialBT = SerialBT;
       //SerialBT->enableSSP();
       //SerialBT->begin("Project Golf", true); 
       SerialBT->begin("Vectra2"); 
@@ -36,12 +36,6 @@ class Bluetooth_comm{
 
     BT_state=0;
     recived_chars="";
-
-    
-    // if(mainSerialBT != NULL){
-    //   mainSerialBT->println("ended BLUETOOTH constructor");
-    //   delay(2000);
-    // }
   }
   ~Bluetooth_comm(){
     // delete (SerialBT);
