@@ -90,6 +90,10 @@ void loop() {
       MyDevice->send_error_message("error handling2222");
       double batteryPercentage = MyDevice->device_get_percentage();
       int isCharging = MyDevice->getCS();
+
+      MyDevice->send_error_message("percentage to save: ");
+      MyDevice->send_error_message(String(batteryPercentage));
+
       delete(MyDevice);
       MyDevice = new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp, batteryPercentage, isCharging);
       MyDevice->GPS_power(true);

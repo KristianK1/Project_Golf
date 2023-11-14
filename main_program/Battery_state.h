@@ -58,7 +58,7 @@ public:
   }
 
   void setBatteryPercentage(double state){
-    current_charge = state * TOTAL_CHARGE;
+    current_charge = state / 100 * TOTAL_CHARGE;
   }
 
   

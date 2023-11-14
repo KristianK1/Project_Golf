@@ -236,11 +236,11 @@ public:
   
 
   int access(){
-    send_error_message("COUNT access");
-    send_error_message(String(millis() - link_active));
+    // send_error_message("COUNT access");
+    // send_error_message(String(millis() - link_active));
 
-    send_error_message("COUNT MILLIS");
-    send_error_message(String(millis()/1000));
+    // send_error_message("COUNT MILLIS");
+    // send_error_message(String(millis()/1000));
     
     if(numberOfSoftResets >= 3){
       //new line for crashing
@@ -250,7 +250,7 @@ public:
       throw(7993);
       
     }
-    if(millis() - link_active > 1.5 * 60 * 1000){
+    if(millis() - link_active > 2.5 * 60 * 1000){
       link_active = millis();
       send_error_message("resetiram GSM modul - SOFT");
       
