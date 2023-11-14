@@ -1,5 +1,6 @@
 #include "thingspeak_API_key.h"
 #include "Thingspeak_chars.h"
+
 class codes{
 protected:
 
@@ -105,7 +106,7 @@ protected:
     
 public:
   codes(){}
-  virtual ~codes(){}
+  ~codes(){}
 
   String big_packet(double X_kor, double Y_kor, int code){
     String binary=make_binary(X_kor, Y_kor);

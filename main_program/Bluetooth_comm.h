@@ -1,6 +1,6 @@
-
 #include "BluetoothSerial.h"
 
+BluetoothSerial *mainSerialBT = NULL;
 class Bluetooth_comm{
   protected:
   BluetoothSerial *SerialBT;
@@ -24,17 +24,21 @@ class Bluetooth_comm{
 
   public:
   Bluetooth_comm(){
-    SerialBT=new BluetoothSerial();
-    
-    //SerialBT->enableSSP();
-    //SerialBT->begin("Project Golf", true); 
-    SerialBT->begin("Vectra2"); 
+    if(mainSerialBT != NULL){
+      SerialBT = mainSerialBT;
+    }
+    else{
+      SerialBT=new BluetoothSerial();
+      //SerialBT->enableSSP();
+      //SerialBT->begin("Project Golf", true); 
+      SerialBT->begin("Vectra2"); 
+    }
 
     BT_state=0;
     recived_chars="";
   }
-  virtual ~Bluetooth_comm(){
-    delete (SerialBT);
+  ~Bluetooth_comm(){
+    // delete (SerialBT);
   }
 
   void Bluetooth_loop(){

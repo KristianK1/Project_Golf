@@ -114,7 +114,7 @@
                 "GCC_NOT_5_2_0=0",
                 "WITH_POSIX",
                 "F_CPU=240000000L",
-                "ARDUINO=10815",
+                "ARDUINO=10607",
                 "ARDUINO_ESP32_DEV",
                 "ARDUINO_ARCH_ESP32",
                 "ARDUINO_BOARD=\"ESP32_DEV\"",

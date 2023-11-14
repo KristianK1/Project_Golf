@@ -1,7 +1,3 @@
-//#include "BluetoothSerial.h"
-
-//BluetoothSerial SerialBT;
-
 class AT_command{
 private:
   String send;
@@ -104,6 +100,8 @@ protected:
   long int timer_ON;
   long int access_timer;
 
+  int numberOfSoftResets = 0;
+
   int AcontainsB(String A, String B){
     
     if(A.length()<B.length()) {
@@ -155,12 +153,12 @@ public:
     power_pin=pin;
     pinMode(power_pin, OUTPUT); //32
     turn_off();
-    Serial2.begin(9600);
+    // Serial2.begin(9600);
     progress.setPart(1);
     recived=new String();
   }
 
-  virtual ~SIM800L_S2(){
+  ~SIM800L_S2(){
     delete(recived);
   }
 
@@ -198,6 +196,7 @@ public:
   void setLink(String new_link){
     link=new_link;
     link_active = millis();
+    numberOfSoftResets = 0;
   }
   String getLink(){
     return link;
@@ -237,21 +236,30 @@ public:
   
 
   int access(){
+    // send_error_message("COUNT access");
+    // send_error_message(String(millis() - link_active));
+
+    // send_error_message("COUNT MILLIS");
+    // send_error_message(String(millis()/1000));
+    
+    if(numberOfSoftResets >= 3){
+      //new line for crashing
+      GSM_power(false);
+      delay(20000);
+      Serial2.flush();
+      throw(7993);
+      
+    }
     if(millis() - link_active > 2.5 * 60 * 1000){
       link_active = millis();
-      send_error_message("resetiram GSM modul");
-      GSM_power(false);
-      // delay(20000);
-
-      //new line for crashing
-      throw("GSM ne funkcionira");
+      send_error_message("resetiram GSM modul - SOFT");
       
-      GSM_power(true);
       Serial2.flush();
       deleteRecive();
       progress.setPart(0);
       progress.setStage(0);
       progress.setRepeat(0);
+      numberOfSoftResets++;
     }
     deleteRecive();
     Recive(recived);
@@ -263,7 +271,7 @@ public:
       Recive(recived);
       deleteRecive();
       Send(progress.AT_commands_setup[0].getSend());
-      //SerialBT.println("reset happend");
+      send_error_message("reset happend");
       return 1;
     }
 

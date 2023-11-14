@@ -64,6 +64,8 @@ void setup() {
   //MyDevice->Wakeup_message();
   //delay(5000);
   pinMode(2, OUTPUT);
+  Serial.begin(9600);
+  Serial2.begin(9600);
   digitalWrite(2, HIGH);
   MyDevice->GPS_power(true);
 }
@@ -73,15 +75,25 @@ void loop() {
   // MyDevice->locks_loop();
   try{
     MyDevice->GSM_loop();
-  } catch(String e){
-    if(e == "GSM ne funkcionira"){
+  } catch(int e){
+    MyDevice->send_error_message("error handling");
+    MyDevice->send_error_message(String(e));
+    delay(5000);
+    if(e == 7993){
+      MyDevice->send_error_message("error handling2222");
       double batteryPercentage = MyDevice->device_get_percentage();
       int isCharging = MyDevice->getCS();
-      free(MyDevice);
-      MyDevice=new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp, batteryPercentage, isCharging);
+
+      MyDevice->send_error_message("percentage to save: ");
+      MyDevice->send_error_message(String(batteryPercentage));
+
+      delete(MyDevice);
+      MyDevice = new Device_state(input1, input2, input3, input4, charge_pp, push_p, GSM_pp, GPS_pp, batteryPercentage, isCharging);
+      MyDevice->GPS_power(true);
     }else{
       throw("rlly throw");
     }
+    MyDevice->send_error_message("error handlingXXXXXXXXXXXXXXXXXX");
   }
   akc_loop_main();
   // MyDevice->check12V_loop();
