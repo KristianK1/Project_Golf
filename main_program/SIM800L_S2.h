@@ -256,7 +256,7 @@ public:
       
       Serial2.flush();
       deleteRecive();
-      progress.setPart(0);
+      progress.setPart(1);
       progress.setStage(0);
       progress.setRepeat(0);
       numberOfSoftResets++;
