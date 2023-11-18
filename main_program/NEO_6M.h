@@ -39,8 +39,7 @@ public:
         power_pin=pp;
         power_state=false;
         pinMode(power_pin, OUTPUT);
-        // GPS_power(HIGH);
-        digitalWrite(power_pin, HIGH);
+        digitalWrite(power_pin, HIGH); //ugasi na pocetku
         new_locations = new Location[5];
         new_loc_counter=0;
     }

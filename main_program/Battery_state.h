@@ -48,7 +48,6 @@ public:
     return current_charge/TOTAL_CHARGE*100;
   }
 
-
   void set_percentage_low(){
     current_charge = 0.1 * TOTAL_CHARGE;
   }

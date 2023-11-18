@@ -43,8 +43,7 @@ public:
         pinMode(u3, INPUT);
         pinMode(u4, INPUT);
         pinMode(akc, INPUT);
-        //TODO SHOULD BE FALSE
-        moving=true;
+        moving=false;
         stopped_moving=false;
         last_sent= new Location(-181,-91);
         current_location = new Location(181, 91);
@@ -100,19 +99,18 @@ public:
             send_error_message("FIRST ATTACH");
             return 1; //ako se negdje u prvih 20 sekundi attachaju interupti jebiga onda
         }
-        //TODO return this
-        // if(millis()-last_time_pushed>2*60*1000){ //idealno 2.5 minute
-        //     moving=false;
+        if(millis()-last_time_pushed>2*60*1000){ //idealno 2.5 minute
+            moving=false;
             
-        //     if(stopped_moving==true){
-        //         stopped_moving=false;
-        //         first_time_pushed = 0;
-        //         send_error_message("ponovno u stanju mirovanja");
-        //         //setCS(false);                
-        //         *last_sent= Location(-181,-91);
-        //     }
-        //     return 2;
-        // }
+            if(stopped_moving==true){
+                stopped_moving=false;
+                first_time_pushed = 0;
+                send_error_message("ponovno u stanju mirovanja");
+                //setCS(false);                
+                *last_sent= Location(-181,-91);
+            }
+            return 2;
+        }
         if(millis()-last_time_pushed>7*1000){
             return 2;
         }

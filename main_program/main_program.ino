@@ -27,37 +27,35 @@ unsigned long int locks_timer;
 //   MyDevice->setLocksAttached(false);
 // }
 
-//TODO return this
-// void IRAM_ATTR pushed(){
-//   detachInterrupt(push_p);
-//   MyDevice->send_error_message("udaren");
-//   MyDevice->setStoppedMoving();
-//   //if(MyDevice->device_get_percentage()<0.75){
-//     //MyDevice->setCS(true);
-//     MyDevice->send_error_message("gurnut");
-//   //}
-//   if(MyDevice->getBTstate()==0){
-//     if(MyDevice->isMoveing()==false){
-//       if(MyDevice->link_exists()==false){
-//         MyDevice->Pushed_message();
-//       }
-//     }
-//   }
-//   MyDevice->setLastTimePushed();
-// }
+void IRAM_ATTR pushed(){
+  detachInterrupt(push_p);
+  MyDevice->send_error_message("udaren");
+  MyDevice->setStoppedMoving();
+  //if(MyDevice->device_get_percentage()<0.75){
+    //MyDevice->setCS(true);
+    MyDevice->send_error_message("gurnut");
+  //}
+  if(MyDevice->getBTstate()==0){
+    if(MyDevice->isMoveing()==false){
+      if(MyDevice->link_exists()==false){
+        MyDevice->Pushed_message();
+      }
+    }
+  }
+  MyDevice->setLastTimePushed();
+}
 
-//TODO return this
-// void akc_loop_main(){
-//   int temp=MyDevice->akc_loop();
-//   if(temp==1){
-//     MyDevice->send_error_message("pocetno attachanje");
-//     attachInterrupt(push_p, pushed, RISING);
-//   }
-//   else if(temp==2){
-//     //MyDevice->send_error_message("reatach");
-//     attachInterrupt(push_p, pushed, RISING);
-//   }
-// }
+void akc_loop_main(){
+  int temp=MyDevice->akc_loop();
+  if(temp==1){
+    MyDevice->send_error_message("pocetno attachanje");
+    attachInterrupt(push_p, pushed, RISING);
+  }
+  else if(temp==2){
+    //MyDevice->send_error_message("reatach");
+    attachInterrupt(push_p, pushed, RISING);
+  }
+}
 
 void setup() {
  
@@ -70,16 +68,11 @@ void setup() {
   Serial2.begin(9600);
   digitalWrite(2, HIGH);
   MyDevice->GPS_power(true);
-  MyDevice->send_error_message("GPS Power??");
-  MyDevice->send_error_message(String(MyDevice->get_GPS_power()));
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   // MyDevice->locks_loop();
-  
-  // MyDevice->send_error_message("GPS Power??");
-  // MyDevice->send_error_message(String(MyDevice->get_GPS_power()));
   try{
     MyDevice->GSM_loop();
   } catch(int e){
@@ -102,7 +95,7 @@ void loop() {
     }
     MyDevice->send_error_message("error handlingXXXXXXXXXXXXXXXXXX");
   }
-  // akc_loop_main();
+  akc_loop_main();
   // MyDevice->check12V_loop();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();
