@@ -95,7 +95,9 @@ void loop() {
     }
     MyDevice->send_error_message("error handlingXXXXXXXXXXXXXXXXXX");
   }
-  akc_loop_main();
+  if(isESPbroken == false){
+    akc_loop_main();
+  }
   // MyDevice->check12V_loop();
   MyDevice->GPS_loop();
   MyDevice->Battery_loop();

@@ -3,6 +3,7 @@
 #include"NEO_6M.h"
 #include"SIM800L_S2.h"
 #include"Bluetooth_comm.h"
+#include"isESPbroken.h"
 class Device_state: Battery_state, SIM800L_S2, NEO_6M, codes, Bluetooth_comm {
 private:
     bool GSM_isON, GPS_isON;
@@ -154,7 +155,7 @@ public:
         // if(isMoveing()==false && get_GPS_power()==true){
         //     GPS_power(false);
         // }
-        if(isMoveing()){
+        if(isMoveing() || isESPbroken){ 
             // if(get_GPS_power()==false){
             //     GPS_power(true);
             // }
